@@ -30,3 +30,15 @@
 *.exe
 *.out
 *.app
+build.sh
+build.bat
+
+# Build directory
+bin/
+build/
+
+# IDE files
+.vscode/
+
+#Other
+.DS_Store
