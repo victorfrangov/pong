@@ -14,7 +14,7 @@ Hud::Hud(Graphics &p_graphics) :
                 return;
             }
 
-            _font = TTF_OpenFont("res/fonts/KenneyPixel.ttf", 24);
+            _font = TTF_OpenFont("res/fonts/KenneyPixel.ttf", 56);
             if(!this->_font)
                 std::cerr << "TTF_OpenFont Error: " << TTF_GetError() << '\n';
         }
@@ -22,7 +22,7 @@ Hud::Hud(Graphics &p_graphics) :
 Hud::~Hud(){
 }
 
-void Hud::renderText(const char* p_text, int p_x, int p_y){
+void Hud::renderText(const char* p_text, int p_x, int p_y, int p_texW, int p_texH){
     if(!this->_font){
         return;
     }
@@ -39,21 +39,17 @@ void Hud::renderText(const char* p_text, int p_x, int p_y){
         return;
     }
 
-    int texW = 0;
-    int texH = 0;
-
-    SDL_QueryTexture(texture, NULL, NULL, &texW, &texH);
-
-
-    SDL_Rect dst = { p_x, p_y, texW, texH };
+    SDL_Rect dst = { p_x, p_y, p_texW, p_texH };
 
     this->_graphics.blitSurface(texture, NULL, &dst);
 
-    SDL_DestroyTexture(texture);
-    SDL_FreeSurface(surface);
+    freeMemory(texture, surface);
 }
 
-//add method to encapsulate the rendertext method, for each menu
+void Hud::freeMemory(SDL_Texture* p_texture, SDL_Surface* p_surface){
+    SDL_DestroyTexture(p_texture);
+    SDL_FreeSurface(p_surface);
+}
 
 void Hud::renderMenu(){
     int texW = 0;
@@ -62,7 +58,5 @@ void Hud::renderMenu(){
 
     TTF_SizeText(this->_font, menu, &texW, &texH);
 
-    this->renderText(menu, (globals::SCREEN_WIDTH / 2) - (texW / 2), (globals::SCREEN_HEIGHT / 4) - (texH / 2));
-
-    // std::cout << (globals::SCREEN_WIDTH / 2) - (texW / 2) << '\n'; prints 302
+    this->renderText(menu, (globals::SCREEN_WIDTH / 2) - (texW / 2), (globals::SCREEN_HEIGHT / 4) - (texH), texW, texH);
 }

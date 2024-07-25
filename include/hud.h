@@ -11,7 +11,9 @@ public:
     Hud(Graphics &p_graphics);
     ~Hud();
 
-    void renderText(const char* p_text, int p_x, int p_y);
+    void renderText(const char* p_text, int p_x, int p_y, int p_texW, int p_texH);
+
+    void freeMemory(SDL_Texture* p_texture, SDL_Surface* p_surface);
 
     void renderMenu();
 private:

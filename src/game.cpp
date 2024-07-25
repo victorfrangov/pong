@@ -55,10 +55,17 @@ void Game::gameLoop(){
 }
 
 void Game::draw(Graphics &p_graphics, Hud p_hud){
+
+    SDL_Color bgColor = {0, 0, 0, 255};
+    SDL_SetRenderDrawColor(this->_graphics.getRenderer(), bgColor.r, bgColor.g, bgColor.b, bgColor.a);
     p_graphics.clear();
 
-    // minus the half of texW, minus half the texH respectively.
     p_hud.renderMenu();
+
+    SDL_Color lineColor = {0, 0, 255, 255};
+    SDL_SetRenderDrawColor(this->_graphics.getRenderer(), lineColor.r, lineColor.g, lineColor.b, lineColor.a);
+    SDL_RenderDrawLine(this->_graphics.getRenderer(), 320, 0, 320, 480);
+    SDL_RenderDrawLine(this->_graphics.getRenderer(), 0, 111, 640, 111);
 
     p_graphics.flip();
 }
