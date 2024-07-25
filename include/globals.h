@@ -75,14 +75,6 @@ struct Vector2f{
         x(p_x),
         y(p_y)
     {}
-
-    /**
-     * @brief Returns a zero vector (0, 0).
-     * @return Vector2f A vector with both x and y set to 0.
-     */
-    Vector2f zero(){
-        return Vector2f(0, 0);
-    }
 };
 
 #endif /* GLOBALS */

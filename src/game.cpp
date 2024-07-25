@@ -4,6 +4,7 @@
 #include "game.h"
 #include "graphics.h"
 #include "input.h"
+#include "hud.h"
 
 namespace{
     const int FPS = 50;
@@ -21,6 +22,7 @@ Game::~Game(){
 void Game::gameLoop(){
     Input input;
     SDL_Event e;
+    Hud hud(this->_graphics);
 
     int LAST_UPDATE_TIME = SDL_GetTicks64();
 
@@ -48,13 +50,15 @@ void Game::gameLoop(){
         this->update(std::min(ELAPSED_TIME_MS, MAX_FRAME_TIME), this->_graphics);
         LAST_UPDATE_TIME = CURRENT_TIME_MS;
 
-        this->draw(this->_graphics);
+        this->draw(this->_graphics, hud);
     }
 }
 
-void Game::draw(Graphics &p_graphics){
+void Game::draw(Graphics &p_graphics, Hud p_hud){
     p_graphics.clear();
 
+    // minus the half of texW, minus half the texH respectively.
+    p_hud.renderMenu();
 
     p_graphics.flip();
 }

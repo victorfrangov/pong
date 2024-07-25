@@ -11,6 +11,8 @@
 
 #include "graphics.h"
 
+class Hud;
+
 /**
  * @class Game
  * @brief Manages the main game loop, rendering, and updating.
@@ -43,7 +45,7 @@ private:
      *
      * @param p_graphics Reference to the Graphics object for rendering.
      */
-    void draw(Graphics &p_graphics);
+    void draw(Graphics &p_graphics, Hud p_hud);
 
     /**
      * @brief Updates the game's state.

@@ -20,22 +20,12 @@
 *.mod
 *.smod
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
 # Executables
 *.exe
 *.out
 *.app
 build.sh
 build.bat
-
-# Build directory
-bin/
-build/
 
 # IDE files
 .vscode/
