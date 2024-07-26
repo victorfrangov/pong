@@ -4,6 +4,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
+#include "globals.h"
+
 class Graphics;
 
 class Hud{
@@ -20,6 +22,11 @@ private:
     Graphics& _graphics;
     TTF_Font* _font;
     SDL_Color _color;
+};
+
+struct MenuItem {
+    const char* text;
+    Vector2f pos;
 };
 
 #endif /* HUD */

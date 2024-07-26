@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 #include "hud.h"
 #include "graphics.h"
@@ -52,11 +53,17 @@ void Hud::freeMemory(SDL_Texture* p_texture, SDL_Surface* p_surface){
 }
 
 void Hud::renderMenu(){
-    int texW = 0;
-    int texH = 0;
-    const char* menu = "PONG";
+    std::vector<MenuItem> menuItems = {
+        {"PONG", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 4)},
+        {"M : Menu", Vector2f(globals::SCREEN_WIDTH / 3, globals::SCREEN_HEIGHT / 2)}
+    };
 
-    TTF_SizeText(this->_font, menu, &texW, &texH);
-
-    this->renderText(menu, (globals::SCREEN_WIDTH / 2) - (texW / 2), (globals::SCREEN_HEIGHT / 4) - (texH), texW, texH);
+    for(const auto& item : menuItems){
+        int titleTexW = 0;
+        int titleTexH = 0;
+        TTF_SizeText(this->_font, item.text, &titleTexW, &titleTexH);
+ 
+        this->renderText(item.text, (globals::SCREEN_WIDTH / 2) - (titleTexW / 2),
+            (globals::SCREEN_HEIGHT / 4) - (titleTexH), titleTexW, titleTexH);
+    }
 }
