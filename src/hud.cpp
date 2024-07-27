@@ -1,10 +1,10 @@
 #include <iostream>
 #include <vector>
-#include <filesystem>
 
 #include "hud.h"
 #include "graphics.h"
 #include "globals.h"
+#include "KenneyPixel.h"
 
 Hud::Hud(Graphics &p_graphics) :
         _graphics(p_graphics),
@@ -16,27 +16,55 @@ Hud::Hud(Graphics &p_graphics) :
                 return;
             }
 
-            std::string currentPath = std::filesystem::current_path().string();
-            std::cout << "Current working directory: " << currentPath << std::endl;
+            SDL_RWops* rw = SDL_RWFromMem(KenneyPixel_ttf, KenneyPixel_ttf_len);
+            if (!rw) {
+                std::cerr << "SDL_RWFromMem Error: " << SDL_GetError() << '\n';
+                return;
+            }
 
-            #ifdef _WIN32
-            _font = TTF_OpenFont("/res/fonts/KenneyPixel.ttf", 56);
-            #else
-            _font = TTF_OpenFont("../res/fonts/KenneyPixel.ttf", 56);
-            #endif
-            if(!this->_font)
-                std::cerr << "TTF_OpenFont Error: " << TTF_GetError() << '\n';
+            _font = TTF_OpenFontRW(rw, 1, 56); // 1 means SDL will free the RWops for us
+            if(!_font) {
+                std::cerr << "TTF_OpenFontRW Error: " << TTF_GetError() << '\n';
+    }
         }
 
 Hud::~Hud(){
 }
 
-void Hud::renderText(const char* p_text, int p_x, int p_y, int p_texW, int p_texH){
+void Hud::draw(Uint8 p_menuIndex, float p_fps, int p_elapsedTime){
+    SDL_Color lineColor = {0, 0, 255, 255};
+    switch (p_menuIndex){
+    case 0:
+        this->renderMenu();
+        break;
+    case 1:
+        SDL_SetRenderDrawColor(this->_graphics.getRenderer(), lineColor.r, lineColor.g, lineColor.b, lineColor.a);
+        SDL_RenderDrawLine(this->_graphics.getRenderer(), 320, 0, 320, 480);
+        SDL_RenderDrawLine(this->_graphics.getRenderer(), 0, 111, 640, 111);
+        break;
+    case 2:
+        break;
+    case 3:
+        this->renderOptions();
+        break;
+    case 4:
+        this->renderFrameInfo(p_fps, p_elapsedTime);
+        break;
+    default:
+        break;
+    }
+}
+
+void Hud::update(){
+
+}
+
+void Hud::renderText(std::string p_text, int p_x, int p_y, int p_texW, int p_texH){
     if(!this->_font){
         return;
     }
 
-    SDL_Surface* surface = TTF_RenderText_Solid(this->_font, p_text, this->_color);
+    SDL_Surface* surface = TTF_RenderText_Solid(this->_font, p_text.c_str(), this->_color);
     if(!surface){
         std::cerr << "TTF_RenderText_Solid Error: " << TTF_GetError() << '\n';
     }
@@ -52,13 +80,10 @@ void Hud::renderText(const char* p_text, int p_x, int p_y, int p_texW, int p_tex
 
     this->_graphics.blitSurface(texture, NULL, &dst);
 
-    freeMemory(texture, surface);
+    SDL_DestroyTexture(texture);
+    SDL_FreeSurface(surface);
 }
 
-void Hud::freeMemory(SDL_Texture* p_texture, SDL_Surface* p_surface){
-    SDL_DestroyTexture(p_texture);
-    SDL_FreeSurface(p_surface);
-}
 
 void Hud::renderMenu(){
     std::vector<HudItem> hudItem = {
@@ -72,7 +97,7 @@ void Hud::renderMenu(){
     for(const auto& item : hudItem){
         int titleTexW = 0;
         int titleTexH = 0;
-        TTF_SizeText(this->_font, item.text, &titleTexW, &titleTexH);
+        TTF_SizeText(this->_font, item.text.c_str(), &titleTexW, &titleTexH);
         this->renderText(item.text, item.pos.x - (titleTexW / 2), item.pos.y - (titleTexH / 2), titleTexW, titleTexH);
     }
 }
@@ -86,7 +111,22 @@ void Hud::renderOptions(){
     for(const auto& item : hudItem){
         int titleTexW = 0;
         int titleTexH = 0;
-        TTF_SizeText(this->_font, item.text, &titleTexW, &titleTexH);
+        TTF_SizeText(this->_font, item.text.c_str(), &titleTexW, &titleTexH);
         this->renderText(item.text, item.pos.x - (titleTexW / 2), item.pos.y - (titleTexH / 2), titleTexW, titleTexH);
+    }
+}
+
+void Hud::renderFrameInfo(float p_fps, int p_elapsedTime){
+    std::vector<HudItem> hudItem = {
+        {"FPS: " + std::to_string(static_cast<int>(p_fps)), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5)},
+        {"Elapsed Time: " + std::to_string(p_elapsedTime) + " ms", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2)}
+    };
+
+    for(const auto& item : hudItem){
+        int titleTexW = 0;
+        int titleTexH = 0;
+        TTF_SizeText(this->_font, item.text.c_str(), &titleTexW, &titleTexH);
+        this->renderText(item.text, item.pos.x - (titleTexW / 2), item.pos.y - (titleTexH / 2), titleTexW, titleTexH);
+    
     }
 }

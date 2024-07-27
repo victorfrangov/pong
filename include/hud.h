@@ -13,13 +13,17 @@ public:
     Hud(Graphics &p_graphics);
     ~Hud();
 
-    void renderText(const char* p_text, int p_x, int p_y, int p_texW, int p_texH);
+    void draw(Uint8 p_menuIndex, float p_fps, int p_elapsedTime);
 
-    void freeMemory(SDL_Texture* p_texture, SDL_Surface* p_surface);
+    void update();
+
+    void renderText(std::string p_text, int p_x, int p_y, int p_texW, int p_texH);
 
     void renderMenu();
 
     void renderOptions();
+
+    void renderFrameInfo(float p_fps, int p_elapsedTime);
 private:
     Graphics& _graphics;
     TTF_Font* _font;
@@ -27,7 +31,7 @@ private:
 };
 
 struct HudItem {
-    const char* text;
+    std::string text;
     Vector2f pos;
 };
 
