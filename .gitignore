@@ -29,6 +29,7 @@ build.bat
 
 # IDE files
 .vscode/
+bin/
 
 #Other
 .DS_Store
