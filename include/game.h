@@ -10,8 +10,10 @@
 #define GAME_H
 
 #include "graphics.h"
+#include "hud.h"
 
-class Hud;
+
+// class Hud;
 
 /**
  * @class Game
@@ -45,7 +47,7 @@ private:
      *
      * @param p_graphics Reference to the Graphics object for rendering.
      */
-    void draw(Graphics &p_graphics, Hud p_hud, Uint8 p_menuIndex, float p_fps, int p_elapsedTime);
+    void draw(Graphics &p_graphics, Uint8 p_menuIndex, float p_fps, int p_elapsedTime);
 
     /**
      * @brief Updates the game's state.
@@ -55,6 +57,7 @@ private:
     void update(float p_elapsedTime, Graphics &p_graphics);
 
     Graphics _graphics; ///< Graphics object used for rendering.
+    Hud _hud;
 };
 
 #endif // GAME_H

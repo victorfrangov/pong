@@ -7,15 +7,14 @@
 #include "hud.h"
 
 namespace{
-    const int FPS = 60;
-    const int MAX_FRAME_TIME = 1000 / FPS;
+    const int FPS_TARGET = 60;
+    const int MAX_FRAME_TIME = 1000 / FPS_TARGET;
 
     int frameCount = 0;
-    float fps = 0.0f;
-    Uint64 lastFpsUpdateTime = 0;
+    float currentFPS = 0.0f;
 }
 
-Game::Game() : _graphics() {
+Game::Game() : _graphics(), _hud(_graphics) {
     this->gameLoop();
 }
 
@@ -23,43 +22,43 @@ Game::~Game(){
 
 }
 
-void Game::gameLoop(){
+void Game::gameLoop() {
     Input input;
     SDL_Event e;
-    Hud hud(this->_graphics);
 
     Uint8 menuIndex = 0;
 
     Uint64 LAST_UPDATE_TIME = SDL_GetTicks64();
+    Uint64 lastFpsUpdateTime = LAST_UPDATE_TIME;
 
-    while(true){
+    while (true) {
         input.beginNewFrame();
 
-        if(SDL_PollEvent(&e)){
-            if(e.type == SDL_KEYDOWN){
-                if(e.key.repeat == 0){
+        while (SDL_PollEvent(&e)) {
+            if (e.type == SDL_KEYDOWN) {
+                if (e.key.repeat == 0) {
                     input.keyDownEvent(e);
                 }
-            } else if(e.type == SDL_KEYUP){
+            } else if (e.type == SDL_KEYUP) {
                 input.keyUpEvent(e);
-            } else if(e.type == SDL_QUIT){
+            } else if (e.type == SDL_QUIT) {
                 return;
             }
         }
 
-        if(input.wasKeyPressed(SDL_SCANCODE_S) && menuIndex == 0) menuIndex = 1; // singleplayer
-        if(input.wasKeyPressed(SDL_SCANCODE_M) && menuIndex == 0) menuIndex = 2; // multiplayer
-        if(input.wasKeyPressed(SDL_SCANCODE_O) && menuIndex == 0) menuIndex = 3; // options
-        if(input.wasKeyPressed(SDL_SCANCODE_Q)) return; // quit add the menuindex condition later
-        if(input.wasKeyPressed(SDL_SCANCODE_S) && menuIndex == 3) menuIndex = 4; // frame info
-
+        if (input.wasKeyPressed(SDL_SCANCODE_S) && menuIndex == 0) menuIndex = 1; // singleplayer
+        if (input.wasKeyPressed(SDL_SCANCODE_M) && menuIndex == 0) menuIndex = 2; // multiplayer
+        if (input.wasKeyPressed(SDL_SCANCODE_O) && menuIndex == 0) menuIndex = 3; // options
+        if (input.wasKeyPressed(SDL_SCANCODE_Q) && menuIndex == 0) return; // quit
+        if (input.wasKeyPressed(SDL_SCANCODE_S) && menuIndex == 3) this->_hud.toggleFps(); // frame info
+        if (input.wasKeyPressed(SDL_SCANCODE_B) && menuIndex != 0) menuIndex = 0; // go back
 
         const Uint64 CURRENT_TIME_MS = SDL_GetTicks64();
         int ELAPSED_TIME_MS = CURRENT_TIME_MS - LAST_UPDATE_TIME;
 
         frameCount++;
         if (CURRENT_TIME_MS - lastFpsUpdateTime >= 1000) {
-            fps = frameCount / ((CURRENT_TIME_MS - lastFpsUpdateTime) / 1000.0f);
+            currentFPS = frameCount / ((CURRENT_TIME_MS - lastFpsUpdateTime) / 1000.0f);
             frameCount = 0;
             lastFpsUpdateTime = CURRENT_TIME_MS;
         }
@@ -67,18 +66,25 @@ void Game::gameLoop(){
         this->update(std::min(ELAPSED_TIME_MS, MAX_FRAME_TIME), this->_graphics);
         LAST_UPDATE_TIME = CURRENT_TIME_MS;
 
-        this->draw(this->_graphics, hud, menuIndex, fps, ELAPSED_TIME_MS);
+        this->draw(this->_graphics, menuIndex, currentFPS, ELAPSED_TIME_MS);
+
+        // Frame rate limiting
+        Uint64 frameEndTime = SDL_GetTicks64();
+        int frameDuration = frameEndTime - CURRENT_TIME_MS;
+        if (frameDuration < MAX_FRAME_TIME) {
+            SDL_Delay(MAX_FRAME_TIME - frameDuration);
+        }
     }
 }
 
-void Game::draw(Graphics &p_graphics, Hud p_hud, Uint8 p_menuIndex, float p_fps, int p_elapsedTime){
+void Game::draw(Graphics &p_graphics, Uint8 p_menuIndex, float p_currentFPS, int p_elapsedTime){
 
     SDL_Color bgColor = {0, 0, 0, 255};
     SDL_SetRenderDrawColor(this->_graphics.getRenderer(), bgColor.r, bgColor.g, bgColor.b, bgColor.a);
 
     p_graphics.clear();
 
-    p_hud.draw(p_menuIndex, p_fps, p_elapsedTime);
+    this->_hud.draw(p_menuIndex, p_currentFPS, p_elapsedTime);
 
     p_graphics.flip();
 }

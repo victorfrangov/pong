@@ -22,7 +22,7 @@ Hud::Hud(Graphics &p_graphics) :
                 return;
             }
 
-            _font = TTF_OpenFontRW(rw, 1, 56); // 1 means SDL will free the RWops for us
+            _font = TTF_OpenFontRW(rw, 1, 56);
             if(!_font) {
                 std::cerr << "TTF_OpenFontRW Error: " << TTF_GetError() << '\n';
     }
@@ -33,25 +33,23 @@ Hud::~Hud(){
 
 void Hud::draw(Uint8 p_menuIndex, float p_fps, int p_elapsedTime){
     SDL_Color lineColor = {0, 0, 255, 255};
+    this->renderFrameInfo(p_fps,  p_elapsedTime);
     switch (p_menuIndex){
-    case 0:
-        this->renderMenu();
-        break;
-    case 1:
-        SDL_SetRenderDrawColor(this->_graphics.getRenderer(), lineColor.r, lineColor.g, lineColor.b, lineColor.a);
-        SDL_RenderDrawLine(this->_graphics.getRenderer(), 320, 0, 320, 480);
-        SDL_RenderDrawLine(this->_graphics.getRenderer(), 0, 111, 640, 111);
-        break;
-    case 2:
-        break;
-    case 3:
-        this->renderOptions();
-        break;
-    case 4:
-        this->renderFrameInfo(p_fps, p_elapsedTime);
-        break;
-    default:
-        break;
+        case 0:
+            this->renderMenu();
+            break;
+        case 1: // singelaplyer
+            SDL_SetRenderDrawColor(this->_graphics.getRenderer(), lineColor.r, lineColor.g, lineColor.b, lineColor.a);
+            SDL_RenderDrawLine(this->_graphics.getRenderer(), 320, 0, 320, 480);
+            SDL_RenderDrawLine(this->_graphics.getRenderer(), 0, 111, 640, 111);
+            break;
+        case 2: //multiplayer
+            break;
+        case 3: // options
+            this->renderOptions();
+            break;
+        default:
+            break;
     }
 }
 
@@ -117,16 +115,20 @@ void Hud::renderOptions(){
 }
 
 void Hud::renderFrameInfo(float p_fps, int p_elapsedTime){
-    std::vector<HudItem> hudItem = {
-        {"FPS: " + std::to_string(static_cast<int>(p_fps)), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5)},
-        {"Elapsed Time: " + std::to_string(p_elapsedTime) + " ms", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2)}
-    };
+    if(this->_showFPS){
+        std::vector<HudItem> hudItem = {
+            {"FPS: " + std::to_string(static_cast<int>(p_fps)), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5)}
+            };
 
-    for(const auto& item : hudItem){
-        int titleTexW = 0;
-        int titleTexH = 0;
-        TTF_SizeText(this->_font, item.text.c_str(), &titleTexW, &titleTexH);
-        this->renderText(item.text, item.pos.x - (titleTexW / 2), item.pos.y - (titleTexH / 2), titleTexW, titleTexH);
-    
+        for(const auto& item : hudItem){
+            int titleTexW = 0;
+            int titleTexH = 0;
+            TTF_SizeText(this->_font, item.text.c_str(), &titleTexW, &titleTexH);
+            this->renderText(item.text, 0, 0, titleTexW / 3, titleTexH / 3);
+        }
     }
+}
+
+void Hud::toggleFps(){
+    this->_showFPS = !this->_showFPS;
 }

@@ -24,10 +24,14 @@ public:
     void renderOptions();
 
     void renderFrameInfo(float p_fps, int p_elapsedTime);
+
+    void toggleFps();
 private:
     Graphics& _graphics;
     TTF_Font* _font;
     SDL_Color _color;
+
+    bool _showFPS = false;
 };
 
 struct HudItem {
