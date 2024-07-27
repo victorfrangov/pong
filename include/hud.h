@@ -18,13 +18,15 @@ public:
     void freeMemory(SDL_Texture* p_texture, SDL_Surface* p_surface);
 
     void renderMenu();
+
+    void renderOptions();
 private:
     Graphics& _graphics;
     TTF_Font* _font;
     SDL_Color _color;
 };
 
-struct MenuItem {
+struct HudItem {
     const char* text;
     Vector2f pos;
 };

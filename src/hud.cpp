@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <filesystem>
 
 #include "hud.h"
 #include "graphics.h"
@@ -15,7 +16,14 @@ Hud::Hud(Graphics &p_graphics) :
                 return;
             }
 
-            _font = TTF_OpenFont("res/fonts/KenneyPixel.ttf", 56);
+            std::string currentPath = std::filesystem::current_path().string();
+            std::cout << "Current working directory: " << currentPath << std::endl;
+
+            #ifdef _WIN32
+            _font = TTF_OpenFont("/res/fonts/KenneyPixel.ttf", 56);
+            #else
+            _font = TTF_OpenFont("../res/fonts/KenneyPixel.ttf", 56);
+            #endif
             if(!this->_font)
                 std::cerr << "TTF_OpenFont Error: " << TTF_GetError() << '\n';
         }
@@ -53,17 +61,32 @@ void Hud::freeMemory(SDL_Texture* p_texture, SDL_Surface* p_surface){
 }
 
 void Hud::renderMenu(){
-    std::vector<MenuItem> menuItems = {
-        {"PONG", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 4)},
-        {"M : Menu", Vector2f(globals::SCREEN_WIDTH / 3, globals::SCREEN_HEIGHT / 2)}
+    std::vector<HudItem> hudItem = {
+        {"PONG", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5)},
+        {"S: SINGLEPLAYER", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.5)},
+        {"M: MULTIPLAYER", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.0)},
+        {"O: OPTIONS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.6667)},
+        {"Q: QUIT", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25)}
     };
 
-    for(const auto& item : menuItems){
+    for(const auto& item : hudItem){
         int titleTexW = 0;
         int titleTexH = 0;
         TTF_SizeText(this->_font, item.text, &titleTexW, &titleTexH);
- 
-        this->renderText(item.text, (globals::SCREEN_WIDTH / 2) - (titleTexW / 2),
-            (globals::SCREEN_HEIGHT / 4) - (titleTexH), titleTexW, titleTexH);
+        this->renderText(item.text, item.pos.x - (titleTexW / 2), item.pos.y - (titleTexH / 2), titleTexW, titleTexH);
+    }
+}
+
+void Hud::renderOptions(){
+    std::vector<HudItem> hudItem = {
+        {"S: SHOW FRAME INFO", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5)},
+        {"B: BACK", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2)}
+    };
+
+    for(const auto& item : hudItem){
+        int titleTexW = 0;
+        int titleTexH = 0;
+        TTF_SizeText(this->_font, item.text, &titleTexW, &titleTexH);
+        this->renderText(item.text, item.pos.x - (titleTexW / 2), item.pos.y - (titleTexH / 2), titleTexW, titleTexH);
     }
 }

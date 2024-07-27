@@ -45,7 +45,7 @@ private:
      *
      * @param p_graphics Reference to the Graphics object for rendering.
      */
-    void draw(Graphics &p_graphics, Hud p_hud);
+    void draw(Graphics &p_graphics, Hud p_hud, Uint8 p_menuIndex);
 
     /**
      * @brief Updates the game's state.
