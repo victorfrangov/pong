@@ -1,17 +1,18 @@
 #ifndef SINGLEPLAYER
 #define SINGLEPLAYER
 
-#include "graphics.h"
 #include "hud.h"
+#include "graphics.h"
 #include "globals.h"
+#include "sprite.h"
 
-class Singleplayer{
+class Singleplayer : public Sprite{
 public:
-    Singleplayer(Graphics &p_graphics, Hud p_hud);
+    Singleplayer(Graphics &p_graphics, Hud *p_hud);
 
-    void draw();
+    void draw(Graphics &p_graphics);
 
-    void update();
+    void update(float p_elapsedTime);
 private:
     int _points;
     Hud _hud;

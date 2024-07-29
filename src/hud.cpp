@@ -9,7 +9,8 @@
 Hud::Hud(Graphics &p_graphics) :
         _graphics(p_graphics),
         _font(nullptr),
-        _color({255, 255, 255, 255})
+        _color({255, 255, 255, 255}),
+        _singleplayer(p_graphics, this)
         {
             if(TTF_Init() != 0){
                 std::cerr << "TTF_Init Error: " << TTF_GetError() << '\n';
@@ -22,10 +23,9 @@ Hud::Hud(Graphics &p_graphics) :
                 return;
             }
 
-            _font = TTF_OpenFontRW(rw, 1, 56);
-            if(!_font) {
+            this->_font = TTF_OpenFontRW(rw, 1, 56);
+            if(!_font)
                 std::cerr << "TTF_OpenFontRW Error: " << TTF_GetError() << '\n';
-    }
         }
 
 Hud::~Hud(){

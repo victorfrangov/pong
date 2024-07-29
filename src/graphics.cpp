@@ -22,7 +22,6 @@ SDL_Surface* Graphics::loadImage(const std::string &p_filePath){
     return this->_spriteSheets[p_filePath];
 }
 
-//not useful anymore ??
 void Graphics::blitSurface(SDL_Texture* p_texture, SDL_Rect* p_src, SDL_Rect* p_dst){
     SDL_RenderCopy(this->_renderer, p_texture, p_src, p_dst);
 }
