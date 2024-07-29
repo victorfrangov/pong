@@ -9,7 +9,7 @@
 class Graphics;
 
 class Hud{
-public:
+public:    
     Hud(Graphics &p_graphics);
     ~Hud();
 

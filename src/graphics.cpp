@@ -15,12 +15,12 @@ Graphics::~Graphics(){
     SDL_DestroyRenderer(this->_renderer);
 }
 
-// SDL_Surface* Graphics::loadImage(const std::string &p_filePath){
-//     if(this->_spriteSheets.count(p_filePath) == 0){
-//         this->_spriteSheets[p_filePath]= IMG_Load(p_filePath.c_str());
-//     }
-//     return this->_spriteSheets[p_filePath];
-// }
+SDL_Surface* Graphics::loadImage(const std::string &p_filePath){
+    if(this->_spriteSheets.count(p_filePath) == 0){
+        this->_spriteSheets[p_filePath]= IMG_Load(p_filePath.c_str());
+    }
+    return this->_spriteSheets[p_filePath];
+}
 
 //not useful anymore ??
 void Graphics::blitSurface(SDL_Texture* p_texture, SDL_Rect* p_src, SDL_Rect* p_dst){

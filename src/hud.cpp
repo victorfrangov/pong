@@ -39,9 +39,7 @@ void Hud::draw(Uint8 p_menuIndex, float p_fps, int p_elapsedTime){
             this->renderMenu();
             break;
         case 1: // singelaplyer
-            SDL_SetRenderDrawColor(this->_graphics.getRenderer(), lineColor.r, lineColor.g, lineColor.b, lineColor.a);
-            SDL_RenderDrawLine(this->_graphics.getRenderer(), 320, 0, 320, 480);
-            SDL_RenderDrawLine(this->_graphics.getRenderer(), 0, 111, 640, 111);
+            //here will get called the singleplayer class, maybe will have to add member vars, single/multi
             break;
         case 2: //multiplayer
             break;

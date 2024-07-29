@@ -6,6 +6,8 @@
 #include "input.h"
 #include "hud.h"
 
+#include "sprite.h"
+
 namespace{
     const int FPS_TARGET = 60;
     const int MAX_FRAME_TIME = 1000 / FPS_TARGET;
@@ -19,7 +21,6 @@ Game::Game() : _graphics(), _hud(_graphics) {
 }
 
 Game::~Game(){
-
 }
 
 void Game::gameLoop() {
@@ -66,7 +67,7 @@ void Game::gameLoop() {
         this->update(std::min(ELAPSED_TIME_MS, MAX_FRAME_TIME), this->_graphics);
         LAST_UPDATE_TIME = CURRENT_TIME_MS;
 
-        this->draw(this->_graphics, menuIndex, currentFPS, ELAPSED_TIME_MS);
+        this->draw(menuIndex, currentFPS, ELAPSED_TIME_MS);
 
         // Frame rate limiting
         Uint64 frameEndTime = SDL_GetTicks64();
@@ -77,16 +78,17 @@ void Game::gameLoop() {
     }
 }
 
-void Game::draw(Graphics &p_graphics, Uint8 p_menuIndex, float p_currentFPS, int p_elapsedTime){
-
+void Game::draw(Uint8 p_menuIndex, float p_currentFPS, int p_elapsedTime){
     SDL_Color bgColor = {0, 0, 0, 255};
     SDL_SetRenderDrawColor(this->_graphics.getRenderer(), bgColor.r, bgColor.g, bgColor.b, bgColor.a);
 
-    p_graphics.clear();
+    this->_graphics.clear();
 
     this->_hud.draw(p_menuIndex, p_currentFPS, p_elapsedTime);
 
-    p_graphics.flip();
+    // Sprite sprite(this->_graphics, "res/gfx/bar.png", 0, 0, 10, 75, 100, 100);
+
+    this->_graphics.flip();
 }
 
 void Game::update(float p_elapsedTime, Graphics &p_graphics){

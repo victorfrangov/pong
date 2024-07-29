@@ -47,7 +47,7 @@ public:
      * @param p_filePath The file path of the image to load.
      * @return SDL_Surface* Pointer to the loaded surface.
      */
-    // SDL_Surface* loadImage(const std::string &p_filePath);
+    SDL_Surface* loadImage(const std::string &p_filePath);
 
     /**
      * @brief Draws a given texture onto a part of the screen.
@@ -78,6 +78,6 @@ public:
 private:
     SDL_Window* _window; ///< The main window.
     SDL_Renderer* _renderer; ///< The renderer for drawing.
-    // std::map<std::string, SDL_Surface*> _spriteSheets; ///< Map of sprite sheets loaded.
+    std::map<std::string, SDL_Surface*> _spriteSheets; ///< Map of sprite sheets loaded.
 };
 #endif /* GRAPHICS_H */
