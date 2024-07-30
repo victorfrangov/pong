@@ -7,11 +7,11 @@
  * @param p_spawnPoint Initial position of the ball.
  */
 Ball::Ball(Graphics &p_graphics, Vector2f p_spawnPoint) :
-        Sprite(p_graphics, 0, 0, 10, 10, this->_x, this->_y),
         _x(p_spawnPoint.x),
         _y(p_spawnPoint.y),
         _dx(0),
-        _dy(0) 
+        _dy(0),
+        Sprite(p_graphics, 0, 0, 10, 10, p_spawnPoint)
         {
         }
 
@@ -41,6 +41,6 @@ void Ball::update(float p_elapsedTime) {
  * 
  * @param p_others A vector of rectangles representing the tiles.
  */
-void Ball::handleTileCollisions(std::vector<Rectangle> &p_others) {
+void Ball::handleCollisions(std::vector<Rectangle> &p_others) {
     // Implement collision handling logic here
 }

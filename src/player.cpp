@@ -10,7 +10,7 @@ namespace player_constants{
 Player::Player(){}
 
 Player::Player(Graphics &p_graphics, Vector2f p_spawnPoint):
-    Sprite(p_graphics, 0, 0, 10, 65, p_spawnPoint.x, p_spawnPoint.y),
+    Sprite(p_graphics, 0, 0, 10, 65, p_spawnPoint),
         _dy(0)
     {
     }

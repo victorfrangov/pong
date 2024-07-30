@@ -40,7 +40,7 @@ public:
      * @param p_posY Initial Y position of the sprite.
      */
     Sprite(Graphics &p_graphics, int p_sourceX, int p_sourceY,
-            int p_width, int p_height, float p_posX, float p_posY);
+            int p_width, int p_height, Vector2f p_pos);
     
     /**
      * @brief Virtual destructor.

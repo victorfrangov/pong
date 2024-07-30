@@ -39,7 +39,7 @@ public:
      * 
      * @param p_others A vector of rectangles representing the tiles.
      */
-    void handleTileCollisions(std::vector<Rectangle> &p_others);
+    void handleCollisions(std::vector<Rectangle> &p_others);
 
     /**
      * @brief Gets the x-coordinate of the ball.

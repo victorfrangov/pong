@@ -9,9 +9,9 @@
 Sprite::Sprite(){}
 
 Sprite::Sprite(Graphics &p_graphics, int p_sourceX, 
-int p_sourceY, int p_width, int p_height, float p_posX, float p_posY):
-    _x(p_posX),
-    _y(p_posY)
+int p_sourceY, int p_width, int p_height, Vector2f p_pos):
+    _x(p_pos.x),
+    _y(p_pos.y)
 {
     this->_src.x = p_sourceX;
     this->_src.y = p_sourceY;
