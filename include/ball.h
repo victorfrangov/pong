@@ -39,7 +39,11 @@ public:
      * 
      * @param p_others A vector of rectangles representing the tiles.
      */
-    void handleCollisions();
+    void handleBorderCollisions();
+
+    void reverseDirectionX();
+
+    void reverseDirectionY();
 
     /**
      * @brief Gets the x-coordinate of the ball.
@@ -56,9 +60,7 @@ public:
     inline float getY() const { return this->_y; }
 
 private:
-    float _x, _y; // Position of the ball
     float _dx, _dy; // Velocity of the ball
-    // Add other necessary private members here
 };
 
 #endif // BALL_H

@@ -70,7 +70,7 @@ public:
      * 
      * @param p_others A vector of rectangles representing the tiles.
      */
-    void handleCollisions();
+    void handleBorderCollisions();
 
     /**
      * @brief Gets the x-coordinate of the player.
@@ -87,6 +87,8 @@ public:
     inline float getY() const { return this->_y; }
 
     inline int getPoints() const { return this->_points; }
+
+    inline void gainPoint() { this->_points += 1; }
 
 private:
     int _points;

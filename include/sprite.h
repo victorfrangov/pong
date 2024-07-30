@@ -86,7 +86,7 @@ public:
      * @param p_other The Rectangle to check collision against.
      * @return const sides::Side: The side of the sprite where the collision with the other rectangle occurred.
      */
-    const sides::Side getCollisionSide(Rectangle &p_other) const;
+    const sides::Side getCollisionSide(const Rectangle &p_other) const;
 
     /**
      * @brief Sets the x-coordinate of the source rectangle.

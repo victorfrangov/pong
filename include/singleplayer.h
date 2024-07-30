@@ -15,6 +15,11 @@ public:
     void draw(Graphics &p_graphics);
 
     void update(float p_elapsedTime);
+
+    bool checkPlayerBallCollision();
+
+    void handlePlayerBallCollision();
+
 private:
     Player& _player;
     Hud* _hud;

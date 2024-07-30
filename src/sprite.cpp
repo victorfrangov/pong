@@ -59,7 +59,8 @@ const Rectangle Sprite::getBoundingBox() const{
     return this->_boundingBox;
 }
 
-const sides::Side Sprite::getCollisionSide(Rectangle &p_other) const{
+//this gets called when there is a collision and you want to check which side collided
+const sides::Side Sprite::getCollisionSide(const Rectangle &p_other) const{
     int amtRight, amtLeft, amtTop, amtBottom;
 
     amtRight = this->_boundingBox.getRight() - p_other.getLeft();

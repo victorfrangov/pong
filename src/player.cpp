@@ -1,6 +1,7 @@
 #include "player.h"
 
 #include <iostream>
+#include <algorithm>
 
 namespace player_constants{
     const float SPEED = 0.3f;
@@ -26,7 +27,7 @@ void Player::stopMoving(){
 void Player::update(float p_elapsedTime){
     this->_y += this->_dy * p_elapsedTime;
     Sprite::update();
-    this->handleCollisions();
+    this->handleBorderCollisions();
 }
 
 void Player::moveUp(){
@@ -37,7 +38,7 @@ void Player::moveDown(){
     this->_dy = std::clamp(this->_dy + player_constants::SPEED, -player_constants::SPEED, player_constants::SPEED);
 }
 
-void Player::handleCollisions(){
+void Player::handleBorderCollisions(){
     const Rectangle rect = Sprite::getBoundingBox();
     if (rect.getBottom() >= globals::SCREEN_HEIGHT) {
         this->_dy = 0;
