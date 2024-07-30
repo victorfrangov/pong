@@ -15,5 +15,5 @@ void Singleplayer::draw(Graphics &p_graphics){
 }
 
 void Singleplayer::update(float p_elapsedTime){
-
+    this->_player.update(p_elapsedTime);
 }

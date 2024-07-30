@@ -81,6 +81,11 @@ void Game::gameLoop() {
         const Uint64 currentTimeMs = SDL_GetTicks64();
         int elapsedTimeMs = currentTimeMs - lastUpdateTime;
 
+        if(input.isKeyHeld(SDL_SCANCODE_W) && menuIndex == 1 && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->moveUp();
+        if(input.wasKeyReleased(SDL_SCANCODE_W) && menuIndex == 1 && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->stopMoving();
+        if(input.isKeyHeld(SDL_SCANCODE_S) && menuIndex == 1 && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->moveDown();
+        if(input.wasKeyReleased(SDL_SCANCODE_S) && menuIndex == 1 && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->stopMoving();
+
         frameCount++;
         if (currentTimeMs - lastFpsUpdateTime >= 1000) {
             currentFPS = frameCount / ((currentTimeMs - lastFpsUpdateTime) / 1000.0f);
@@ -119,7 +124,6 @@ void Game::draw(Uint8 p_menuIndex, float p_currentFPS, int p_elapsedTime){
 void Game::update(float p_elapsedTime, Graphics &p_graphics){
     if(this->_singleplayer != nullptr)
         this->_singleplayer->update(p_elapsedTime);
-
 
     //where the "game" will update status
     // player pos too

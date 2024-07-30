@@ -16,7 +16,7 @@ public:
 
     void update(float p_elapsedTime);
 private:
-    Player _player;
+    Player& _player;
     Hud* _hud;
     Ball _ball;
 };

@@ -4,7 +4,7 @@
 #include <iostream>
 
 namespace player_constants{
-    const float SPEED = 0.2f;
+    const float SPEED = 0.3f;
 }
 
 Player::Player(){}
@@ -27,8 +27,24 @@ void Player::stopMoving(){
 void Player::update(float p_elapsedTime){
     this->_y += _dy * p_elapsedTime;
     Sprite::update();
+    this->handleCollisions();
 }
 
-void Player::handleCollisions(std::vector<Rectangle> &p_others){
-    //when ball enters in contact with bar, ball bounces back
+void Player::moveUp(){
+    this->_dy = std::clamp(this->_dy - player_constants::SPEED, -player_constants::SPEED, player_constants::SPEED);
+}
+
+void Player::moveDown(){
+    this->_dy = std::clamp(this->_dy + player_constants::SPEED, -player_constants::SPEED, player_constants::SPEED);
+}
+
+void Player::handleCollisions(){
+    const Rectangle rect = Sprite::getBoundingBox();
+    if (rect.getBottom() >= globals::SCREEN_HEIGHT) {
+        this->_y = globals::SCREEN_HEIGHT - rect.getHeight(); // Ensure the player is within bounds
+        this->_dy = 0;
+    } else if (rect.getTop() <= 0) {
+        this->_y = 0; // Ensure the player is within bounds
+        this->_dy = 0;
+    }
 }

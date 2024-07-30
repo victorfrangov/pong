@@ -56,6 +56,10 @@ public:
      */
     void update(float p_elapsedTime);
 
+    void moveUp();
+
+    void moveDown();
+
     /**
      * @brief Stops the player's movement (dx = 0).
      */
@@ -66,7 +70,7 @@ public:
      * 
      * @param p_others A vector of rectangles representing the tiles.
      */
-    void handleCollisions(std::vector<Rectangle> &p_others);
+    void handleCollisions();
 
     /**
      * @brief Gets the x-coordinate of the player.
