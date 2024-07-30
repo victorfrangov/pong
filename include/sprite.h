@@ -39,8 +39,8 @@ public:
      * @param p_posX Initial X position of the sprite.
      * @param p_posY Initial Y position of the sprite.
      */
-    Sprite(Graphics &p_graphics, const std::string &p_filePath, int p_sourceX,
-           int p_sourceY, int p_width, int p_height, float p_posX, float p_posY);
+    Sprite(Graphics &p_graphics, int p_sourceX, int p_sourceY,
+            int p_width, int p_height, float p_posX, float p_posY);
     
     /**
      * @brief Virtual destructor.
@@ -64,7 +64,7 @@ public:
      * @param p_x X position where the sprite should be drawn.
      * @param p_y Y position where the sprite should be drawn.
      */
-    void draw(Graphics &p_graphics, int p_x, int p_y);
+    void draw(Graphics &p_graphics, Vector2f p_pos);
 
     /**
      * @brief Gets the bounding box of the sprite.

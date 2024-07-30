@@ -10,7 +10,6 @@ Hud::Hud(Graphics &p_graphics) :
         _graphics(p_graphics),
         _font(nullptr),
         _color({255, 255, 255, 255})
-        // _singleplayer(p_graphics, this)
         {
             if(TTF_Init() != 0){
                 std::cerr << "TTF_Init Error: " << TTF_GetError() << '\n';
@@ -40,6 +39,7 @@ void Hud::draw(Uint8 p_menuIndex, float p_fps, int p_elapsedTime){
             break;
         case 1: // singelaplyer
             //here will get called the singleplayer class, maybe will have to add member vars, single/multi
+            // will be points drawn
             break;
         case 2: //multiplayer
             break;
@@ -115,14 +115,14 @@ void Hud::renderOptions(){
 void Hud::renderFrameInfo(float p_fps, int p_elapsedTime){
     if(this->_showFPS){
         std::vector<HudItem> hudItem = {
-            {"FPS: " + std::to_string(static_cast<int>(p_fps)), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5)}
+            {"FPS: " + std::to_string(static_cast<int>(p_fps)), Vector2f(0, 0)}
             };
 
         for(const auto& item : hudItem){
             int titleTexW = 0;
             int titleTexH = 0;
             TTF_SizeText(this->_font, item.text.c_str(), &titleTexW, &titleTexH);
-            this->renderText(item.text, 0, 0, titleTexW / 3, titleTexH / 3);
+            this->renderText(item.text, item.pos.x, item.pos.y, titleTexW / 3, titleTexH / 3);
         }
     }
 }

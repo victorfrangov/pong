@@ -15,7 +15,7 @@ namespace{
     float currentFPS = 0.0f;
 }
 
-Game::Game() : _graphics(), _hud(_graphics), _singleplayer(nullptr) {
+Game::Game() : _graphics(), _hud(_graphics), _singleplayer(nullptr), _player(nullptr) {
     this->gameLoop();
 }
 
@@ -24,7 +24,7 @@ Game::~Game(){
         delete this->_singleplayer;
         this->_singleplayer = nullptr;
     }
-    
+
     if(this->_player != nullptr){
         delete this->_player;
         this->_player = nullptr;
@@ -37,8 +37,8 @@ void Game::gameLoop() {
 
     Uint8 menuIndex = 0;
 
-    Uint64 LAST_UPDATE_TIME = SDL_GetTicks64();
-    Uint64 lastFpsUpdateTime = LAST_UPDATE_TIME;
+    Uint64 lastUpdateTime = SDL_GetTicks64();
+    Uint64 lastFpsUpdateTime = lastUpdateTime;
 
     while (true) {
         input.beginNewFrame();
@@ -67,26 +67,35 @@ void Game::gameLoop() {
         if (input.wasKeyPressed(SDL_SCANCODE_O) && menuIndex == 0) menuIndex = 3; // options
         if (input.wasKeyPressed(SDL_SCANCODE_Q) && menuIndex == 0) return; // quit
         if (input.wasKeyPressed(SDL_SCANCODE_S) && menuIndex == 3) this->_hud.toggleFps(); // frame info
-        if (input.wasKeyPressed(SDL_SCANCODE_B) && menuIndex != 0) menuIndex = 0; // go back
-
-        const Uint64 CURRENT_TIME_MS = SDL_GetTicks64();
-        int ELAPSED_TIME_MS = CURRENT_TIME_MS - LAST_UPDATE_TIME;
+        if (input.wasKeyPressed(SDL_SCANCODE_B) && menuIndex != 0){
+            menuIndex = 0;
+            if (this->_singleplayer != nullptr) {
+                delete this->_singleplayer;
+                this->_singleplayer = nullptr;
+            }
+            if (this->_player != nullptr) {
+                delete this->_player;
+                this->_player = nullptr;
+            }
+        }
+        const Uint64 currentTimeMs = SDL_GetTicks64();
+        int elapsedTimeMs = currentTimeMs - lastUpdateTime;
 
         frameCount++;
-        if (CURRENT_TIME_MS - lastFpsUpdateTime >= 1000) {
-            currentFPS = frameCount / ((CURRENT_TIME_MS - lastFpsUpdateTime) / 1000.0f);
+        if (currentTimeMs - lastFpsUpdateTime >= 1000) {
+            currentFPS = frameCount / ((currentTimeMs - lastFpsUpdateTime) / 1000.0f);
             frameCount = 0;
-            lastFpsUpdateTime = CURRENT_TIME_MS;
+            lastFpsUpdateTime = currentTimeMs;
         }
 
-        this->update(std::min(ELAPSED_TIME_MS, MAX_FRAME_TIME), this->_graphics);
-        LAST_UPDATE_TIME = CURRENT_TIME_MS;
+        this->update(std::min(elapsedTimeMs, MAX_FRAME_TIME), this->_graphics);
+        lastUpdateTime = currentTimeMs;
 
-        this->draw(menuIndex, currentFPS, ELAPSED_TIME_MS);
+        this->draw(menuIndex, currentFPS, elapsedTimeMs);
 
         // Frame rate limiting
         Uint64 frameEndTime = SDL_GetTicks64();
-        int frameDuration = frameEndTime - CURRENT_TIME_MS;
+        int frameDuration = frameEndTime - currentTimeMs;
         if (frameDuration < MAX_FRAME_TIME) {
             SDL_Delay(MAX_FRAME_TIME - frameDuration);
         }

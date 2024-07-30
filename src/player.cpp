@@ -10,14 +10,13 @@ namespace player_constants{
 Player::Player(){}
 
 Player::Player(Graphics &p_graphics, Vector2f p_spawnPoint):
-    Sprite(p_graphics, "res/gfx/bar.png", 0, 0, 10, 65, 50, 50),
+    Sprite(p_graphics, 0, 0, 10, 65, p_spawnPoint.x, p_spawnPoint.y),
         _dy(0)
     {
-        p_graphics.loadImage("res/gfx/bar.png");
     }
 
 void Player::draw(Graphics &p_graphics){
-    Sprite::draw(p_graphics, this->_x, this ->_y);
+    Sprite::draw(p_graphics, Vector2f(this->_x, this->_y));
 }
 
 void Player::stopMoving(){

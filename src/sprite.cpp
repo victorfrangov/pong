@@ -1,10 +1,14 @@
 #include "sprite.h"
 #include "graphics.h"
 #include "globals.h"
+#include "bar.h"
+#include <SDL2/SDL_image.h>
+
+#include <iostream>
 
 Sprite::Sprite(){}
 
-Sprite::Sprite(Graphics &p_graphics, const std::string &p_filePath, int p_sourceX, 
+Sprite::Sprite(Graphics &p_graphics, int p_sourceX, 
 int p_sourceY, int p_width, int p_height, float p_posX, float p_posY):
     _x(p_posX),
     _y(p_posY)
@@ -14,9 +18,25 @@ int p_sourceY, int p_width, int p_height, float p_posX, float p_posY):
     this->_src.w = p_width;
     this->_src.h = p_height;
 
-    this->_spriteSheet = SDL_CreateTextureFromSurface(p_graphics.getRenderer(), p_graphics.loadImage(p_filePath));
-    if(this->_spriteSheet == NULL)
+    // Load image from memory
+    SDL_RWops* rw = SDL_RWFromMem(bar_png, bar_png_len);
+    if (!rw) {
+        printf("SDL_RWFromMem Error: %s\n", SDL_GetError());
+        return;
+    }
+
+    SDL_Surface* surface = IMG_Load_RW(rw, 1); // 1 means SDL will free the RWops for us
+    if (!surface) {
+        printf("IMG_Load_RW Error: %s\n", IMG_GetError());
+        return;
+    }
+
+    this->_spriteSheet = SDL_CreateTextureFromSurface(p_graphics.getRenderer(), surface);
+    if (this->_spriteSheet == NULL) {
         printf("Error: Unable to load image onto _spriteSheet\n");
+    }
+
+    SDL_FreeSurface(surface);
 
     this->_boundingBox = Rectangle(this->_x, this->_y, p_width * globals::SPRITE_SCALE, p_height * globals::SPRITE_SCALE);
 }
@@ -29,8 +49,8 @@ void Sprite::update(){
     this->_boundingBox = Rectangle(this->_x, this->_y, this->_src.w * globals::SPRITE_SCALE, this->_src.h * globals::SPRITE_SCALE);
 }
 
-void Sprite::draw(Graphics &p_graphics, int p_x, int p_y){
-    SDL_Rect dst = {p_x, p_y, static_cast<int>(this->_src.w * globals::SPRITE_SCALE), 
+void Sprite::draw(Graphics &p_graphics, Vector2f p_pos){    
+    SDL_Rect dst = {p_pos.x, p_pos.y, static_cast<int>(this->_src.w * globals::SPRITE_SCALE), 
     static_cast<int>(this->_src.h * globals::SPRITE_SCALE)};
     p_graphics.blitSurface(this->_spriteSheet, &this->_src, &dst);
 }
