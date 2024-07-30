@@ -6,6 +6,7 @@
 #include <string>
 
 #include "globals.h"
+#include "player.h"
 
 class Graphics;
 class Singleplayer;
@@ -28,11 +29,12 @@ public:
     void renderFrameInfo(float p_fps, int p_elapsedTime);
 
     void toggleFps();
+
+    void renderPoints(Player* p_player);
 private:
     Graphics& _graphics;
     TTF_Font* _font;
     SDL_Color _color;
-    // Singleplayer &_singleplayer;
 
     bool _showFPS = false;
 };

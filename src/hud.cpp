@@ -130,3 +130,16 @@ void Hud::renderFrameInfo(float p_fps, int p_elapsedTime){
 void Hud::toggleFps(){
     this->_showFPS = !this->_showFPS;
 }
+
+void Hud::renderPoints(Player* p_player){
+    std::vector<HudItem> hudItem = {
+        {std::to_string(p_player->getPoints()), Vector2f(globals::SCREEN_WIDTH / 4, globals::SCREEN_HEIGHT / 7)}
+    };
+
+    for(const auto& item : hudItem){
+        int titleTexW = 0;
+        int titleTexH = 0;
+        TTF_SizeText(this->_font, item.text.c_str(), &titleTexW, &titleTexH);
+        this->renderText(item.text, item.pos.x - (titleTexW / 2), item.pos.y - (titleTexH / 2), titleTexW, titleTexH);
+    }
+}

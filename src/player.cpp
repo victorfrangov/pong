@@ -11,6 +11,7 @@ Player::Player(){}
 
 Player::Player(Graphics &p_graphics, Vector2f p_spawnPoint):
     Sprite(p_graphics, 0, 0, 10, 65, p_spawnPoint),
+        _points(0),
         _dy(0)
     {
     }
@@ -28,6 +29,6 @@ void Player::update(float p_elapsedTime){
     Sprite::update();
 }
 
-void Player::handleTileCollisions(std::vector<Rectangle> &p_others){
+void Player::handleCollisions(std::vector<Rectangle> &p_others){
     //when ball enters in contact with bar, ball bounces back
 }

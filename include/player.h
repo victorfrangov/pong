@@ -66,7 +66,7 @@ public:
      * 
      * @param p_others A vector of rectangles representing the tiles.
      */
-    void handleTileCollisions(std::vector<Rectangle> &p_others);
+    void handleCollisions(std::vector<Rectangle> &p_others);
 
     /**
      * @brief Gets the x-coordinate of the player.
@@ -82,8 +82,10 @@ public:
      */
     inline float getY() const { return this->_y; }
 
+    inline int getPoints() const { return this->_points; }
 
 private:
+    int _points;
     float _dy; ///< Delta y for player's movement.
 };
 

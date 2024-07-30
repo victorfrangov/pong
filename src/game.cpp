@@ -59,7 +59,7 @@ void Game::gameLoop() {
             menuIndex = 1;
             if(this->_singleplayer == nullptr){
                 this->_player = new Player(this->_graphics, Vector2f(100, 100));
-                this->_singleplayer = new Singleplayer(this->_graphics, this->_player);
+                this->_singleplayer = new Singleplayer(this->_graphics, this->_player, this->_hud);
             }
         }
         
