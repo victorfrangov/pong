@@ -1,5 +1,4 @@
 #include "player.h"
-#include "graphics.h"
 
 #include <iostream>
 
@@ -25,7 +24,7 @@ void Player::stopMoving(){
 }
 
 void Player::update(float p_elapsedTime){
-    this->_y += _dy * p_elapsedTime;
+    this->_y += this->_dy * p_elapsedTime;
     Sprite::update();
     this->handleCollisions();
 }
@@ -41,10 +40,10 @@ void Player::moveDown(){
 void Player::handleCollisions(){
     const Rectangle rect = Sprite::getBoundingBox();
     if (rect.getBottom() >= globals::SCREEN_HEIGHT) {
-        this->_y = globals::SCREEN_HEIGHT - rect.getHeight(); // Ensure the player is within bounds
         this->_dy = 0;
+        this->_y = globals::SCREEN_HEIGHT - rect.getHeight();
     } else if (rect.getTop() <= 0) {
-        this->_y = 0; // Ensure the player is within bounds
         this->_dy = 0;
+        this->_y = 0;
     }
 }

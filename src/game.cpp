@@ -108,9 +108,6 @@ void Game::gameLoop() {
 }
 
 void Game::draw(Uint8 p_menuIndex, float p_currentFPS, int p_elapsedTime){
-    SDL_Color bgColor = {0, 0, 0, 255};
-    SDL_SetRenderDrawColor(this->_graphics.getRenderer(), bgColor.r, bgColor.g, bgColor.b, bgColor.a);
-
     this->_graphics.clear();
 
     this->_hud.draw(p_menuIndex, p_currentFPS, p_elapsedTime);
