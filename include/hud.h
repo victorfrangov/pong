@@ -6,9 +6,9 @@
 #include <string>
 
 #include "globals.h"
-#include "singleplayer.h"
 
 class Graphics;
+class Singleplayer;
 
 class Hud{
 public:    
@@ -32,7 +32,7 @@ private:
     Graphics& _graphics;
     TTF_Font* _font;
     SDL_Color _color;
-    Singleplayer _singleplayer;
+    // Singleplayer &_singleplayer;
 
     bool _showFPS = false;
 };

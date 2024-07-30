@@ -11,7 +11,7 @@
 
 #include "graphics.h"
 #include "hud.h"
-
+#include "player.h"
 
 // class Hud;
 
@@ -58,6 +58,8 @@ private:
 
     Graphics _graphics; ///< Graphics object used for rendering.
     Hud _hud;
+    Singleplayer* _singleplayer;
+    Player* _player;
 };
 
 #endif // GAME_H

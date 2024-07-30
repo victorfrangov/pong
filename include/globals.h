@@ -14,7 +14,7 @@ namespace globals{
     const int SCREEN_WIDTH = 640; ///< Width of the screen in pixels.
     const int SCREEN_HEIGHT = 480; ///< Height of the screen in pixels.
 
-    const int SPRITE_SCALE = 2.0f; ///< Scale factor for sprites.
+    const int SPRITE_SCALE = 1.0f; ///< Scale factor for sprites.
 }
 
 namespace sides{

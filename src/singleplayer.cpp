@@ -1,14 +1,14 @@
 #include "singleplayer.h"
 #include "sprite.h"
 
-Singleplayer::Singleplayer(Graphics &p_graphics, Hud *p_hud) :
+Singleplayer::Singleplayer(Graphics &p_graphics, Player* p_player) :
         _points(0),
-        _hud(p_graphics)
+        _player(*p_player)
         {
         }
 
 void Singleplayer::draw(Graphics &p_graphics){
-    Sprite::draw(p_graphics, 0, 0);
+    this->_player.draw(p_graphics);
 }
 
 void Singleplayer::update(float p_elapsedTime){

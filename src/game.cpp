@@ -5,22 +5,30 @@
 #include "graphics.h"
 #include "input.h"
 #include "hud.h"
-
-#include "sprite.h"
+#include "singleplayer.h"
 
 namespace{
     const int FPS_TARGET = 60;
     const int MAX_FRAME_TIME = 1000 / FPS_TARGET;
 
-    int frameCount = 0;
+    unsigned int frameCount = 0;
     float currentFPS = 0.0f;
 }
 
-Game::Game() : _graphics(), _hud(_graphics) {
+Game::Game() : _graphics(), _hud(_graphics), _singleplayer(nullptr) {
     this->gameLoop();
 }
 
 Game::~Game(){
+    if(this->_singleplayer != nullptr){
+        delete this->_singleplayer;
+        this->_singleplayer = nullptr;
+    }
+    
+    if(this->_player != nullptr){
+        delete this->_player;
+        this->_player = nullptr;
+    }
 }
 
 void Game::gameLoop() {
@@ -47,7 +55,14 @@ void Game::gameLoop() {
             }
         }
 
-        if (input.wasKeyPressed(SDL_SCANCODE_S) && menuIndex == 0) menuIndex = 1; // singleplayer
+        if (input.wasKeyPressed(SDL_SCANCODE_S) && menuIndex == 0){
+            menuIndex = 1;
+            if(this->_singleplayer == nullptr){
+                this->_player = new Player(this->_graphics, Vector2f(100, 100));
+                this->_singleplayer = new Singleplayer(this->_graphics, this->_player);
+            }
+        }
+        
         if (input.wasKeyPressed(SDL_SCANCODE_M) && menuIndex == 0) menuIndex = 2; // multiplayer
         if (input.wasKeyPressed(SDL_SCANCODE_O) && menuIndex == 0) menuIndex = 3; // options
         if (input.wasKeyPressed(SDL_SCANCODE_Q) && menuIndex == 0) return; // quit
@@ -86,12 +101,17 @@ void Game::draw(Uint8 p_menuIndex, float p_currentFPS, int p_elapsedTime){
 
     this->_hud.draw(p_menuIndex, p_currentFPS, p_elapsedTime);
 
-    // Sprite sprite(this->_graphics, "res/gfx/bar.png", 0, 0, 10, 75, 100, 100);
+    if(this->_singleplayer != nullptr)
+        this->_singleplayer->draw(this->_graphics);
 
     this->_graphics.flip();
 }
 
 void Game::update(float p_elapsedTime, Graphics &p_graphics){
+    if(this->_singleplayer != nullptr)
+        this->_singleplayer->update(p_elapsedTime);
+
+
     //where the "game" will update status
     // player pos too
     // anda the hud too
