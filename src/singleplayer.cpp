@@ -44,28 +44,24 @@ void Singleplayer::handlePlayerBallCollision(){
 }
 
 //fixed
-// void Singleplayer::handlePlayerBallCollision(){
-//     if(this->checkPlayerBallCollision()){
+// void Singleplayer::handlePlayerBallCollision() {
+//     if (this->checkPlayerBallCollision()) {
 //         this->_player.gainPoint();
 //         const Rectangle ballRect = this->_ball.getBoundingBox();
 //         sides::Side collisionSide = this->_player.getCollisionSide(ballRect);
 
 //         // Update ball position based on collision side
-//         switch(collisionSide) {
+//         switch (collisionSide) {
 //             case sides::LEFT:
-//                 this->_ball.setPosition(this->_player.getBoundingBox().getRight() + 1, ballRect.getY());
-//                 this->_ball.reverseDirectionX();
-//                 break;
 //             case sides::RIGHT:
-//                 this->_ball.setPosition(this->_player.getBoundingBox().getLeft() - ballRect.getWidth() - 1, ballRect.getY());
 //                 this->_ball.reverseDirectionX();
 //                 break;
 //             case sides::TOP:
-//                 this->_ball.setPosition(ballRect.getX(), this->_player.getBoundingBox().getBottom() + 1);
+//                 this->_ball.setPosition(ballRect.getLeft(), this->_player.getBoundingBox().getTop() - ballRect.getHeight());
 //                 this->_ball.reverseDirectionY();
 //                 break;
 //             case sides::BOTTOM:
-//                 this->_ball.setPosition(ballRect.getX(), this->_player.getBoundingBox().getTop() - ballRect.getHeight() - 1);
+//                 this->_ball.setPosition(ballRect.getLeft(), this->_player.getBoundingBox().getBottom() + ballRect.getHeight());
 //                 this->_ball.reverseDirectionY();
 //                 break;
 //             default:

@@ -61,7 +61,7 @@ private:
     Singleplayer* _singleplayer;
     Player* _player;
 
-    int _menuIndex;
+    Menu _menu;
 };
 
 #endif // GAME_H

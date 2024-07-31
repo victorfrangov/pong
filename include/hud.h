@@ -16,7 +16,7 @@ public:
     Hud(Graphics &p_graphics);
     ~Hud();
 
-    void draw(Uint8 p_menuIndex, float p_fps, int p_elapsedTime);
+    void draw(Menu p_menu, float p_fps, int p_elapsedTime);
 
     void update();
 
@@ -33,6 +33,8 @@ public:
     void renderPoints(Player* p_player);
 
     void renderLose();
+
+    void renderSPOptions();
 private:
     Graphics& _graphics;
     TTF_Font* _font;

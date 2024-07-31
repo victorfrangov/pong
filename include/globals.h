@@ -49,6 +49,15 @@ enum Direction{
     DOWN
 };
 
+enum Menu{
+    MAINMENU,
+    SPMENU,
+    MPMENU,
+    OPTIONS,
+    LOSE,
+    SPGAME
+};
+
 /**
  * @struct Vector2f
  * @brief Represents a 2D vector with floating point coordinates.

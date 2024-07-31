@@ -46,6 +46,8 @@ public:
 
     void reverseDirectionY();
 
+    void setPosition(int p_x, int p_y);
+
     /**
      * @brief Gets the x-coordinate of the ball.
      * 

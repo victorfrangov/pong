@@ -30,24 +30,25 @@ Hud::Hud(Graphics &p_graphics) :
 Hud::~Hud(){
 }
 
-void Hud::draw(Uint8 p_menuIndex, float p_fps, int p_elapsedTime){
+void Hud::draw(Menu p_menu, float p_fps, int p_elapsedTime){
     SDL_Color lineColor = {0, 0, 255, 255};
     this->renderFrameInfo(p_fps,  p_elapsedTime);
-    switch (p_menuIndex){
-        case 0:
+    switch (p_menu){
+        case MAINMENU:
             this->renderMenu();
             break;
-        case 1: // singelaplyer
-            //here will get called the singleplayer class, maybe will have to add member vars, single/multi
-            // will be points drawn
+        case SPMENU:
+            this->renderSPOptions();
             break;
-        case 2: //multiplayer
+        case MPMENU:
             break;
-        case 3: // options
+        case OPTIONS:
             this->renderOptions();
             break;
-        case 4:
+        case LOSE:
             this->renderLose();
+        default:
+            break;
     }
 }
 
@@ -115,7 +116,7 @@ void Hud::renderOptions(){
 void Hud::renderFrameInfo(float p_fps, int p_elapsedTime){
     if(this->_showFPS){
         std::vector<HudItem> hudItem = {
-            {"FPS: " + std::to_string(static_cast<int>(p_fps)), Vector2f(0, 0)}
+            {"FPS: " + std::to_string(static_cast<int>(p_fps)), Vector2f(0, 0)} // add a ping counter later
             };
 
         for(const HudItem& item : hudItem){
@@ -147,6 +148,19 @@ void Hud::renderPoints(Player* p_player){
 void Hud::renderLose(){
     std::vector<HudItem> hudItem = {
         {"YOU LOSE!", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5)}
+    };
+
+    for(const HudItem& item : hudItem){
+        int titleTexW = 0;
+        int titleTexH = 0;
+        TTF_SizeText(this->_font, item.text.c_str(), &titleTexW, &titleTexH);
+        this->renderText(item.text, item.pos.x - (titleTexW / 2), item.pos.y - (titleTexH / 2), titleTexW, titleTexH);
+    }
+}
+
+void Hud::renderSPOptions(){
+    std::vector<HudItem> hudItem = {
+        {"SINGLEPLAYER OPTIONS:", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5)}
     };
 
     for(const HudItem& item : hudItem){
