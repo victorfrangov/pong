@@ -47,7 +47,7 @@ private:
      *
      * @param p_graphics Reference to the Graphics object for rendering.
      */
-    void draw(Uint8 p_menuIndex, float p_fps, int p_elapsedTime);
+    void draw(float p_fps, int p_elapsedTime);
 
     /**
      * @brief Updates the game's state.
@@ -60,6 +60,8 @@ private:
     Hud _hud;
     Singleplayer* _singleplayer;
     Player* _player;
+
+    int _menuIndex;
 };
 
 #endif // GAME_H

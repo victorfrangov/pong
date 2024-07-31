@@ -60,9 +60,15 @@ public:
      */
     inline float getY() const { return this->_y; }
 
+    inline void setLost() { this->_hasLost = true; }
+
+    inline bool getLostStatus() const { return this->_hasLost; }
+
 private:
     float _dx, _dy; // Velocity of the ball
     Hud &_hud;
+
+    bool _hasLost;
 };
 
 #endif // BALL_H

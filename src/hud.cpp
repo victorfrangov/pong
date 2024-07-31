@@ -46,8 +46,8 @@ void Hud::draw(Uint8 p_menuIndex, float p_fps, int p_elapsedTime){
         case 3: // options
             this->renderOptions();
             break;
-        default:
-            break;
+        case 4:
+            this->renderLose();
     }
 }
 

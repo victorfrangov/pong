@@ -6,6 +6,7 @@
 #include "input.h"
 #include "hud.h"
 #include "singleplayer.h"
+#include "player.h"
 
 namespace{
     const int FPS_TARGET = 60;
@@ -19,7 +20,8 @@ Game::Game() :
     _graphics(),
     _hud(_graphics),
     _singleplayer(nullptr),
-    _player(nullptr) 
+    _player(nullptr),
+    _menuIndex(0)
     {
     this->gameLoop();
     }
@@ -40,8 +42,6 @@ void Game::gameLoop() {
     Input input;
     SDL_Event e;
 
-    Uint8 menuIndex = 0;
-
     Uint64 lastUpdateTime = SDL_GetTicks64();
     Uint64 lastFpsUpdateTime = lastUpdateTime;
 
@@ -60,20 +60,20 @@ void Game::gameLoop() {
             }
         }
 
-        if (input.wasKeyPressed(SDL_SCANCODE_S) && menuIndex == 0){
-            menuIndex = 1;
+        if (input.wasKeyPressed(SDL_SCANCODE_S) && _menuIndex == 0){
+            _menuIndex = 1;
             if(this->_singleplayer == nullptr){
                 this->_player = new Player(this->_graphics, Vector2f(100, 100));
                 this->_singleplayer = new Singleplayer(this->_graphics, this->_player, this->_hud);
             }
         }
         
-        if (input.wasKeyPressed(SDL_SCANCODE_M) && menuIndex == 0) menuIndex = 2; // multiplayer
-        if (input.wasKeyPressed(SDL_SCANCODE_O) && menuIndex == 0) menuIndex = 3; // options
-        if (input.wasKeyPressed(SDL_SCANCODE_Q) && menuIndex == 0) return; // quit
-        if (input.wasKeyPressed(SDL_SCANCODE_S) && menuIndex == 3) this->_hud.toggleFps(); // frame info
-        if (input.wasKeyPressed(SDL_SCANCODE_B) && menuIndex != 0){
-            menuIndex = 0;
+        if (input.wasKeyPressed(SDL_SCANCODE_M) && _menuIndex == 0) _menuIndex = 2; // multiplayer
+        if (input.wasKeyPressed(SDL_SCANCODE_O) && _menuIndex == 0) _menuIndex = 3; // options
+        if (input.wasKeyPressed(SDL_SCANCODE_Q) && _menuIndex == 0) return; // quit
+        if (input.wasKeyPressed(SDL_SCANCODE_S) && _menuIndex == 3) this->_hud.toggleFps(); // frame info
+        if (input.wasKeyPressed(SDL_SCANCODE_B) && _menuIndex != 0){
+            _menuIndex = 0;
             if (this->_singleplayer != nullptr) {
                 delete this->_singleplayer;
                 this->_singleplayer = nullptr;
@@ -86,10 +86,10 @@ void Game::gameLoop() {
         const Uint64 currentTimeMs = SDL_GetTicks64();
         int elapsedTimeMs = currentTimeMs - lastUpdateTime;
 
-        if(input.isKeyHeld(SDL_SCANCODE_W) && menuIndex == 1 && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->moveUp();
-        if(input.wasKeyReleased(SDL_SCANCODE_W) && menuIndex == 1 && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->stopMoving();
-        if(input.isKeyHeld(SDL_SCANCODE_S) && menuIndex == 1 && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->moveDown();
-        if(input.wasKeyReleased(SDL_SCANCODE_S) && menuIndex == 1 && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->stopMoving();
+        if(input.isKeyHeld(SDL_SCANCODE_W) && _menuIndex == 1 && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->moveUp();
+        if(input.wasKeyReleased(SDL_SCANCODE_W) && _menuIndex == 1 && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->stopMoving();
+        if(input.isKeyHeld(SDL_SCANCODE_S) && _menuIndex == 1 && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->moveDown();
+        if(input.wasKeyReleased(SDL_SCANCODE_S) && _menuIndex == 1 && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->stopMoving();
 
         frameCount++;
         if (currentTimeMs - lastFpsUpdateTime >= 1000) {
@@ -101,7 +101,7 @@ void Game::gameLoop() {
         this->update(std::min(elapsedTimeMs, MAX_FRAME_TIME), this->_graphics);
         lastUpdateTime = currentTimeMs;
 
-        this->draw(menuIndex, currentFPS, elapsedTimeMs);
+        this->draw(currentFPS, elapsedTimeMs);
 
         // Frame rate limiting
         Uint64 frameEndTime = SDL_GetTicks64();
@@ -112,10 +112,10 @@ void Game::gameLoop() {
     }
 }
 
-void Game::draw(Uint8 p_menuIndex, float p_currentFPS, int p_elapsedTime){
+void Game::draw(float p_currentFPS, int p_elapsedTime){
     this->_graphics.clear();
 
-    this->_hud.draw(p_menuIndex, p_currentFPS, p_elapsedTime);
+    this->_hud.draw(_menuIndex, p_currentFPS, p_elapsedTime);
 
     if(this->_singleplayer != nullptr)
         this->_singleplayer->draw(this->_graphics);
@@ -126,6 +126,11 @@ void Game::draw(Uint8 p_menuIndex, float p_currentFPS, int p_elapsedTime){
 void Game::update(float p_elapsedTime, Graphics &p_graphics){
     if(this->_singleplayer != nullptr)
         this->_singleplayer->update(p_elapsedTime);
+
+    if(this->_player != nullptr){
+        if(this->_player->getLostStatus())
+            _menuIndex = 4;
+    }
 
     //where the "game" will update status
     // player pos too

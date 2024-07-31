@@ -19,7 +19,6 @@ public:
     bool checkPlayerBallCollision();
 
     void handlePlayerBallCollision();
-
 private:
     Player &_player;
     Hud &_hud;

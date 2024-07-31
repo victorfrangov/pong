@@ -19,6 +19,10 @@ void Singleplayer::update(float p_elapsedTime){
     this->_player.update(p_elapsedTime);
     
     this->handlePlayerBallCollision();
+
+    if(this->_ball.getLostStatus()){
+        this->_player.setLost();
+    }
 }
 
 bool Singleplayer::checkPlayerBallCollision(){
@@ -27,8 +31,6 @@ bool Singleplayer::checkPlayerBallCollision(){
     return ballRect.collidesWith(playerRect);
 }
 
-// there is a weird bug where the ball will get stuck inside 
-// the bar and circle around it and then get out
 void Singleplayer::handlePlayerBallCollision(){
     if(this->checkPlayerBallCollision()){
         this->_player.gainPoint();
@@ -40,3 +42,34 @@ void Singleplayer::handlePlayerBallCollision(){
             this->_ball.reverseDirectionY();
     }
 }
+
+//fixed
+// void Singleplayer::handlePlayerBallCollision(){
+//     if(this->checkPlayerBallCollision()){
+//         this->_player.gainPoint();
+//         const Rectangle ballRect = this->_ball.getBoundingBox();
+//         sides::Side collisionSide = this->_player.getCollisionSide(ballRect);
+
+//         // Update ball position based on collision side
+//         switch(collisionSide) {
+//             case sides::LEFT:
+//                 this->_ball.setPosition(this->_player.getBoundingBox().getRight() + 1, ballRect.getY());
+//                 this->_ball.reverseDirectionX();
+//                 break;
+//             case sides::RIGHT:
+//                 this->_ball.setPosition(this->_player.getBoundingBox().getLeft() - ballRect.getWidth() - 1, ballRect.getY());
+//                 this->_ball.reverseDirectionX();
+//                 break;
+//             case sides::TOP:
+//                 this->_ball.setPosition(ballRect.getX(), this->_player.getBoundingBox().getBottom() + 1);
+//                 this->_ball.reverseDirectionY();
+//                 break;
+//             case sides::BOTTOM:
+//                 this->_ball.setPosition(ballRect.getX(), this->_player.getBoundingBox().getTop() - ballRect.getHeight() - 1);
+//                 this->_ball.reverseDirectionY();
+//                 break;
+//             default:
+//                 break;
+//         }
+//     }
+// }

@@ -5,7 +5,8 @@ Ball::Ball(Graphics &p_graphics, Vector2f p_spawnPoint, Hud &p_hud) :
         Sprite(p_graphics, 0, 0, 10, 10, p_spawnPoint),
         _dx(0.15f), // make this use params to be able to modify where the ball will start going to every round
         _dy(0.15f),
-        _hud(p_hud)
+        _hud(p_hud),
+        _hasLost(false)
         {
         }
 
@@ -30,7 +31,7 @@ void Ball::handleBorderCollisions() {
         this->_dy = -this->_dy;
         this->_y = 0;
     } else if (rect.getLeft() <= 0) {
-        this->_hud.renderLose();
+        this->setLost();
     } else if (rect.getRight() >= globals::SCREEN_WIDTH) {
         this->_dx = -this->_dx;
         this->_x = globals::SCREEN_WIDTH - rect.getWidth();

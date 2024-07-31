@@ -90,9 +90,15 @@ public:
 
     inline void gainPoint() { this->_points += 1; }
 
+    inline void setLost() { this->_hasLost = true; }
+
+    inline bool getLostStatus() const { return this->_hasLost; }
+
 private:
     int _points;
     float _dy; ///< Delta y for player's movement.
+
+    bool _hasLost;
 };
 
 #endif /* PLAYER */
