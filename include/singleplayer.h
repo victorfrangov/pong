@@ -21,8 +21,8 @@ public:
     void handlePlayerBallCollision();
 
 private:
-    Player& _player;
-    Hud* _hud;
+    Player &_player;
+    Hud &_hud;
     Ball _ball;
 };
 

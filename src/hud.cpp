@@ -90,7 +90,7 @@ void Hud::renderMenu(){
         {"Q: QUIT", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25)}
     };
 
-    for(const auto& item : hudItem){
+    for(const HudItem& item : hudItem){
         int titleTexW = 0;
         int titleTexH = 0;
         TTF_SizeText(this->_font, item.text.c_str(), &titleTexW, &titleTexH);
@@ -104,7 +104,7 @@ void Hud::renderOptions(){
         {"B: BACK", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2)}
     };
 
-    for(const auto& item : hudItem){
+    for(const HudItem& item : hudItem){
         int titleTexW = 0;
         int titleTexH = 0;
         TTF_SizeText(this->_font, item.text.c_str(), &titleTexW, &titleTexH);
@@ -118,7 +118,7 @@ void Hud::renderFrameInfo(float p_fps, int p_elapsedTime){
             {"FPS: " + std::to_string(static_cast<int>(p_fps)), Vector2f(0, 0)}
             };
 
-        for(const auto& item : hudItem){
+        for(const HudItem& item : hudItem){
             int titleTexW = 0;
             int titleTexH = 0;
             TTF_SizeText(this->_font, item.text.c_str(), &titleTexW, &titleTexH);
@@ -136,7 +136,20 @@ void Hud::renderPoints(Player* p_player){
         {std::to_string(p_player->getPoints()), Vector2f(globals::SCREEN_WIDTH / 4, globals::SCREEN_HEIGHT / 7)}
     };
 
-    for(const auto& item : hudItem){
+    for(const HudItem& item : hudItem){
+        int titleTexW = 0;
+        int titleTexH = 0;
+        TTF_SizeText(this->_font, item.text.c_str(), &titleTexW, &titleTexH);
+        this->renderText(item.text, item.pos.x - (titleTexW / 2), item.pos.y - (titleTexH / 2), titleTexW, titleTexH);
+    }
+}
+
+void Hud::renderLose(){
+    std::vector<HudItem> hudItem = {
+        {"YOU LOSE!", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5)}
+    };
+
+    for(const HudItem& item : hudItem){
         int titleTexW = 0;
         int titleTexH = 0;
         TTF_SizeText(this->_font, item.text.c_str(), &titleTexW, &titleTexH);

@@ -31,6 +31,8 @@ public:
     void toggleFps();
 
     void renderPoints(Player* p_player);
+
+    void renderLose();
 private:
     Graphics& _graphics;
     TTF_Font* _font;

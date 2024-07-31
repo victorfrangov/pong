@@ -15,9 +15,14 @@ namespace{
     float currentFPS = 0.0f;
 }
 
-Game::Game() : _graphics(), _hud(_graphics), _singleplayer(nullptr), _player(nullptr) {
+Game::Game() : 
+    _graphics(),
+    _hud(_graphics),
+    _singleplayer(nullptr),
+    _player(nullptr) 
+    {
     this->gameLoop();
-}
+    }
 
 Game::~Game(){
     if(this->_singleplayer != nullptr){

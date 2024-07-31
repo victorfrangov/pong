@@ -5,6 +5,7 @@
 #include "globals.h"
 #include "rectangle.h"
 #include "sprite.h"
+#include "hud.h"
 #include <vector>
 
 /**
@@ -18,7 +19,7 @@ public:
      * @param p_graphics Graphics context to draw the ball.
      * @param p_spawnPoint Initial position of the ball.
      */
-    Ball(Graphics &p_graphics, Vector2f p_spawnPoint);
+    Ball(Graphics &p_graphics, Vector2f p_spawnPoint, Hud &p_hud);
 
     /**
      * @brief Draws the ball on the screen.
@@ -61,6 +62,7 @@ public:
 
 private:
     float _dx, _dy; // Velocity of the ball
+    Hud &_hud;
 };
 
 #endif // BALL_H
