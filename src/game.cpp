@@ -21,6 +21,7 @@ Game::Game() :
     _hud(_graphics),
     _singleplayer(nullptr),
     _player(nullptr),
+    _isRunning(true),
     _menu()
     {
     this->gameLoop();
@@ -40,60 +41,15 @@ Game::~Game(){
 
 void Game::gameLoop() {
     Input input;
-    SDL_Event e;
-
     Uint64 lastUpdateTime = SDL_GetTicks64();
     Uint64 lastFpsUpdateTime = lastUpdateTime;
 
-    while (true) {
+    while (this->_isRunning) {
         input.beginNewFrame();
+        this->handleInput(input);
 
-        while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_KEYDOWN) {
-                if (e.key.repeat == 0) {
-                    input.keyDownEvent(e);
-                }
-            } else if (e.type == SDL_KEYUP) {
-                input.keyUpEvent(e);
-            } else if (e.type == SDL_QUIT) {
-                return;
-            }
-        }
-
-        if (input.wasKeyPressed(SDL_SCANCODE_S) && this->_menu == MAINMENU){
-            this->_menu = SPMENU;
-        }
-
-        if(input.wasKeyPressed(SDL_SCANCODE_T) && this->_menu == SPMENU){
-            if(this->_singleplayer == nullptr && this->_player == nullptr){
-                this->_menu = SPGAME;
-                this->_player = new Player(this->_graphics, Vector2f(100, 100));
-                this->_singleplayer = new Singleplayer(this->_graphics, this->_player, this->_hud); // will have to pass in the variables for speed/size before it gets init
-            }
-        }
-    
-        if (input.wasKeyPressed(SDL_SCANCODE_M) && this->_menu == 0) this->_menu = MPMENU; // multiplayer
-        if (input.wasKeyPressed(SDL_SCANCODE_O) && this->_menu == 0) this->_menu = OPTIONS; // options
-        if (input.wasKeyPressed(SDL_SCANCODE_Q) && this->_menu == 0) return; // quit
-        if (input.wasKeyPressed(SDL_SCANCODE_S) && this->_menu == 3) this->_hud.toggleFps(); // frame info
-        if (input.wasKeyPressed(SDL_SCANCODE_B) && this->_menu != 0){
-            this->_menu = MAINMENU;
-            if (this->_singleplayer != nullptr) {
-                delete this->_singleplayer;
-                this->_singleplayer = nullptr;
-            }
-            if (this->_player != nullptr) {
-                delete this->_player;
-                this->_player = nullptr;
-            }
-        }
         const Uint64 currentTimeMs = SDL_GetTicks64();
         int elapsedTimeMs = currentTimeMs - lastUpdateTime;
-
-        if(input.isKeyHeld(SDL_SCANCODE_W) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->moveUp();
-        if(input.wasKeyReleased(SDL_SCANCODE_W) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->stopMoving();
-        if(input.isKeyHeld(SDL_SCANCODE_S) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->moveDown();
-        if(input.wasKeyReleased(SDL_SCANCODE_S) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->stopMoving();
 
         frameCount++;
         if (currentTimeMs - lastFpsUpdateTime >= 1000) {
@@ -102,7 +58,7 @@ void Game::gameLoop() {
             lastFpsUpdateTime = currentTimeMs;
         }
 
-        this->update(std::min(elapsedTimeMs, MAX_FRAME_TIME), this->_graphics);
+        this->update(std::min(elapsedTimeMs, MAX_FRAME_TIME));
         lastUpdateTime = currentTimeMs;
 
         this->draw(currentFPS, elapsedTimeMs);
@@ -127,7 +83,7 @@ void Game::draw(float p_currentFPS, int p_elapsedTime){
     this->_graphics.flip();
 }
 
-void Game::update(float p_elapsedTime, Graphics &p_graphics){
+void Game::update(float p_elapsedTime){
     if(this->_singleplayer != nullptr)
         this->_singleplayer->update(p_elapsedTime);
 
@@ -135,8 +91,51 @@ void Game::update(float p_elapsedTime, Graphics &p_graphics){
         if(this->_player->getLostStatus())
             this->_menu = LOSE;
     }
+}
 
-    //where the "game" will update status
-    // player pos too
-    // anda the hud too
+void Game::handleInput(Input &p_input) {
+    SDL_Event e;
+    while (SDL_PollEvent(&e)) {
+        if (e.type == SDL_KEYDOWN) {
+            p_input.keyDownEvent(e);
+        } else if (e.type == SDL_KEYUP) {
+            p_input.keyUpEvent(e);
+        } else if (e.type == SDL_QUIT) {
+            this->_isRunning = false;
+            return;
+        }
+    }
+
+    if (p_input.wasKeyPressed(SDL_SCANCODE_S) && this->_menu == MAINMENU){
+        this->_menu = SPMENU;
+    }
+
+    if(p_input.wasKeyPressed(SDL_SCANCODE_P) && this->_menu == SPMENU){
+        if(this->_singleplayer == nullptr && this->_player == nullptr){
+            this->_menu = SPGAME;
+            this->_player = new Player(this->_graphics, Vector2f(100, 100));
+            this->_singleplayer = new Singleplayer(this->_graphics, this->_player, this->_hud); // will have to pass in the variables for speed/size before it gets init
+        }
+    }
+
+    if (p_input.wasKeyPressed(SDL_SCANCODE_M) && this->_menu == 0) this->_menu = MPMENU; // multiplayer
+    if (p_input.wasKeyPressed(SDL_SCANCODE_O) && this->_menu == 0) this->_menu = OPTIONS; // options
+    if (p_input.wasKeyPressed(SDL_SCANCODE_Q) && this->_menu == 0) { this->_isRunning = false; return; } // quit
+    if (p_input.wasKeyPressed(SDL_SCANCODE_S) && this->_menu == 3) this->_hud.toggleFps(); // frame info
+    if (p_input.wasKeyPressed(SDL_SCANCODE_B) && this->_menu != 0){
+        this->_menu = MAINMENU;
+        if (this->_singleplayer != nullptr) {
+            delete this->_singleplayer;
+            this->_singleplayer = nullptr;
+        }
+        if (this->_player != nullptr) {
+            delete this->_player;
+            this->_player = nullptr;
+        }
+    }
+
+    if(p_input.isKeyHeld(SDL_SCANCODE_W) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->moveUp();
+    if(p_input.wasKeyReleased(SDL_SCANCODE_W) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->stopMoving();
+    if(p_input.isKeyHeld(SDL_SCANCODE_S) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->moveDown();
+    if(p_input.wasKeyReleased(SDL_SCANCODE_S) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->stopMoving();
 }

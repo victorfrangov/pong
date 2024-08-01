@@ -13,7 +13,7 @@
 #include "hud.h"
 #include "player.h"
 
-// class Hud;
+class Input;
 
 /**
  * @class Game
@@ -54,7 +54,9 @@ private:
      *
      * @param p_elapsedTime The time elapsed since the last update call.
      */
-    void update(float p_elapsedTime, Graphics &p_graphics);
+    void update(float p_elapsedTime);
+
+    void handleInput(Input &p_input);
 
     Graphics _graphics; ///< Graphics object used for rendering.
     Hud _hud;
@@ -62,6 +64,7 @@ private:
     Player* _player;
 
     Menu _menu;
+    bool _isRunning;
 };
 
 #endif // GAME_H

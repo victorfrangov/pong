@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <sstream> // Add this line
 
 #include "hud.h"
 #include "graphics.h"
@@ -161,13 +162,17 @@ void Hud::renderLose(){
 }
 
 void Hud::renderSPOptions(std::vector<float> p_ballSpeedOptions){
+    std::ostringstream stream;
+    stream.precision(2);
+    stream << std::fixed << p_ballSpeedOptions[1];
+
     std::vector<HudItem> hudItem = {
         {"SINGLEPLAYER OPTIONS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5)},
         {"CONTROL WITH ARROWS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 3.5), 2},
-        {"BALL SPEED: " + std::to_string(static_cast<int>(p_ballSpeedOptions[1])), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.5)}, //FIX INTEGER DIVISON
+        {"BALL SPEED: " + stream.str(), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.5)},
         {"PLAYER SPEED: " + std::to_string(1000), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2)},
         {"BALL SIZE: " + std::to_string(10), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.666667)},
-        {"B: BACK", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25)}
+        {"P: PLAY / B: BACK", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25)}
     };
 
     for(const HudItem& item : hudItem){
