@@ -32,7 +32,6 @@ Hud::~Hud(){
 }
 
 void Hud::draw(Menu p_menu, float p_fps, int p_elapsedTime){
-    std::vector<float> ballSpeedOptions = {0.05f, 0.15f, 0.25f, 0.35f};
     SDL_Color lineColor = {0, 0, 255, 255};
     this->renderFrameInfo(p_fps,  p_elapsedTime);
     switch (p_menu){
@@ -40,7 +39,7 @@ void Hud::draw(Menu p_menu, float p_fps, int p_elapsedTime){
             this->renderMenu();
             break;
         case SPMENU:
-            this->renderSPOptions(ballSpeedOptions);
+            this->renderSPOptions();
             break;
         case MPMENU:
             break;
@@ -103,7 +102,10 @@ void Hud::renderMenu(){
 
 void Hud::renderOptions(){
     std::vector<HudItem> hudItem = {
-        {"S: SHOW FRAME INFO", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5)},
+        {"GAME OPTIONS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5)},
+        {"S: SHOW FRAME INFO", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.5)},
+        {"F: FULLSCREEN TOGGLE", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.0)},
+        {"RESOLUTION : " + std::to_string(globals::SCREEN_WIDTH) + " / " + std::to_string(globals::SCREEN_HEIGHT), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.66667)},
         {"B: BACK", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25)}
     };
 
@@ -161,10 +163,14 @@ void Hud::renderLose(){
     }
 }
 
-void Hud::renderSPOptions(std::vector<float> p_ballSpeedOptions){
+void Hud::renderSPOptions(){
+    std::vector<float> ballSpeedOptions = {0.15f, 0.30f, 0.50f, 1.00f, 1.50f};
+    std::vector<float> playerSpeedOptions = {0.20f, 0.60f, 1.50f, 2.30f,3.00f};
+    std::vector<float> ballSizeOptions = {0.50f, 1.00f, 2.00f, 3.00f, 5.00f};
+
     std::ostringstream stream;
     stream.precision(2);
-    stream << std::fixed << p_ballSpeedOptions[1];
+    stream << std::fixed << ballSpeedOptions[1];
 
     // method that returns string if true, true if selectec, the first one will be default
     std::vector<HudItem> hudItem = {
@@ -173,6 +179,7 @@ void Hud::renderSPOptions(std::vector<float> p_ballSpeedOptions){
         {"BALL SPEED: " + stream.str(), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.5)},
         {"PLAYER SPEED: " + std::to_string(1000), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2)},
         {"BALL SIZE: " + std::to_string(10), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.666667)},
+        //add cooldown option?
         {"P: PLAY / B: BACK", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25)}
     };
 

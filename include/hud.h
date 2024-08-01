@@ -34,7 +34,7 @@ public:
 
     void renderLose();
 
-    void renderSPOptions(std::vector<float> p_ballSpeedOptions);
+    void renderSPOptions();
 private:
     Graphics& _graphics;
     TTF_Font* _font;

@@ -4,7 +4,7 @@
 #include <algorithm>
 
 namespace player_constants{
-    const float SPEED = 0.3f;
+    const float SPEED = 0.20f;
 }
 
 Player::Player(){}

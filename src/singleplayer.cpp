@@ -1,9 +1,11 @@
 #include "singleplayer.h"
 // #include "sprite.h"
 
+
 Singleplayer::Singleplayer(Graphics &p_graphics, Player* p_player, Hud &p_hud) :
         _player(*p_player),
         _hud(p_hud),
+        _collisionTimer(0.0f),
         _ball(p_graphics, Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2), p_hud)
         {
         }
@@ -17,6 +19,10 @@ void Singleplayer::draw(Graphics &p_graphics){
 void Singleplayer::update(float p_elapsedTime){
     this->_ball.update(p_elapsedTime);
     this->_player.update(p_elapsedTime);
+
+    if(this->_collisionTimer > 0.0f){
+        this->_collisionTimer -= p_elapsedTime;
+    }
     
     this->handlePlayerBallCollision();
 
@@ -32,40 +38,18 @@ bool Singleplayer::checkPlayerBallCollision(){
 }
 
 void Singleplayer::handlePlayerBallCollision(){
-    if(this->checkPlayerBallCollision()){
-        this->_player.gainPoint();
+    if(this->_collisionTimer <= 0 && this->checkPlayerBallCollision()){
         const Rectangle ballRect = this->_ball.getBoundingBox();
-        sides::Side test = this->_player.getCollisionSide(ballRect);
-        if(test == sides::LEFT || test == sides::RIGHT)
+        const Rectangle playerRect = this->_player.getBoundingBox();
+
+        this->_player.gainPoint();
+        sides::Side collisionSide = this->_player.getCollisionSide(ballRect);
+
+        if(collisionSide == sides::LEFT || collisionSide == sides::RIGHT)
             this->_ball.reverseDirectionX();
-        else if(test == sides::TOP || test == sides::BOTTOM)
+        else if(collisionSide == sides::TOP || collisionSide == sides::BOTTOM)
             this->_ball.reverseDirectionY();
+
+        this->_collisionTimer = COLLISION_COOLDOWN_TIME;
     }
 }
-
-//fixed
-// void Singleplayer::handlePlayerBallCollision() {
-//     if (this->checkPlayerBallCollision()) {
-//         this->_player.gainPoint();
-//         const Rectangle ballRect = this->_ball.getBoundingBox();
-//         sides::Side collisionSide = this->_player.getCollisionSide(ballRect);
-
-//         // Update ball position based on collision side
-//         switch (collisionSide) {
-//             case sides::LEFT:
-//             case sides::RIGHT:
-//                 this->_ball.reverseDirectionX();
-//                 break;
-//             case sides::TOP:
-//                 this->_ball.setPosition(ballRect.getLeft(), this->_player.getBoundingBox().getTop() - ballRect.getHeight());
-//                 this->_ball.reverseDirectionY();
-//                 break;
-//             case sides::BOTTOM:
-//                 this->_ball.setPosition(ballRect.getLeft(), this->_player.getBoundingBox().getBottom() + ballRect.getHeight());
-//                 this->_ball.reverseDirectionY();
-//                 break;
-//             default:
-//                 break;
-//         }
-//     }
-// }

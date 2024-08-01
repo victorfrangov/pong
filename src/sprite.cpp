@@ -61,16 +61,14 @@ const Rectangle Sprite::getBoundingBox() const{
 
 //this gets called when there is a collision and you want to check which side collided
 const sides::Side Sprite::getCollisionSide(const Rectangle &p_other) const{
-    int amtRight, amtLeft, amtTop, amtBottom;
-
-    amtRight = this->_boundingBox.getRight() - p_other.getLeft();
-    amtLeft = p_other.getRight() - this->_boundingBox.getLeft();
-    amtTop = p_other.getBottom() - this->_boundingBox.getTop();
-    amtBottom = this->_boundingBox.getBottom() - p_other.getTop();
+    int amtRight = this->_boundingBox.getRight() - p_other.getLeft();
+    int amtLeft = p_other.getRight() - this->_boundingBox.getLeft();
+    int amtTop = p_other.getBottom() - this->_boundingBox.getTop();
+    int amtBottom = this->_boundingBox.getBottom() - p_other.getTop();
 
     int vals[4] = {abs(amtRight), abs(amtLeft), abs(amtTop), abs(amtBottom)};
     int lowest = vals[0];
-    for(int i = 0; i < sizeof(vals) / sizeof(vals[0]); i++){
+    for(int i = 1; i < sizeof(vals) / sizeof(vals[0]); i++){
         if(vals[i] < lowest){
             lowest = vals[i];
         }

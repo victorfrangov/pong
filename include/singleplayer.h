@@ -23,6 +23,9 @@ private:
     Player &_player;
     Hud &_hud;
     Ball _ball;
+
+    const float COLLISION_COOLDOWN_TIME = 500.0f;
+    float _collisionTimer;
 };
 
 #endif /* SINGLEPLAYER */
