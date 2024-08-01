@@ -166,6 +166,7 @@ void Hud::renderSPOptions(std::vector<float> p_ballSpeedOptions){
     stream.precision(2);
     stream << std::fixed << p_ballSpeedOptions[1];
 
+    // method that returns string if true, true if selectec, the first one will be default
     std::vector<HudItem> hudItem = {
         {"SINGLEPLAYER OPTIONS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5)},
         {"CONTROL WITH ARROWS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 3.5), 2},
