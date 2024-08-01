@@ -65,7 +65,6 @@ public:
     inline void setLost() { this->_hasLost = true; }
 
     inline bool getLostStatus() const { return this->_hasLost; }
-
 private:
     float _dx, _dy; // Velocity of the ball
     Hud &_hud;

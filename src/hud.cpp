@@ -31,6 +31,7 @@ Hud::~Hud(){
 }
 
 void Hud::draw(Menu p_menu, float p_fps, int p_elapsedTime){
+    std::vector<float> ballSpeedOptions = {0.05f, 0.15f, 0.25f, 0.35f};
     SDL_Color lineColor = {0, 0, 255, 255};
     this->renderFrameInfo(p_fps,  p_elapsedTime);
     switch (p_menu){
@@ -38,7 +39,7 @@ void Hud::draw(Menu p_menu, float p_fps, int p_elapsedTime){
             this->renderMenu();
             break;
         case SPMENU:
-            this->renderSPOptions();
+            this->renderSPOptions(ballSpeedOptions);
             break;
         case MPMENU:
             break;
@@ -102,7 +103,7 @@ void Hud::renderMenu(){
 void Hud::renderOptions(){
     std::vector<HudItem> hudItem = {
         {"S: SHOW FRAME INFO", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5)},
-        {"B: BACK", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2)}
+        {"B: BACK", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25)}
     };
 
     for(const HudItem& item : hudItem){
@@ -147,7 +148,8 @@ void Hud::renderPoints(Player* p_player){
 
 void Hud::renderLose(){
     std::vector<HudItem> hudItem = {
-        {"YOU LOSE!", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5)}
+        {"YOU LOSE!", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5)},
+        {"B: BACK", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25)}
     };
 
     for(const HudItem& item : hudItem){
@@ -158,15 +160,23 @@ void Hud::renderLose(){
     }
 }
 
-void Hud::renderSPOptions(){
+void Hud::renderSPOptions(std::vector<float> p_ballSpeedOptions){
     std::vector<HudItem> hudItem = {
-        {"SINGLEPLAYER OPTIONS:", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5)}
+        {"SINGLEPLAYER OPTIONS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5)},
+        {"CONTROL WITH ARROWS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 3.5), 2},
+        {"BALL SPEED: " + std::to_string(static_cast<int>(p_ballSpeedOptions[1])), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.5)}, //FIX INTEGER DIVISON
+        {"PLAYER SPEED: " + std::to_string(1000), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2)},
+        {"BALL SIZE: " + std::to_string(10), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.666667)},
+        {"B: BACK", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25)}
     };
 
     for(const HudItem& item : hudItem){
         int titleTexW = 0;
         int titleTexH = 0;
         TTF_SizeText(this->_font, item.text.c_str(), &titleTexW, &titleTexH);
-        this->renderText(item.text, item.pos.x - (titleTexW / 2), item.pos.y - (titleTexH / 2), titleTexW, titleTexH);
+
+        int scaledTexW = titleTexW / item.sizeScale;
+        int scaledTexH = titleTexH / item.sizeScale;
+        this->renderText(item.text, item.pos.x - (scaledTexW / 2), item.pos.y - (scaledTexH / 2), scaledTexW, scaledTexH);
     }
 }

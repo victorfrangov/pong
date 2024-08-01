@@ -68,7 +68,7 @@ void Game::gameLoop() {
             if(this->_singleplayer == nullptr && this->_player == nullptr){
                 this->_menu = SPGAME;
                 this->_player = new Player(this->_graphics, Vector2f(100, 100));
-                this->_singleplayer = new Singleplayer(this->_graphics, this->_player, this->_hud);
+                this->_singleplayer = new Singleplayer(this->_graphics, this->_player, this->_hud); // will have to pass in the variables for speed/size before it gets init
             }
         }
     

@@ -34,7 +34,7 @@ public:
 
     void renderLose();
 
-    void renderSPOptions();
+    void renderSPOptions(std::vector<float> p_ballSpeedOptions);
 private:
     Graphics& _graphics;
     TTF_Font* _font;
@@ -46,6 +46,7 @@ private:
 struct HudItem {
     std::string text;
     Vector2f pos;
+    float sizeScale = 1;
 };
 
 #endif /* HUD */
