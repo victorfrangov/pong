@@ -12,6 +12,8 @@ Hud::Hud(Graphics &p_graphics) :
         _font(nullptr),
         _color({255, 255, 255, 255})
         {
+            this->_hudItem = {};
+
             if(TTF_Init() != 0){
                 std::cerr << "TTF_Init Error: " << TTF_GetError() << '\n';
                 return;
@@ -32,7 +34,6 @@ Hud::~Hud(){
 }
 
 void Hud::draw(Menu p_menu, float p_fps, int p_elapsedTime){
-    SDL_Color lineColor = {0, 0, 255, 255};
     this->renderFrameInfo(p_fps,  p_elapsedTime);
     switch (p_menu){
         case MAINMENU:
@@ -84,51 +85,36 @@ void Hud::renderText(std::string p_text, int p_x, int p_y, int p_texW, int p_tex
 
 
 void Hud::renderMenu(){
-    std::vector<HudItem> hudItem = {
-        {"PONG", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5)},
-        {"S: SINGLEPLAYER", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.5)},
-        {"M: MULTIPLAYER", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.0)},
-        {"O: OPTIONS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.6667)},
-        {"Q: QUIT", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25)}
+    this->_hudItem = {
+        {"PONG", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5), Dash::NODASH},
+        {"S: SINGLEPLAYER", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.5), Dash::DASH},
+        {"M: MULTIPLAYER", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.0), Dash::DASH},
+        {"O: OPTIONS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.6667), Dash::DASH},
+        {"Q: QUIT", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25), Dash::DASH}
     };
 
-    for(const HudItem& item : hudItem){
-        int titleTexW = 0;
-        int titleTexH = 0;
-        TTF_SizeText(this->_font, item.text.c_str(), &titleTexW, &titleTexH);
-        this->renderText(item.text, item.pos.x - (titleTexW / 2), item.pos.y - (titleTexH / 2), titleTexW, titleTexH);
-    }
+    this->renderHudItems();
 }
 
 void Hud::renderOptions(){
-    std::vector<HudItem> hudItem = {
-        {"GAME OPTIONS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5)},
-        {"S: SHOW FRAME INFO", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.5)},
-        {"F: FULLSCREEN TOGGLE", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.0)},
-        {"RESOLUTION : " + std::to_string(globals::SCREEN_WIDTH) + " / " + std::to_string(globals::SCREEN_HEIGHT), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.66667)},
-        {"B: BACK", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25)}
+    this->_hudItem = {
+        {"GAME OPTIONS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5), Dash::NODASH},
+        {"S: SHOW FRAME INFO", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.5), Dash::DASH},
+        {"F: FULLSCREEN TOGGLE", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.0), Dash::DASH},
+        {"RESOLUTION : " + std::to_string(globals::SCREEN_WIDTH) + " / " + std::to_string(globals::SCREEN_HEIGHT), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.66667), Dash::DASH},
+        {"B: BACK", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25), Dash::DASH}
     };
 
-    for(const HudItem& item : hudItem){
-        int titleTexW = 0;
-        int titleTexH = 0;
-        TTF_SizeText(this->_font, item.text.c_str(), &titleTexW, &titleTexH);
-        this->renderText(item.text, item.pos.x - (titleTexW / 2), item.pos.y - (titleTexH / 2), titleTexW, titleTexH);
-    }
+    this->renderHudItems();
 }
 
 void Hud::renderFrameInfo(float p_fps, int p_elapsedTime){
     if(this->_showFPS){
-        std::vector<HudItem> hudItem = {
-            {"FPS: " + std::to_string(static_cast<int>(p_fps)), Vector2f(0, 0)} // add a ping counter later
+        this->_hudItem = {
+            {"FPS: " + std::to_string(static_cast<int>(p_fps)), Vector2f(0, 0), Dash::NODASH, 3} // add a ping counter later
             };
 
-        for(const HudItem& item : hudItem){
-            int titleTexW = 0;
-            int titleTexH = 0;
-            TTF_SizeText(this->_font, item.text.c_str(), &titleTexW, &titleTexH);
-            this->renderText(item.text, item.pos.x, item.pos.y, titleTexW / 3, titleTexH / 3);
-        }
+        this->renderHudItems(); // bug here the fps is out of the window
     }
 }
 
@@ -137,30 +123,20 @@ void Hud::toggleFps(){
 }
 
 void Hud::renderPoints(Player* p_player){
-    std::vector<HudItem> hudItem = {
-        {std::to_string(p_player->getPoints()), Vector2f(globals::SCREEN_WIDTH / 4, globals::SCREEN_HEIGHT / 7)}
+    this->_hudItem = {
+        {std::to_string(p_player->getPoints()), Vector2f(globals::SCREEN_WIDTH / 4, globals::SCREEN_HEIGHT / 7), Dash::NODASH}
     };
 
-    for(const HudItem& item : hudItem){
-        int titleTexW = 0;
-        int titleTexH = 0;
-        TTF_SizeText(this->_font, item.text.c_str(), &titleTexW, &titleTexH);
-        this->renderText(item.text, item.pos.x - (titleTexW / 2), item.pos.y - (titleTexH / 2), titleTexW, titleTexH);
-    }
+    this->renderHudItems();
 }
 
 void Hud::renderLose(){
-    std::vector<HudItem> hudItem = {
-        {"YOU LOSE!", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5)},
-        {"B: BACK", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25)}
+    this->_hudItem = {
+        {"YOU LOSE!", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5), Dash::NODASH},
+        {"B: BACK", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25), Dash::DASH}
     };
 
-    for(const HudItem& item : hudItem){
-        int titleTexW = 0;
-        int titleTexH = 0;
-        TTF_SizeText(this->_font, item.text.c_str(), &titleTexW, &titleTexH);
-        this->renderText(item.text, item.pos.x - (titleTexW / 2), item.pos.y - (titleTexH / 2), titleTexW, titleTexH);
-    }
+    this->renderHudItems();
 }
 
 void Hud::renderSPOptions(){
@@ -170,26 +146,48 @@ void Hud::renderSPOptions(){
 
     std::ostringstream stream;
     stream.precision(2);
-    stream << std::fixed << ballSpeedOptions[1];
+    stream << std::fixed << ballSpeedOptions[0];
 
     // method that returns string if true, true if selectec, the first one will be default
-    std::vector<HudItem> hudItem = {
-        {"SINGLEPLAYER OPTIONS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5)},
-        {"CONTROL WITH ARROWS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 3.5), 2},
-        {"BALL SPEED: " + stream.str(), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.5)},
-        {"PLAYER SPEED: " + std::to_string(1000), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2)},
-        {"BALL SIZE: " + std::to_string(10), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.666667)},
+    this->_hudItem = {
+        {"SINGLEPLAYER OPTIONS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5), Dash::NODASH},
+        {"BALL SPEED: " + stream.str(), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.5), Dash::DASH},
+        {"PLAYER SPEED: " + std::to_string(1000), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2), Dash::DASH},
+        {"BALL SIZE: " + std::to_string(10), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.666667), Dash::DASH},
         //add cooldown option?
-        {"P: PLAY / B: BACK", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25)}
+        {"CONTROL WITH ARROWS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 3.5), Dash::NODASH, 2},
+        {"P: PLAY / B: BACK", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25), Dash::DASH}
     };
 
-    for(const HudItem& item : hudItem){
+    this->renderHudItems();
+}
+
+void Hud::handleArrowInput(bool p_up) {
+    do {
+        if (p_up) {
+            _selectedOptionIndex = (_selectedOptionIndex - 1 + this->_hudItem.size()) % this->_hudItem.size();
+        } else {
+            _selectedOptionIndex = (_selectedOptionIndex + 1) % this->_hudItem.size();
+        }
+    } while (this->_hudItem[_selectedOptionIndex]._dash == Dash::NODASH);
+}
+
+void Hud::renderHudItems(){
+    for (size_t i = 0; i < this->_hudItem.size(); ++i) {
+        const HudItem& item = this->_hudItem[i];
         int titleTexW = 0;
         int titleTexH = 0;
-        TTF_SizeText(this->_font, item.text.c_str(), &titleTexW, &titleTexH);
+
+        std::string displayText = item.text;
+        if (i == _selectedOptionIndex && item._dash == Dash::DASH) {
+            displayText = "- " + displayText;
+        }
+
+        TTF_SizeText(this->_font, displayText.c_str(), &titleTexW, &titleTexH);
+
 
         int scaledTexW = titleTexW / item.sizeScale;
         int scaledTexH = titleTexH / item.sizeScale;
-        this->renderText(item.text, item.pos.x - (scaledTexW / 2), item.pos.y - (scaledTexH / 2), scaledTexW, scaledTexH);
+        this->renderText(displayText, item.pos.x - (scaledTexW / 2), item.pos.y - (scaledTexH / 2), scaledTexW, scaledTexH);
     }
 }

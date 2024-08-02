@@ -11,6 +11,18 @@
 class Graphics;
 class Singleplayer;
 
+enum Dash{
+    DASH,
+    NODASH,
+};
+
+struct HudItem {
+    std::string text;
+    Vector2f pos;
+    Dash _dash;
+    float sizeScale = 1;
+};
+
 class Hud{
 public:    
     Hud(Graphics &p_graphics);
@@ -35,18 +47,20 @@ public:
     void renderLose();
 
     void renderSPOptions();
+
+    void handleArrowInput(bool p_up);
+
+    void renderHudItems();
+
+    inline void setOptionIndex(int p_optionIndex) { this->_selectedOptionIndex = p_optionIndex; }
 private:
     Graphics& _graphics;
     TTF_Font* _font;
     SDL_Color _color;
+    std::vector<HudItem> _hudItem;    
 
     bool _showFPS = false;
-};
-
-struct HudItem {
-    std::string text;
-    Vector2f pos;
-    float sizeScale = 1;
+    int _selectedOptionIndex = 1;
 };
 
 #endif /* HUD */
