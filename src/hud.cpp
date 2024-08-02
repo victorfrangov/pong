@@ -114,7 +114,7 @@ void Hud::renderFrameInfo(float p_fps, int p_elapsedTime){
         for(const HudItem& item : this->_hudItem){
             int titleTexW = 0;
             int titleTexH = 0;
-            TTF_SizeText(this->_font, item.text.c_str(), &titleTexW, &titleTexH);
+            TTF_SizeUTF8(this->_font, item.text.c_str(), &titleTexW, &titleTexH);
             this->renderText(item.text, item.pos.x, item.pos.y, titleTexW / 3, titleTexH / 3);
         }
     }
@@ -146,9 +146,8 @@ void Hud::renderSPOptions(){
 
     std::ostringstream stream;
     stream.precision(2);
-    stream << std::fixed << ballSpeedOptions[0];
+    stream << std::fixed << ballSpeedOptions[this->vectorIndex];
 
-    // method that returns string if true, true if selectec, the first one will be default
     this->_hudItem = {
         {"SINGLEPLAYER OPTIONS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5), Dash::NODASH},
         {"BALL SPEED: " + stream.str(), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.5), Dash::DASH},
@@ -161,12 +160,23 @@ void Hud::renderSPOptions(){
     this->renderHudItems();
 }
 
-void Hud::handleArrowInput(bool p_up) {
+void Hud::handleArrowInput(SDL_Scancode p_key) {
     do {
-        if (p_up) {
+        switch (p_key){
+        case SDL_SCANCODE_UP:
             _selectedOptionIndex = (_selectedOptionIndex - 1 + this->_hudItem.size()) % this->_hudItem.size();
-        } else {
+            break;
+        case SDL_SCANCODE_DOWN:
             _selectedOptionIndex = (_selectedOptionIndex + 1) % this->_hudItem.size();
+            break;
+        case SDL_SCANCODE_LEFT:
+            //something
+            break;
+        case SDL_SCANCODE_RIGHT:
+            //smth
+            break;
+        default:
+            break;
         }
     } while (this->_hudItem[_selectedOptionIndex]._dash == Dash::NODASH);
 }
@@ -182,7 +192,7 @@ void Hud::renderHudItems(){
             displayText = "- " + displayText;
         }
 
-        TTF_SizeText(this->_font, displayText.c_str(), &titleTexW, &titleTexH);
+        TTF_SizeUTF8(this->_font, displayText.c_str(), &titleTexW, &titleTexH);
 
         int scaledTexW = titleTexW / item.sizeScale;
         int scaledTexH = titleTexH / item.sizeScale;

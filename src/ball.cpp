@@ -31,9 +31,9 @@ void Ball::handleBorderCollisions() {
         this->_dy = -this->_dy;
         this->_y = 0;
     } else if (rect.getLeft() <= 0) {
-        // this->setLost(); removed for testing
-        this->_dx = -this->_dx;
-        this->_x = 0;
+        this->setLost(); // removed for testing
+        // this->_dx = -this->_dx;
+        // this->_x = 0;
     } else if (rect.getRight() >= globals::SCREEN_WIDTH) {
         this->_dx = -this->_dx;
         this->_x = globals::SCREEN_WIDTH - rect.getWidth();

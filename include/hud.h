@@ -48,7 +48,7 @@ public:
 
     void renderSPOptions();
 
-    void handleArrowInput(bool p_up);
+    void handleArrowInput(SDL_Scancode p_key);
 
     void renderHudItems();
 
@@ -61,6 +61,8 @@ private:
 
     bool _showFPS = false;
     int _selectedOptionIndex = 1;
+
+    int vectorIndex = 0;
 };
 
 #endif /* HUD */

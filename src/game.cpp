@@ -89,7 +89,7 @@ void Game::update(float p_elapsedTime){
 
     if(this->_player != nullptr){
         if(this->_player->getLostStatus())
-            this->_menu = LOSE;
+            this->_menu = LOSE; // delete sp and player instances unless you have a play again button
     }
 }
 
@@ -107,10 +107,15 @@ void Game::handleInput(Input &p_input) {
     }
 
     if(p_input.wasKeyPressed(SDL_SCANCODE_S) && this->_menu == MAINMENU){ this->_hud.setOptionIndex(1); this->_menu = SPMENU; }
-    if (p_input.wasKeyPressed(SDL_SCANCODE_UP)) {
-        this->_hud.handleArrowInput(true);
-    } else if (p_input.wasKeyPressed(SDL_SCANCODE_DOWN)) {
-        this->_hud.handleArrowInput(false);
+
+    if (p_input.wasKeyPressed(SDL_SCANCODE_UP) && this->_menu != SPGAME) { // must chcek that you are not in a game or else will crash
+        this->_hud.handleArrowInput(SDL_SCANCODE_UP);
+    } else if (p_input.wasKeyPressed(SDL_SCANCODE_DOWN) && this->_menu != SPGAME) {
+        this->_hud.handleArrowInput(SDL_SCANCODE_DOWN);
+    } else if (p_input.wasKeyPressed(SDL_SCANCODE_RIGHT) && this->_menu != SPGAME) {
+        this->_hud.handleArrowInput(SDL_SCANCODE_RIGHT);
+    } else if (p_input.wasKeyPressed(SDL_SCANCODE_LEFT) && this->_menu != SPGAME) {
+        this->_hud.handleArrowInput(SDL_SCANCODE_LEFT);
     }
 
     if(p_input.wasKeyPressed(SDL_SCANCODE_P) && this->_menu == SPMENU){
@@ -121,14 +126,15 @@ void Game::handleInput(Input &p_input) {
         }
     }
 
-    if (p_input.wasKeyPressed(SDL_SCANCODE_M) && this->_menu == 0) { this->_menu = MPMENU; this->_hud.setOptionIndex(1); } // multiplayer
-    if (p_input.wasKeyPressed(SDL_SCANCODE_O) && this->_menu == 0) { this->_menu = OPTIONS; this->_hud.setOptionIndex(1); }  // options
-    if (p_input.wasKeyPressed(SDL_SCANCODE_Q) && this->_menu == 0) { this->_isRunning = false; return; } // quit
-    if (p_input.wasKeyPressed(SDL_SCANCODE_S) && this->_menu == 3) this->_hud.toggleFps(); // frame info
-    if (p_input.wasKeyPressed(SDL_SCANCODE_B) && this->_menu != 0){
+    if (p_input.wasKeyPressed(SDL_SCANCODE_M) && this->_menu == MAINMENU) { this->_menu = MPMENU; this->_hud.setOptionIndex(1); } // multiplayer
+    if (p_input.wasKeyPressed(SDL_SCANCODE_O) && this->_menu == MAINMENU) { this->_menu = OPTIONS; this->_hud.setOptionIndex(1); }  // options
+    if (p_input.wasKeyPressed(SDL_SCANCODE_Q) && this->_menu == MAINMENU) { this->_isRunning = false; return; } // quit
+    if (p_input.wasKeyPressed(SDL_SCANCODE_S) && this->_menu == OPTIONS) this->_hud.toggleFps(); // frame info
+
+    if (p_input.wasKeyPressed(SDL_SCANCODE_B) && this->_menu != MAINMENU){
         this->_hud.setOptionIndex(1);
         this->_menu = MAINMENU;
-        if (this->_singleplayer != nullptr) {
+        if (this->_singleplayer != nullptr) { // add checks for when will have multiplayer
             delete this->_singleplayer;
             this->_singleplayer = nullptr;
         }
