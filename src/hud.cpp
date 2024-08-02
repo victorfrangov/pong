@@ -83,7 +83,6 @@ void Hud::renderText(std::string p_text, int p_x, int p_y, int p_texW, int p_tex
     SDL_FreeSurface(surface);
 }
 
-
 void Hud::renderMenu(){
     this->_hudItem = {
         {"PONG", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5), Dash::NODASH},
@@ -92,7 +91,6 @@ void Hud::renderMenu(){
         {"O: OPTIONS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.6667), Dash::DASH},
         {"Q: QUIT", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25), Dash::DASH}
     };
-
     this->renderHudItems();
 }
 
@@ -104,7 +102,6 @@ void Hud::renderOptions(){
         {"RESOLUTION : " + std::to_string(globals::SCREEN_WIDTH) + " / " + std::to_string(globals::SCREEN_HEIGHT), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.66667), Dash::DASH},
         {"B: BACK", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25), Dash::DASH}
     };
-
     this->renderHudItems();
 }
 
@@ -114,7 +111,12 @@ void Hud::renderFrameInfo(float p_fps, int p_elapsedTime){
             {"FPS: " + std::to_string(static_cast<int>(p_fps)), Vector2f(0, 0), Dash::NODASH, 3} // add a ping counter later
             };
 
-        this->renderHudItems(); // bug here the fps is out of the window
+        for(const HudItem& item : this->_hudItem){
+            int titleTexW = 0;
+            int titleTexH = 0;
+            TTF_SizeText(this->_font, item.text.c_str(), &titleTexW, &titleTexH);
+            this->renderText(item.text, item.pos.x, item.pos.y, titleTexW / 3, titleTexH / 3);
+        }
     }
 }
 
@@ -126,7 +128,6 @@ void Hud::renderPoints(Player* p_player){
     this->_hudItem = {
         {std::to_string(p_player->getPoints()), Vector2f(globals::SCREEN_WIDTH / 4, globals::SCREEN_HEIGHT / 7), Dash::NODASH}
     };
-
     this->renderHudItems();
 }
 
@@ -135,7 +136,6 @@ void Hud::renderLose(){
         {"YOU LOSE!", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5), Dash::NODASH},
         {"B: BACK", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25), Dash::DASH}
     };
-
     this->renderHudItems();
 }
 
@@ -155,10 +155,9 @@ void Hud::renderSPOptions(){
         {"PLAYER SPEED: " + std::to_string(1000), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2), Dash::DASH},
         {"BALL SIZE: " + std::to_string(10), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.666667), Dash::DASH},
         //add cooldown option?
-        {"CONTROL WITH ARROWS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 3.5), Dash::NODASH, 2},
-        {"P: PLAY / B: BACK", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25), Dash::DASH}
+        {"P: PLAY", Vector2f(globals::SCREEN_WIDTH / 3, globals::SCREEN_HEIGHT / 1.25), Dash::DASH},
+        {"B: BACK", Vector2f(globals::SCREEN_WIDTH / 1.5, globals::SCREEN_HEIGHT / 1.25), Dash::DASH}        
     };
-
     this->renderHudItems();
 }
 
@@ -184,7 +183,6 @@ void Hud::renderHudItems(){
         }
 
         TTF_SizeText(this->_font, displayText.c_str(), &titleTexW, &titleTexH);
-
 
         int scaledTexW = titleTexW / item.sizeScale;
         int scaledTexH = titleTexH / item.sizeScale;
