@@ -27,7 +27,7 @@ Hud::Hud(Graphics &p_graphics) :
 
             this->_font = TTF_OpenFontIO(rw, 1, 56);
             if(!_font)
-                std::cerr << "TTF_OpenFontRW Error: " << TTF_GetError() << '\n';
+                std::cerr << "TTF_OpenFontIO Error: " << TTF_GetError() << '\n';
         }
 
 Hud::~Hud(){

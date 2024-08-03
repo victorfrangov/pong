@@ -17,7 +17,7 @@ Graphics::Graphics(){
 
     SDL_Surface* surface = IMG_Load_IO(rw, 1);
     if(!surface){
-        printf("IMG_Load_RW Error: %s\n", IMG_GetError());
+        printf("IMG_Load_IO Error: %s\n", IMG_GetError());
         return;
     }
     SDL_SetWindowIcon(this->_window, surface);

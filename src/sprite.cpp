@@ -27,7 +27,7 @@ float p_sourceY, float p_width, float p_height, Vector2f p_pos):
 
     SDL_Surface* surface = IMG_Load_IO(rw, 1); // 1 means SDL will free the RWops for us
     if (!surface) {
-        printf("IMG_Load_RW Error: %s\n", IMG_GetError());
+        printf("IMG_Load_IO Error: %s\n", IMG_GetError());
         return;
     }
 
