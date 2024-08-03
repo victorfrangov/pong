@@ -14,7 +14,7 @@ namespace globals{
     const int SCREEN_WIDTH = 640; ///< Width of the screen in pixels.
     const int SCREEN_HEIGHT = 480; ///< Height of the screen in pixels.
 
-    const int SPRITE_SCALE = 1.0f; ///< Scale factor for sprites.
+    const float SPRITE_SCALE = 1.0f; ///< Scale factor for sprites.
 }
 
 namespace sides{
@@ -65,7 +65,7 @@ enum Menu{
  * This structure is used to represent positions and dimensions in 2D space.
  */
 struct Vector2f{
-    int x, y; ///< X and Y coordinates of the vector.
+    float x, y; ///< X and Y coordinates of the vector.
 
     /**
      * @brief Default constructor. Initializes x and y to 0.
@@ -80,7 +80,7 @@ struct Vector2f{
      * @param p_x X coordinate.
      * @param p_y Y coordinate.
      */
-    Vector2f(int p_x, int p_y):
+    Vector2f(float p_x, float p_y):
         x(p_x),
         y(p_y)
     {}

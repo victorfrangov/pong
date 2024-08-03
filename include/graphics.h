@@ -15,6 +15,8 @@ struct SDL_Surface;
 struct SDL_Rect;
 struct SDL_Texture;
 
+class SDL_FRect;
+
 /**
  * @class Graphics
  * @brief Manages all graphics for the game.
@@ -56,7 +58,7 @@ public:
      * @param p_src The source rectangle within the texture to draw.
      * @param p_dst The destination rectangle on the screen to draw the texture to.
      */
-    void blitSurface(SDL_Texture* p_texture, SDL_Rect* p_src, SDL_Rect* p_dst);
+    void blitSurface(SDL_Texture* p_texture, SDL_FRect* p_src, SDL_FRect* p_dst);
 
     /**
      * @brief Renders everything on the screen.

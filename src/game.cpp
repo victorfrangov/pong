@@ -1,4 +1,4 @@
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 #include <iostream>
 
 #include "game.h"
@@ -41,14 +41,14 @@ Game::~Game(){
 
 void Game::gameLoop() {
     Input input;
-    Uint64 lastUpdateTime = SDL_GetTicks64();
+    Uint64 lastUpdateTime = SDL_GetTicks();
     Uint64 lastFpsUpdateTime = lastUpdateTime;
 
     while (this->_isRunning) {
         input.beginNewFrame();
         this->handleInput(input);
 
-        const Uint64 currentTimeMs = SDL_GetTicks64();
+        const Uint64 currentTimeMs = SDL_GetTicks();
         int elapsedTimeMs = currentTimeMs - lastUpdateTime;
 
         frameCount++;
@@ -64,7 +64,7 @@ void Game::gameLoop() {
         this->draw(currentFPS, elapsedTimeMs);
 
         // Frame rate limiting
-        Uint64 frameEndTime = SDL_GetTicks64();
+        Uint64 frameEndTime = SDL_GetTicks();
         int frameDuration = frameEndTime - currentTimeMs;
         if (frameDuration < MAX_FRAME_TIME) {
             SDL_Delay(MAX_FRAME_TIME - frameDuration);
@@ -96,11 +96,11 @@ void Game::update(float p_elapsedTime){
 void Game::handleInput(Input &p_input) {
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
-        if (e.type == SDL_KEYDOWN) {
+        if (e.type == SDL_EVENT_KEY_DOWN) {
             p_input.keyDownEvent(e);
-        } else if (e.type == SDL_KEYUP) {
+        } else if (e.type == SDL_EVENT_KEY_UP) {
             p_input.keyUpEvent(e);
-        } else if (e.type == SDL_QUIT) {
+        } else if (e.type == SDL_EVENT_QUIT) {
             this->_isRunning = false;
             return;
         }

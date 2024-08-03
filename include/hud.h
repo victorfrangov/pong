@@ -1,8 +1,8 @@
 #ifndef HUD
 #define HUD
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_ttf.h>
 #include <string>
 
 #include "globals.h"
@@ -32,7 +32,7 @@ public:
 
     void update();
 
-    void renderText(std::string p_text, int p_x, int p_y, int p_texW, int p_texH);
+    void renderText(std::string p_text, float p_x, float p_y, float p_texW, float p_texH);
 
     void renderMenu();
 

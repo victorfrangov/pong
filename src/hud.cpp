@@ -19,13 +19,13 @@ Hud::Hud(Graphics &p_graphics) :
                 return;
             }
 
-            SDL_RWops* rw = SDL_RWFromMem(KenneyPixel_ttf, KenneyPixel_ttf_len);
+            SDL_IOStream* rw = SDL_IOFromMem(KenneyPixel_ttf, KenneyPixel_ttf_len);
             if (!rw) {
-                std::cerr << "SDL_RWFromMem Error: " << SDL_GetError() << '\n';
+                std::cerr << "SDL_IOFromMem Error: " << SDL_GetError() << '\n';
                 return;
             }
 
-            this->_font = TTF_OpenFontRW(rw, 1, 56);
+            this->_font = TTF_OpenFontIO(rw, 1, 56);
             if(!_font)
                 std::cerr << "TTF_OpenFontRW Error: " << TTF_GetError() << '\n';
         }
@@ -58,7 +58,7 @@ void Hud::update(){
 
 }
 
-void Hud::renderText(std::string p_text, int p_x, int p_y, int p_texW, int p_texH){
+void Hud::renderText(std::string p_text, float p_x, float p_y, float p_texW, float p_texH){
     if(!this->_font){
         return;
     }
@@ -71,16 +71,16 @@ void Hud::renderText(std::string p_text, int p_x, int p_y, int p_texW, int p_tex
     SDL_Texture* texture = SDL_CreateTextureFromSurface(this->_graphics.getRenderer(), surface);
     if(!texture){
         std::cerr << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << '\n';
-        SDL_FreeSurface(surface);
+        SDL_DestroySurface(surface);
         return;
     }
 
-    SDL_Rect dst = { p_x, p_y, p_texW, p_texH };
+    SDL_FRect dst = { p_x, p_y, p_texW, p_texH };
 
     this->_graphics.blitSurface(texture, NULL, &dst);
 
     SDL_DestroyTexture(texture);
-    SDL_FreeSurface(surface);
+    SDL_DestroySurface(surface);
 }
 
 void Hud::renderMenu(){
