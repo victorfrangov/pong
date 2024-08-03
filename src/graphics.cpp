@@ -3,11 +3,25 @@
 
 #include "graphics.h"
 #include "globals.h"
+#include "pongIcon.h"
 
 Graphics::Graphics(){
     SDL_Init(SDL_INIT_EVERYTHING);
     SDL_CreateWindowAndRenderer(globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT, 0, &this->_window, &this->_renderer);
-    SDL_SetWindowTitle(this->_window, "Pong");
+    SDL_SetWindowTitle(this->_window, "PONG");
+
+    SDL_RWops* rw = SDL_RWFromMem(pong_png, pong_png_len);
+    if(!rw){
+        printf("SDL_RWFromMem Error: %s\n", SDL_GetError());
+        return;
+    }
+
+    SDL_Surface* surface = IMG_Load_RW(rw, 1);
+    if(!surface){
+        printf("IMG_Load_RW Error: %s\n", IMG_GetError());
+        return;
+    }
+    SDL_SetWindowIcon(this->_window, surface);
 }
 
 Graphics::~Graphics(){
