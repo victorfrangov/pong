@@ -32,7 +32,7 @@ public:
 
     void update();
 
-    void renderText(std::string p_text, float p_x, float p_y, float p_texW, float p_texH);
+    void renderText(const std::string& p_text, float p_x, float p_y, float p_texW, float p_texH);
 
     void renderMenu();
 

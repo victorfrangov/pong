@@ -58,7 +58,7 @@ void Hud::update(){
 
 }
 
-void Hud::renderText(std::string p_text, float p_x, float p_y, float p_texW, float p_texH){
+void Hud::renderText(const std::string& p_text, float p_x, float p_y, float p_texW, float p_texH){
     if(!this->_font){
         return;
     }
