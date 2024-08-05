@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include <sstream> // Add this line
+#include <sstream>
 
 #include "hud.h"
 #include "graphics.h"
@@ -10,7 +10,8 @@
 Hud::Hud(Graphics &p_graphics) :
         _graphics(p_graphics),
         _font(nullptr),
-        _color({255, 255, 255, 255})
+        _color({255, 255, 255, 255}),
+        _isRunning(true)
         {
             this->_hudItem = {};
 
@@ -43,6 +44,7 @@ void Hud::draw(Menu p_menu, float p_fps, int p_elapsedTime){
             this->renderSPOptions();
             break;
         case MPMENU:
+            this->renderMPOptions();
             break;
         case OPTIONS:
             this->renderOptions();
@@ -86,9 +88,9 @@ void Hud::renderText(const std::string& p_text, float p_x, float p_y, float p_te
 void Hud::renderMenu(){
     this->_hudItem = {
         {"PONG", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5), Dash::NODASH},
-        {"S: SINGLEPLAYER", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.5), Dash::DASH},
-        {"M: MULTIPLAYER", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.0), Dash::DASH},
-        {"O: OPTIONS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.6667), Dash::DASH},
+        {"SINGLEPLAYER", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.5), Dash::DASH},
+        {"MULTIPLAYER", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.0), Dash::DASH},
+        {"OPTIONS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.6667), Dash::DASH},
         {"Q: QUIT", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25), Dash::DASH}
     };
     this->renderHudItems();
@@ -120,9 +122,9 @@ void Hud::renderFrameInfo(float p_fps, int p_elapsedTime){
     }
 }
 
-void Hud::toggleFps(){
-    this->_showFPS = !this->_showFPS;
-}
+// void Hud::toggleFps(){
+//     this->_showFPS = !this->_showFPS;
+// }
 
 void Hud::renderPoints(Player* p_player){
     this->_hudItem = {
@@ -160,14 +162,23 @@ void Hud::renderSPOptions(){
     this->renderHudItems();
 }
 
-void Hud::handleArrowInput(SDL_Scancode p_key) {
+void Hud::renderMPOptions(){
+    this->_hudItem = {
+        {"MULTIPLAYER OPTIONS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5), Dash::NODASH},
+        {"P: PLAY", Vector2f(globals::SCREEN_WIDTH / 3, globals::SCREEN_HEIGHT / 1.25), Dash::DASH},
+        {"B: BACK", Vector2f(globals::SCREEN_WIDTH / 1.5, globals::SCREEN_HEIGHT / 1.25), Dash::DASH}        
+    };
+    this->renderHudItems();
+}
+
+void Hud::handleKeyInput(SDL_Scancode p_key, Menu* p_menu) {
     do {
         switch (p_key){
         case SDL_SCANCODE_UP:
-            _selectedOptionIndex = (_selectedOptionIndex - 1 + this->_hudItem.size()) % this->_hudItem.size();
+            this->_selectedOptionIndex = (this->_selectedOptionIndex - 1 + this->_hudItem.size()) % this->_hudItem.size();
             break;
         case SDL_SCANCODE_DOWN:
-            _selectedOptionIndex = (_selectedOptionIndex + 1) % this->_hudItem.size();
+            this->_selectedOptionIndex = (this->_selectedOptionIndex + 1) % this->_hudItem.size();
             break;
         case SDL_SCANCODE_LEFT:
             //something
@@ -175,10 +186,91 @@ void Hud::handleArrowInput(SDL_Scancode p_key) {
         case SDL_SCANCODE_RIGHT:
             //smth
             break;
+        case SDL_SCANCODE_RETURN:
+            this->handleSelect(p_menu);
+            break;
         default:
             break;
         }
-    } while (this->_hudItem[_selectedOptionIndex]._dash == Dash::NODASH);
+    } while (this->_hudItem[this->_selectedOptionIndex]._dash == Dash::NODASH);
+}
+
+void Hud::handleSelect(Menu* p_menu){
+    if(*p_menu == MAINMENU){
+        switch(this->_selectedOptionIndex){
+            case 1:
+                *p_menu = SPMENU;
+                break;
+            case 2:
+                *p_menu = MPMENU;
+                break;
+            case 3:
+                *p_menu = OPTIONS;
+                break;
+            case 4:
+                this->_isRunning = false;
+                break;
+            default:
+                break;
+        }
+    } else if(*p_menu == SPMENU){
+        switch (this->_selectedOptionIndex){
+            case 1:
+                //ball speed
+                break;
+            case 2:
+                //player speed
+                break;
+            case 3:
+                //ball size
+                break;
+            case 4:
+                //start sp game
+                break;
+            case 5:
+                *p_menu = MAINMENU;
+            default:
+                break;
+        }
+
+    } else if(*p_menu == MPMENU){
+        switch(this->_selectedOptionIndex){
+            case 1:
+                // *p_menu = MPGAME;
+                break;
+            case 2:
+                *p_menu = MAINMENU;
+                break;
+            default:
+                break;
+        }
+    } else if(*p_menu == OPTIONS){
+        switch (this->_selectedOptionIndex){
+            case 1:
+                this->_showFPS = !this->_showFPS;
+                break;
+            case 2:
+                //fullscreen toggle
+                break;
+            case 3:
+                //resolution change
+                break;
+            case 4:
+                *p_menu = MAINMENU;
+                break;
+            default:
+                break;
+        }
+    } else if (*p_menu == LOSE){
+        switch(this->_selectedOptionIndex){
+            case 1:
+                *p_menu = MAINMENU;
+                break;
+            default:
+                break;
+        }
+    }
+    this->_selectedOptionIndex = 1;
 }
 
 void Hud::renderHudItems(){

@@ -64,7 +64,6 @@ private:
     Player* _player;
 
     Menu _menu;
-    bool _isRunning;
 };
 
 #endif // GAME_H

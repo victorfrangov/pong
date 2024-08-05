@@ -40,7 +40,7 @@ public:
 
     void renderFrameInfo(float p_fps, int p_elapsedTime);
 
-    void toggleFps();
+    // void toggleFps();
 
     void renderPoints(Player* p_player);
 
@@ -48,11 +48,21 @@ public:
 
     void renderSPOptions();
 
-    void handleArrowInput(SDL_Scancode p_key);
+    void renderMPOptions();
+
+    void handleKeyInput(SDL_Scancode p_key, Menu* p_menu = nullptr);
+
+    void handleSelect(Menu* p_menu);
 
     void renderHudItems();
 
-    inline void setOptionIndex(int p_optionIndex) { this->_selectedOptionIndex = p_optionIndex; }
+    bool getRunning() const { return this->_isRunning; }
+
+    void setRunning(bool isRunning) { this->_isRunning = isRunning; }
+
+    unsigned int getOptionIndex() { return this->_selectedOptionIndex; }
+
+    // inline void setOptionIndex(int p_optionIndex) { this->_selectedOptionIndex = p_optionIndex; }
 private:
     Graphics& _graphics;
     TTF_Font* _font;
@@ -60,9 +70,11 @@ private:
     std::vector<HudItem> _hudItem;    
 
     bool _showFPS = false;
-    int _selectedOptionIndex = 1;
+    unsigned int _selectedOptionIndex = 1;
 
-    int vectorIndex = 0;
+    unsigned int vectorIndex = 0;
+
+    bool _isRunning;
 };
 
 #endif /* HUD */
