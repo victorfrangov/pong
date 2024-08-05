@@ -2,7 +2,7 @@
 #include "graphics.h"
 #include "globals.h"
 #include "bar.h"
-#include <SDL3/SDL_image.h>
+#include <SDL3_image/SDL_image.h>
 
 #include <iostream>
 
