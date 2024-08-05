@@ -11,7 +11,8 @@ Hud::Hud(Graphics &p_graphics) :
         _graphics(p_graphics),
         _font(nullptr),
         _color({255, 255, 255, 255}),
-        _isRunning(true)
+        _isRunning(true),
+        _selectedOptionIndex(1)
         {
             this->_hudItem = {};
 
@@ -51,6 +52,7 @@ void Hud::draw(Menu p_menu, float p_fps, int p_elapsedTime){
             break;
         case LOSE:
             this->renderLose();
+            break;
         default:
             break;
     }
@@ -91,7 +93,7 @@ void Hud::renderMenu(){
         {"SINGLEPLAYER", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.5), Dash::DASH},
         {"MULTIPLAYER", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.0), Dash::DASH},
         {"OPTIONS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.6667), Dash::DASH},
-        {"Q: QUIT", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25), Dash::DASH}
+        {"QUIT", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25), Dash::DASH}
     };
     this->renderHudItems();
 }
@@ -99,10 +101,10 @@ void Hud::renderMenu(){
 void Hud::renderOptions(){
     this->_hudItem = {
         {"GAME OPTIONS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5), Dash::NODASH},
-        {"S: SHOW FRAME INFO", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.5), Dash::DASH},
-        {"F: FULLSCREEN TOGGLE", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.0), Dash::DASH},
+        {"SHOW FRAME INFO", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.5), Dash::DASH},
+        {"FULLSCREEN TOGGLE", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.0), Dash::DASH},
         {"RESOLUTION : " + std::to_string(globals::SCREEN_WIDTH) + " / " + std::to_string(globals::SCREEN_HEIGHT), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.66667), Dash::DASH},
-        {"B: BACK", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25), Dash::DASH}
+        {"BACK", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25), Dash::DASH}
     };
     this->renderHudItems();
 }
@@ -136,7 +138,8 @@ void Hud::renderPoints(Player* p_player){
 void Hud::renderLose(){
     this->_hudItem = {
         {"YOU LOSE!", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5), Dash::NODASH},
-        {"B: BACK", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.25), Dash::DASH}
+        {"PLAY AGAIN", Vector2f(globals::SCREEN_WIDTH / 3, globals::SCREEN_HEIGHT / 1.25), Dash::DASH},
+        {"BACK", Vector2f(globals::SCREEN_WIDTH / 1.5, globals::SCREEN_HEIGHT / 1.25), Dash::DASH}
     };
     this->renderHudItems();
 }
@@ -156,8 +159,8 @@ void Hud::renderSPOptions(){
         {"PLAYER SPEED: " + std::to_string(1000), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2), Dash::DASH},
         {"BALL SIZE: " + std::to_string(10), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.666667), Dash::DASH},
         //add cooldown option?
-        {"P: PLAY", Vector2f(globals::SCREEN_WIDTH / 3, globals::SCREEN_HEIGHT / 1.25), Dash::DASH},
-        {"B: BACK", Vector2f(globals::SCREEN_WIDTH / 1.5, globals::SCREEN_HEIGHT / 1.25), Dash::DASH}        
+        {"PLAY", Vector2f(globals::SCREEN_WIDTH / 3, globals::SCREEN_HEIGHT / 1.25), Dash::DASH},
+        {"BACK", Vector2f(globals::SCREEN_WIDTH / 1.5, globals::SCREEN_HEIGHT / 1.25), Dash::DASH}        
     };
     this->renderHudItems();
 }
@@ -165,8 +168,8 @@ void Hud::renderSPOptions(){
 void Hud::renderMPOptions(){
     this->_hudItem = {
         {"MULTIPLAYER OPTIONS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5), Dash::NODASH},
-        {"P: PLAY", Vector2f(globals::SCREEN_WIDTH / 3, globals::SCREEN_HEIGHT / 1.25), Dash::DASH},
-        {"B: BACK", Vector2f(globals::SCREEN_WIDTH / 1.5, globals::SCREEN_HEIGHT / 1.25), Dash::DASH}        
+        {"PLAY", Vector2f(globals::SCREEN_WIDTH / 3, globals::SCREEN_HEIGHT / 1.25), Dash::DASH},
+        {"BACK", Vector2f(globals::SCREEN_WIDTH / 1.5, globals::SCREEN_HEIGHT / 1.25), Dash::DASH}
     };
     this->renderHudItems();
 }
@@ -175,7 +178,9 @@ void Hud::handleKeyInput(SDL_Scancode p_key, Menu* p_menu) {
     do {
         switch (p_key){
         case SDL_SCANCODE_UP:
-            this->_selectedOptionIndex = (this->_selectedOptionIndex - 1 + this->_hudItem.size()) % this->_hudItem.size();
+            if((this->_selectedOptionIndex = (this->_selectedOptionIndex - 1 + this->_hudItem.size()) % this->_hudItem.size()) == 0){
+                this->_selectedOptionIndex = this->_hudItem.size() - 1;
+            }
             break;
         case SDL_SCANCODE_DOWN:
             this->_selectedOptionIndex = (this->_selectedOptionIndex + 1) % this->_hudItem.size();
@@ -263,7 +268,7 @@ void Hud::handleSelect(Menu* p_menu){
         }
     } else if (*p_menu == LOSE){
         switch(this->_selectedOptionIndex){
-            case 1:
+            case 2:
                 *p_menu = MAINMENU;
                 break;
             default:
@@ -280,7 +285,7 @@ void Hud::renderHudItems(){
         int titleTexH = 0;
 
         std::string displayText = item.text;
-        if (i == _selectedOptionIndex && item._dash == Dash::DASH) {
+        if (i == this->_selectedOptionIndex && item._dash == Dash::DASH) {
             displayText = "- " + displayText;
         }
 

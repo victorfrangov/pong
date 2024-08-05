@@ -55,6 +55,7 @@ enum Menu{
     MPMENU,
     OPTIONS,
     LOSE,
+    PAUSE,
     SPGAME,
     MPGAME
 };
