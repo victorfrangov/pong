@@ -3,16 +3,13 @@
 ![Pong Game](https://example.com/pong-game-banner.png)
 
 ## Overview
-Welcome to **Pong**, a classic multiplayer pong game built with SDL3. Challenge your friends or play against yourself in this timeless arcade game.
+Welcome to **Pong**, a classic singleplayer/multiplayer pong game built with SDL3. Challenge your friends or play against yourself in this timeless arcade game.
 
 ## Features
-- 🎮 **Multiplayer Mode**: Play with friends locally.
-- 🕹️ **Single Player Mode**: Challenge the computer.
-- ⏸️ **Pause Menu**: Take a break anytime.
+- 🎮 **Multiplayer Mode**: Play with friends locally or on the net!.
+- 🕹️ **Single Player Mode**: Challenge the computer (SOON).
 - 🔄 **Game Options**: Customize your gameplay experience.
 - 🖥️ **Fullscreen Toggle**: Switch between fullscreen and windowed mode.
-- 📏 **Resolution Settings**: Adjust the game resolution to your preference.
-- Playing agaisnt an AI will come one day :)
 
 ## Getting Started
 
@@ -34,15 +31,11 @@ Welcome to **Pong**, a classic multiplayer pong game built with SDL3. Challenge 
     cmake ..
     make
     ```
-Make not configured yet
 
 3. **Run the game**:
     ```sh
     ./pong
     ```
-
-## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
 
