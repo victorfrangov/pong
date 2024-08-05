@@ -1,7 +1,7 @@
 #ifndef SPRITE
 #define SPRITE
 
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 #include <string>
 
 #include "rectangle.h"
@@ -39,8 +39,8 @@ public:
      * @param p_posX Initial X position of the sprite.
      * @param p_posY Initial Y position of the sprite.
      */
-    Sprite(Graphics &p_graphics, int p_sourceX, int p_sourceY,
-            int p_width, int p_height, Vector2f p_pos);
+    Sprite(Graphics &p_graphics, float p_sourceX, float p_sourceY,
+            float p_width, float p_height, Vector2f p_pos);
     
     /**
      * @brief Virtual destructor.
@@ -143,7 +143,7 @@ public:
     inline float getY() const { return this->_y; }
 
 protected:
-    SDL_Rect _src; ///< Source rectangle in the sprite sheet.
+    SDL_FRect _src; ///< Source rectangle in the sprite sheet.
     SDL_Texture* _spriteSheet; ///< Texture of the sprite sheet.
     float _x, _y; ///< Current position of the sprite.
     Rectangle _boundingBox; ///< Bounding box of the sprite.

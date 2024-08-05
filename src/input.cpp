@@ -10,13 +10,13 @@ void Input::beginNewFrame(){
 }
 
 void Input::keyDownEvent(const SDL_Event& e){
-    this->_pressedKeys[e.key.keysym.scancode] = true;
-    this->_heldKeys[e.key.keysym.scancode] = true;
+    this->_pressedKeys[e.key.scancode] = true;
+    this->_heldKeys[e.key.scancode] = true;
 }
 
 void Input::keyUpEvent(const SDL_Event& e){
-    this->_releasedKeys[e.key.keysym.scancode] = true;
-    this->_heldKeys[e.key.keysym.scancode] = false;
+    this->_releasedKeys[e.key.scancode] = true;
+    this->_heldKeys[e.key.scancode] = false;
 }
 
 bool Input::wasKeyPressed(SDL_Scancode p_key){

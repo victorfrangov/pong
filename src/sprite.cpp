@@ -2,14 +2,14 @@
 #include "graphics.h"
 #include "globals.h"
 #include "bar.h"
-#include <SDL2/SDL_image.h>
+#include <SDL3_image/SDL_image.h>
 
 #include <iostream>
 
 Sprite::Sprite(){}
 
-Sprite::Sprite(Graphics &p_graphics, int p_sourceX, 
-int p_sourceY, int p_width, int p_height, Vector2f p_pos):
+Sprite::Sprite(Graphics &p_graphics, float p_sourceX, 
+float p_sourceY, float p_width, float p_height, Vector2f p_pos):
     _x(p_pos.x),
     _y(p_pos.y)
 {
@@ -19,15 +19,15 @@ int p_sourceY, int p_width, int p_height, Vector2f p_pos):
     this->_src.h = p_height;
 
     // Load image from memory
-    SDL_RWops* rw = SDL_RWFromMem(bar_png, bar_png_len);
+    SDL_IOStream* rw = SDL_IOFromMem(bar_png, bar_png_len);
     if (!rw) {
-        printf("SDL_RWFromMem Error: %s\n", SDL_GetError());
+        printf("SDL_IOFromMem Error: %s\n", SDL_GetError());
         return;
     }
 
-    SDL_Surface* surface = IMG_Load_RW(rw, 1); // 1 means SDL will free the RWops for us
+    SDL_Surface* surface = IMG_Load_IO(rw, 1); // 1 means SDL will free the RWops for us
     if (!surface) {
-        printf("IMG_Load_RW Error: %s\n", IMG_GetError());
+        printf("IMG_Load_IO Error: %s\n", IMG_GetError());
         return;
     }
 
@@ -36,7 +36,7 @@ int p_sourceY, int p_width, int p_height, Vector2f p_pos):
         printf("Error: Unable to load image onto _spriteSheet\n");
     }
 
-    SDL_FreeSurface(surface);
+    SDL_DestroySurface(surface);
 
     this->_boundingBox = Rectangle(this->_x, this->_y, p_width * globals::SPRITE_SCALE, p_height * globals::SPRITE_SCALE);
 }
@@ -50,8 +50,7 @@ void Sprite::update(){
 }
 
 void Sprite::draw(Graphics &p_graphics, Vector2f p_pos){    
-    SDL_Rect dst = {p_pos.x, p_pos.y, static_cast<int>(this->_src.w * globals::SPRITE_SCALE), 
-    static_cast<int>(this->_src.h * globals::SPRITE_SCALE)};
+    SDL_FRect dst = {p_pos.x, p_pos.y, this->_src.w * globals::SPRITE_SCALE, this->_src.h * globals::SPRITE_SCALE};
     p_graphics.blitSurface(this->_spriteSheet, &this->_src, &dst);
 }
 

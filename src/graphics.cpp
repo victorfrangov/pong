@@ -1,24 +1,23 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
 
 #include "graphics.h"
 #include "globals.h"
 #include "pongIcon.h"
 
 Graphics::Graphics(){
-    SDL_Init(SDL_INIT_EVERYTHING);
-    SDL_CreateWindowAndRenderer(globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT, 0, &this->_window, &this->_renderer);
-    SDL_SetWindowTitle(this->_window, "PONG");
+    SDL_Init(SDL_INIT_VIDEO);
+    SDL_CreateWindowAndRenderer("PONG", globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT, 0, &this->_window, &this->_renderer);
 
-    SDL_RWops* rw = SDL_RWFromMem(pong_png, pong_png_len);
+    SDL_IOStream* rw = SDL_IOFromMem(pong_png, pong_png_len);
     if(!rw){
-        printf("SDL_RWFromMem Error: %s\n", SDL_GetError());
+        printf("SDL_IOFromMem Error: %s\n", SDL_GetError());
         return;
     }
 
-    SDL_Surface* surface = IMG_Load_RW(rw, 1);
+    SDL_Surface* surface = IMG_Load_IO(rw, 1);
     if(!surface){
-        printf("IMG_Load_RW Error: %s\n", IMG_GetError());
+        printf("IMG_Load_IO Error: %s\n", IMG_GetError());
         return;
     }
     SDL_SetWindowIcon(this->_window, surface);
@@ -36,8 +35,8 @@ SDL_Surface* Graphics::loadImage(const std::string &p_filePath){
     return this->_spriteSheets[p_filePath];
 }
 
-void Graphics::blitSurface(SDL_Texture* p_texture, SDL_Rect* p_src, SDL_Rect* p_dst){
-    SDL_RenderCopy(this->_renderer, p_texture, p_src, p_dst);
+void Graphics::blitSurface(SDL_Texture* p_texture, SDL_FRect* p_src, SDL_FRect* p_dst){
+    SDL_RenderTexture(this->_renderer, p_texture, p_src, p_dst);
 }
 
 void Graphics::flip(){

@@ -1,4 +1,4 @@
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 #include <iostream>
 
 #include "game.h"
@@ -21,7 +21,6 @@ Game::Game() :
     _hud(_graphics),
     _singleplayer(nullptr),
     _player(nullptr),
-    _isRunning(true),
     _menu()
     {
     this->gameLoop();
@@ -41,14 +40,14 @@ Game::~Game(){
 
 void Game::gameLoop() {
     Input input;
-    Uint64 lastUpdateTime = SDL_GetTicks64();
+    Uint64 lastUpdateTime = SDL_GetTicks();
     Uint64 lastFpsUpdateTime = lastUpdateTime;
 
-    while (this->_isRunning) {
+    while (this->_hud.getRunning()) {
         input.beginNewFrame();
         this->handleInput(input);
 
-        const Uint64 currentTimeMs = SDL_GetTicks64();
+        const Uint64 currentTimeMs = SDL_GetTicks();
         int elapsedTimeMs = currentTimeMs - lastUpdateTime;
 
         frameCount++;
@@ -64,7 +63,7 @@ void Game::gameLoop() {
         this->draw(currentFPS, elapsedTimeMs);
 
         // Frame rate limiting
-        Uint64 frameEndTime = SDL_GetTicks64();
+        Uint64 frameEndTime = SDL_GetTicks();
         int frameDuration = frameEndTime - currentTimeMs;
         if (frameDuration < MAX_FRAME_TIME) {
             SDL_Delay(MAX_FRAME_TIME - frameDuration);
@@ -96,56 +95,55 @@ void Game::update(float p_elapsedTime){
 void Game::handleInput(Input &p_input) {
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
-        if (e.type == SDL_KEYDOWN) {
+        if (e.type == SDL_EVENT_KEY_DOWN) {
             p_input.keyDownEvent(e);
-        } else if (e.type == SDL_KEYUP) {
+        } else if (e.type == SDL_EVENT_KEY_UP) {
             p_input.keyUpEvent(e);
-        } else if (e.type == SDL_QUIT) {
-            this->_isRunning = false;
+        } else if (e.type == SDL_EVENT_QUIT) {
+            this->_hud.setRunning(false);
             return;
         }
     }
 
-    if(p_input.wasKeyPressed(SDL_SCANCODE_S) && this->_menu == MAINMENU){ this->_hud.setOptionIndex(1); this->_menu = SPMENU; }
-
-    if (p_input.wasKeyPressed(SDL_SCANCODE_UP) && this->_menu != SPGAME) { // must chcek that you are not in a game or else will crash
-        this->_hud.handleArrowInput(SDL_SCANCODE_UP);
-    } else if (p_input.wasKeyPressed(SDL_SCANCODE_DOWN) && this->_menu != SPGAME) {
-        this->_hud.handleArrowInput(SDL_SCANCODE_DOWN);
-    } else if (p_input.wasKeyPressed(SDL_SCANCODE_RIGHT) && this->_menu != SPGAME) {
-        this->_hud.handleArrowInput(SDL_SCANCODE_RIGHT);
-    } else if (p_input.wasKeyPressed(SDL_SCANCODE_LEFT) && this->_menu != SPGAME) {
-        this->_hud.handleArrowInput(SDL_SCANCODE_LEFT);
-    }
-
-    if(p_input.wasKeyPressed(SDL_SCANCODE_P) && this->_menu == SPMENU){
-        if(this->_singleplayer == nullptr && this->_player == nullptr){
-            this->_menu = SPGAME;
-            this->_player = new Player(this->_graphics, Vector2f(100, 100));
-            this->_singleplayer = new Singleplayer(this->_graphics, this->_player, this->_hud); // will have to pass in the variables for speed/size before it gets init
+    auto handleMenuNav = [this, &p_input]() {
+        if (p_input.wasKeyPressed(SDL_SCANCODE_UP) && this->_menu != SPGAME) { // must chcek that you are not in a game or else will crash
+            this->_hud.handleKeyInput(SDL_SCANCODE_UP);
+        } else if (p_input.wasKeyPressed(SDL_SCANCODE_DOWN) && this->_menu != SPGAME) {
+            this->_hud.handleKeyInput(SDL_SCANCODE_DOWN);
+        } else if (p_input.wasKeyPressed(SDL_SCANCODE_RIGHT) && this->_menu != SPGAME) {
+            this->_hud.handleKeyInput(SDL_SCANCODE_RIGHT);
+        } else if (p_input.wasKeyPressed(SDL_SCANCODE_LEFT) && this->_menu != SPGAME) {
+            this->_hud.handleKeyInput(SDL_SCANCODE_LEFT);
         }
-    }
+    };
 
-    if (p_input.wasKeyPressed(SDL_SCANCODE_M) && this->_menu == MAINMENU) { this->_menu = MPMENU; this->_hud.setOptionIndex(1); } // multiplayer
-    if (p_input.wasKeyPressed(SDL_SCANCODE_O) && this->_menu == MAINMENU) { this->_menu = OPTIONS; this->_hud.setOptionIndex(1); }  // options
-    if (p_input.wasKeyPressed(SDL_SCANCODE_Q) && this->_menu == MAINMENU) { this->_isRunning = false; return; } // quit
-    if (p_input.wasKeyPressed(SDL_SCANCODE_S) && this->_menu == OPTIONS) this->_hud.toggleFps(); // frame info
-
-    if (p_input.wasKeyPressed(SDL_SCANCODE_B) && this->_menu != MAINMENU){
-        this->_hud.setOptionIndex(1);
-        this->_menu = MAINMENU;
-        if (this->_singleplayer != nullptr) { // add checks for when will have multiplayer
-            delete this->_singleplayer;
-            this->_singleplayer = nullptr;
+    auto handleMenuSelection = [this, &p_input]() {
+        if(p_input.wasKeyPressed(SDL_SCANCODE_RETURN)) {
+            if(this->_menu == SPMENU && this->_hud.getOptionIndex() == 4 && this->_singleplayer == nullptr && this->_player == nullptr){
+                this->_menu = SPGAME;
+                this->_player = new Player(this->_graphics, Vector2f(100, 100));
+                this->_singleplayer = new Singleplayer(this->_graphics, this->_player, this->_hud); // will have to pass in the variables for speed/size before it gets init
+            }
+            this->_hud.handleKeyInput(SDL_SCANCODE_RETURN, &this->_menu);
         }
-        if (this->_player != nullptr) {
-            delete this->_player;
-            this->_player = nullptr;
-        }
-    }
 
-    if(p_input.isKeyHeld(SDL_SCANCODE_W) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->moveUp();
-    if(p_input.wasKeyReleased(SDL_SCANCODE_W) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->stopMoving();
-    if(p_input.isKeyHeld(SDL_SCANCODE_S) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->moveDown();
-    if(p_input.wasKeyReleased(SDL_SCANCODE_S) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->stopMoving();
+        if(this->_menu != SPGAME && this->_menu != MPGAME){
+            if (this->_singleplayer != nullptr) { // add checks for when will have multiplayer
+                delete this->_singleplayer;
+                this->_singleplayer = nullptr;
+            }
+            if (this->_player != nullptr) {
+                delete this->_player;
+                this->_player = nullptr;
+            }
+        }
+
+        if(p_input.isKeyHeld(SDL_SCANCODE_W) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->moveUp();
+        if(p_input.wasKeyReleased(SDL_SCANCODE_W) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->stopMoving();
+        if(p_input.isKeyHeld(SDL_SCANCODE_S) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->moveDown();
+        if(p_input.wasKeyReleased(SDL_SCANCODE_S) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->stopMoving();
+    };
+
+    handleMenuNav();
+    handleMenuSelection();
 }
