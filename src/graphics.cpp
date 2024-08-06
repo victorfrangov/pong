@@ -7,15 +7,20 @@
 
 Graphics::Graphics(){
     SDL_Init(SDL_INIT_VIDEO);
-    SDL_CreateWindowAndRenderer("PONG", globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT, 0, &this->_window, &this->_renderer);
+    if(SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl") == SDL_TRUE) {
+        SDL_Log("opengl was set");
+    }
 
-    SDL_IOStream* rw = SDL_IOFromMem(pong_png, pong_png_len);
-    if(!rw){
+    SDL_CreateWindowAndRenderer("PONG", globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT, 0, &this->_window, &this->_renderer);
+    SDL_SetRenderLogicalPresentation(this->_renderer, globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX, SDL_SCALEMODE_NEAREST);
+
+    SDL_IOStream* io = SDL_IOFromMem(pong_png, pong_png_len);
+    if(!io){
         printf("SDL_IOFromMem Error: %s\n", SDL_GetError());
         return;
     }
 
-    SDL_Surface* surface = IMG_Load_IO(rw, 1);
+    SDL_Surface* surface = IMG_Load_IO(io, 1);
     if(!surface){
         printf("IMG_Load_IO Error: %s\n", IMG_GetError());
         return;
@@ -49,4 +54,13 @@ void Graphics::clear(){
 
 SDL_Renderer* Graphics::getRenderer() const{
     return this->_renderer; 
+}
+
+void Graphics::toggleFullScreen(){
+    SDL_WindowFlags test = SDL_GetWindowFlags(this->_window);
+    if(test != SDL_WINDOW_FULLSCREEN){
+        SDL_SetWindowFullscreen(this->_window, SDL_TRUE);
+    } else{
+        SDL_SetWindowFullscreen(this->_window, SDL_FALSE);
+    }
 }

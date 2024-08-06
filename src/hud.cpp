@@ -19,13 +19,13 @@ Hud::Hud(Graphics &p_graphics) :
                 return;
             }
 
-            SDL_IOStream* rw = SDL_IOFromMem(KenneyPixel_ttf, KenneyPixel_ttf_len);
-            if (!rw) {
+            SDL_IOStream* io = SDL_IOFromMem(KenneyPixel_ttf, KenneyPixel_ttf_len);
+            if (!io) {
                 std::cerr << "SDL_IOFromMem Error: " << SDL_GetError() << '\n';
                 return;
             }
 
-            this->_font = TTF_OpenFontIO(rw, 1, 56);
+            this->_font = TTF_OpenFontIO(io, 1, 56);
             if(!_font)
                 std::cerr << "TTF_OpenFontIO Error: " << TTF_GetError() << '\n';
         }
@@ -56,8 +56,8 @@ void Hud::draw(Menu p_menu, float p_fps, int p_elapsedTime){
     }
 }
 
-void Hud::update(){
-
+void Hud::update(Player *p_player){
+    this->renderPoints(p_player);
 }
 
 void Hud::renderText(const std::string& p_text, float p_x, float p_y, float p_texW, float p_texH){
@@ -206,9 +206,11 @@ void Hud::handleSelect(Menu* p_menu){
                 break;
             case 2:
                 *p_menu = MPMENU;
+                this->_selectedOptionIndex = 1;
                 break;
             case 3:
                 *p_menu = OPTIONS;
+                this->_selectedOptionIndex = 1;
                 break;
             case 4:
                 Game::setRunning(false);
@@ -229,13 +231,14 @@ void Hud::handleSelect(Menu* p_menu){
                 break;
             case 4:
                 //start sp game
+                this->_selectedOptionIndex = 1;
                 break;
             case 5:
                 *p_menu = MAINMENU;
+                this->_selectedOptionIndex = 1;
             default:
                 break;
         }
-
     } else if(*p_menu == MPMENU){
         switch(this->_selectedOptionIndex){
             case 1:
@@ -243,6 +246,7 @@ void Hud::handleSelect(Menu* p_menu){
                 break;
             case 2:
                 *p_menu = MAINMENU;
+                this->_selectedOptionIndex = 1;
                 break;
             default:
                 break;
@@ -253,27 +257,30 @@ void Hud::handleSelect(Menu* p_menu){
                 this->_showFPS = !this->_showFPS;
                 break;
             case 2:
-                //fullscreen toggle
+                this->_graphics.toggleFullScreen();
                 break;
             case 3:
                 //resolution change
                 break;
             case 4:
                 *p_menu = MAINMENU;
+                this->_selectedOptionIndex = 1;
                 break;
             default:
                 break;
         }
     } else if (*p_menu == LOSE){
         switch(this->_selectedOptionIndex){
+            case 1:
+                break;
             case 2:
                 *p_menu = MAINMENU;
+                this->_selectedOptionIndex = 1;
                 break;
             default:
                 break;
         }
     }
-    this->_selectedOptionIndex = 1;
 }
 
 void Hud::renderHudItems(){

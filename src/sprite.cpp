@@ -19,13 +19,13 @@ float p_sourceY, float p_width, float p_height, Vector2f p_pos):
     this->_src.h = p_height;
 
     // Load image from memory
-    SDL_IOStream* rw = SDL_IOFromMem(bar_png, bar_png_len);
-    if (!rw) {
+    SDL_IOStream* io = SDL_IOFromMem(bar_png, bar_png_len);
+    if (!io) {
         printf("SDL_IOFromMem Error: %s\n", SDL_GetError());
         return;
     }
 
-    SDL_Surface* surface = IMG_Load_IO(rw, 1); // 1 means SDL will free the RWops for us
+    SDL_Surface* surface = IMG_Load_IO(io, 1); // 1 means SDL will free the RWops for us
     if (!surface) {
         printf("IMG_Load_IO Error: %s\n", IMG_GetError());
         return;
