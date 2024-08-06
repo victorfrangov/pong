@@ -56,9 +56,9 @@ public:
 
     void renderHudItems();
 
-    bool getRunning() const { return this->_isRunning; }
+    // bool getRunning() const { return this->_isRunning; }
 
-    void setRunning(bool isRunning) { this->_isRunning = isRunning; }
+    // void setRunning(bool isRunning) { this->_isRunning = isRunning; }
 
     unsigned int getOptionIndex() { return this->_selectedOptionIndex; }
 
@@ -74,7 +74,7 @@ private:
 
     unsigned int vectorIndex = 0;
 
-    bool _isRunning;
+    // bool _isRunning;
 };
 
 #endif /* HUD */

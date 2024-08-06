@@ -34,6 +34,8 @@ public:
      */
     ~Game();
 
+    static void setRunning(bool isRunning) { _isRunning = isRunning; }
+
 private:
     /**
      * @brief Contains the game's main loop logic.
@@ -62,8 +64,9 @@ private:
     Hud _hud;
     Singleplayer* _singleplayer;
     Player* _player;
-
     Menu _menu;
+
+    static bool _isRunning;
 };
 
 #endif // GAME_H

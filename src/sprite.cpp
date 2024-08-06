@@ -81,18 +81,18 @@ const sides::Side Sprite::getCollisionSide(const Rectangle &p_other) const{
             sides::NONE;
 }
 
-void Sprite::setSourceRectX(int p_value){
-    this->_src.x = p_value;
-}
+// void Sprite::setSourceRectX(int p_value){
+//     this->_src.x = p_value;
+// }
 
-void Sprite::setSourceRectY(int p_value){
-    this->_src.y = p_value;
-}
+// void Sprite::setSourceRectY(int p_value){
+//     this->_src.y = p_value;
+// }
 
-void Sprite::setSourceRectW(int p_value){
-    this->_src.w = p_value;
-}
+// void Sprite::setSourceRectW(int p_value){
+//     this->_src.w = p_value;
+// }
 
-void Sprite::setSourceRectH(int p_value){
-    this->_src.h = p_value;
-}
+// void Sprite::setSourceRectH(int p_value){
+//     this->_src.h = p_value;
+// }

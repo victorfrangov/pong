@@ -3,15 +3,13 @@
 #include <sstream>
 
 #include "hud.h"
-#include "graphics.h"
-#include "globals.h"
 #include "KenneyPixel.h"
+#include "game.h"
 
 Hud::Hud(Graphics &p_graphics) :
         _graphics(p_graphics),
         _font(nullptr),
         _color({255, 255, 255, 255}),
-        _isRunning(true),
         _selectedOptionIndex(1)
         {
             this->_hudItem = {};
@@ -213,7 +211,7 @@ void Hud::handleSelect(Menu* p_menu){
                 *p_menu = OPTIONS;
                 break;
             case 4:
-                this->_isRunning = false;
+                Game::setRunning(false);
                 break;
             default:
                 break;

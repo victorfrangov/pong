@@ -16,6 +16,8 @@ namespace{
     float currentFPS = 0.0f;
 }
 
+bool Game::_isRunning = true;
+
 Game::Game() : 
     _graphics(),
     _hud(_graphics),
@@ -43,7 +45,7 @@ void Game::gameLoop() {
     Uint64 lastUpdateTime = SDL_GetTicks();
     Uint64 lastFpsUpdateTime = lastUpdateTime;
 
-    while (this->_hud.getRunning()) {
+    while (this->_isRunning) {
         input.beginNewFrame();
         this->handleInput(input);
 
@@ -100,21 +102,21 @@ void Game::handleInput(Input &p_input) {
         } else if (e.type == SDL_EVENT_KEY_UP) {
             p_input.keyUpEvent(e);
         } else if (e.type == SDL_EVENT_QUIT) {
-            this->_hud.setRunning(false);
+            this->_isRunning = false;
             return;
         }
     }
 
-    auto handleMenuNav = [this, &p_input]() {
-        if (p_input.wasKeyPressed(SDL_SCANCODE_UP) && this->_menu != SPGAME) { // must chcek that you are not in a game or else will crash
-            this->_hud.handleKeyInput(SDL_SCANCODE_UP);
-        } else if (p_input.wasKeyPressed(SDL_SCANCODE_DOWN) && this->_menu != SPGAME) {
-            this->_hud.handleKeyInput(SDL_SCANCODE_DOWN);
-        } else if (p_input.wasKeyPressed(SDL_SCANCODE_RIGHT) && this->_menu != SPGAME) {
-            this->_hud.handleKeyInput(SDL_SCANCODE_RIGHT);
-        } else if (p_input.wasKeyPressed(SDL_SCANCODE_LEFT) && this->_menu != SPGAME) {
-            this->_hud.handleKeyInput(SDL_SCANCODE_LEFT);
-        }
+    auto handleArrowKeys = [this, &p_input]() {
+        if (p_input.wasKeyPressed(SDL_SCANCODE_UP) && this->_menu != SPGAME) this->_hud.handleKeyInput(SDL_SCANCODE_UP);
+        if (p_input.wasKeyPressed(SDL_SCANCODE_DOWN) && this->_menu != SPGAME) this->_hud.handleKeyInput(SDL_SCANCODE_DOWN);
+        if (p_input.wasKeyPressed(SDL_SCANCODE_RIGHT) && this->_menu != SPGAME) this->_hud.handleKeyInput(SDL_SCANCODE_RIGHT);
+        if (p_input.wasKeyPressed(SDL_SCANCODE_LEFT) && this->_menu != SPGAME) this->_hud.handleKeyInput(SDL_SCANCODE_LEFT);
+
+        if(p_input.isKeyHeld(SDL_SCANCODE_UP) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->moveUp();
+        if(p_input.wasKeyReleased(SDL_SCANCODE_UP) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->stopMoving();
+        if(p_input.isKeyHeld(SDL_SCANCODE_DOWN) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->moveDown();
+        if(p_input.wasKeyReleased(SDL_SCANCODE_DOWN) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->stopMoving();
     };
 
     auto handleMenuSelection = [this, &p_input]() {
@@ -127,11 +129,9 @@ void Game::handleInput(Input &p_input) {
         if(p_input.wasKeyPressed(SDL_SCANCODE_ESCAPE) && this->_menu == SPGAME) this->_menu = MAINMENU;
 
         if(p_input.wasKeyPressed(SDL_SCANCODE_RETURN)) {
-            if(this->_menu == SPMENU && this->_hud.getOptionIndex() == 4 && this->_singleplayer == nullptr && this->_player == nullptr){
-                lambdaStartSPGame();
-            } else if(this->_menu == LOSE && this->_hud.getOptionIndex() == 1 && this->_singleplayer == nullptr && this->_player == nullptr){
-                lambdaStartSPGame();
-            }
+            if(this->_menu == SPMENU && this->_hud.getOptionIndex() == 4 && this->_singleplayer == nullptr && this->_player == nullptr) lambdaStartSPGame();
+            if(this->_menu == LOSE && this->_hud.getOptionIndex() == 1 && this->_singleplayer == nullptr && this->_player == nullptr) lambdaStartSPGame();
+            
             this->_hud.handleKeyInput(SDL_SCANCODE_RETURN, &this->_menu);
         }
 
@@ -145,13 +145,8 @@ void Game::handleInput(Input &p_input) {
                 this->_player = nullptr;
             }
         }
-
-        if(p_input.isKeyHeld(SDL_SCANCODE_W) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->moveUp();
-        if(p_input.wasKeyReleased(SDL_SCANCODE_W) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->stopMoving();
-        if(p_input.isKeyHeld(SDL_SCANCODE_S) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->moveDown();
-        if(p_input.wasKeyReleased(SDL_SCANCODE_S) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->stopMoving();
     };
 
-    handleMenuNav();
+    handleArrowKeys();
     handleMenuSelection();
 }
