@@ -34,6 +34,13 @@ Hud::~Hud(){
 }
 
 void Hud::draw(Menu p_menu, float p_fps, int p_elapsedTime){
+    if(this->_graphics.getWindowStatus()){
+        SDL_SetRenderDrawColor(this->_graphics.getRenderer(), 63, 63, 63, 255);
+        SDL_RenderLine(this->_graphics.getRenderer(), 0.0f, 0.0f, static_cast<float>(globals::SCREEN_WIDTH), 0.0f); //top
+        SDL_RenderLine(this->_graphics.getRenderer(), 0.0f, 0.0f, 0.0f, static_cast<float>(globals::SCREEN_HEIGHT)); //left
+        SDL_RenderLine(this->_graphics.getRenderer(), static_cast<float>(globals::SCREEN_WIDTH) - 1, 0.0f, static_cast<float>(globals::SCREEN_WIDTH) - 1, static_cast<float>(globals::SCREEN_HEIGHT) - 1); // right
+        SDL_RenderLine(this->_graphics.getRenderer(), 0.0f, static_cast<float>(globals::SCREEN_HEIGHT) - 1, static_cast<float>(globals::SCREEN_WIDTH) - 1, static_cast<float>(globals::SCREEN_HEIGHT) - 1); // bottom
+    }
     this->renderFrameInfo(p_fps,  p_elapsedTime);
     switch (p_menu){
         case MAINMENU:

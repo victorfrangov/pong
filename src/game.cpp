@@ -2,11 +2,9 @@
 #include <iostream>
 
 #include "game.h"
-#include "graphics.h"
 #include "input.h"
 #include "hud.h"
 #include "singleplayer.h"
-#include "player.h"
 
 namespace{
     const int FPS_TARGET = 60;
@@ -126,7 +124,7 @@ void Game::handleInput(Input &p_input) {
             this->_singleplayer = new Singleplayer(this->_graphics, this->_player, this->_hud); // will have to pass in the variables for speed/size before it gets init
         };
         
-        if(p_input.wasKeyPressed(SDL_SCANCODE_ESCAPE) && this->_menu == SPGAME) this->_menu = MAINMENU;
+        if(p_input.wasKeyPressed(SDL_SCANCODE_ESCAPE) && this->_menu == SPGAME) { this->_menu = MAINMENU; this->_hud.setOptionIndex(1); }
 
         if(p_input.wasKeyPressed(SDL_SCANCODE_RETURN)) {
             if(this->_menu == SPMENU && this->_hud.getOptionIndex() == 4 && this->_singleplayer == nullptr && this->_player == nullptr) lambdaStartSPGame();

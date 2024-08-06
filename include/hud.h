@@ -56,13 +56,13 @@ public:
 
     void renderHudItems();
 
-    // bool getRunning() const { return this->_isRunning; }
+    // inline bool getRunning() const { return this->_isRunning; }
 
-    // void setRunning(bool isRunning) { this->_isRunning = isRunning; }
+    // inline void setRunning(bool isRunning) { this->_isRunning = isRunning; }
 
-    unsigned int getOptionIndex() { return this->_selectedOptionIndex; }
+    inline unsigned int getOptionIndex() { return this->_selectedOptionIndex; }
 
-    // inline void setOptionIndex(int p_optionIndex) { this->_selectedOptionIndex = p_optionIndex; }
+    inline void setOptionIndex(int p_optionIndex) { this->_selectedOptionIndex = p_optionIndex; }
 private:
     Graphics& _graphics;
     TTF_Font* _font;

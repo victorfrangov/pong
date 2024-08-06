@@ -11,7 +11,7 @@ Graphics::Graphics(){
         SDL_Log("opengl was set");
     }
 
-    SDL_CreateWindowAndRenderer("PONG", globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT, 0, &this->_window, &this->_renderer);
+    SDL_CreateWindowAndRenderer("PONG", globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE, &this->_window, &this->_renderer);
     SDL_SetRenderLogicalPresentation(this->_renderer, globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX, SDL_SCALEMODE_NEAREST);
 
     SDL_IOStream* io = SDL_IOFromMem(pong_png, pong_png_len);
@@ -49,6 +49,7 @@ void Graphics::flip(){
 }
 
 void Graphics::clear(){
+    SDL_SetRenderDrawColor(this->_renderer, 0, 0, 0, 255);
     SDL_RenderClear(this->_renderer);
 }
 
@@ -57,10 +58,9 @@ SDL_Renderer* Graphics::getRenderer() const{
 }
 
 void Graphics::toggleFullScreen(){
-    SDL_WindowFlags test = SDL_GetWindowFlags(this->_window);
-    if(test != SDL_WINDOW_FULLSCREEN){
-        SDL_SetWindowFullscreen(this->_window, SDL_TRUE);
-    } else{
-        SDL_SetWindowFullscreen(this->_window, SDL_FALSE);
-    }
+    SDL_SetWindowFullscreen(this->_window, this->getWindowStatus() ? SDL_FALSE : SDL_TRUE);
+}
+
+bool Graphics::getWindowStatus(){
+    return SDL_GetWindowFlags(this->_window) & SDL_WINDOW_FULLSCREEN;
 }

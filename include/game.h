@@ -11,9 +11,10 @@
 
 #include "graphics.h"
 #include "hud.h"
-#include "player.h"
 
+class Player;
 class Input;
+class Singleplayer;
 
 /**
  * @class Game

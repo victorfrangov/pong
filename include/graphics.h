@@ -79,6 +79,8 @@ public:
 
     void toggleFullScreen();
 
+    bool getWindowStatus();
+
 private:
     SDL_Window* _window; ///< The main window.
     SDL_Renderer* _renderer; ///< The renderer for drawing.
