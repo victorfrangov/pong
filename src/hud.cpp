@@ -63,9 +63,8 @@ void Hud::draw(Menu p_menu, float p_fps, int p_elapsedTime){
     }
 }
 
-void Hud::update(Player *p_player){
-    this->renderPoints(p_player);
-}
+// void Hud::update(){
+// }
 
 void Hud::renderText(const std::string& p_text, float p_x, float p_y, float p_texW, float p_texH){
     if(!this->_font){
@@ -238,7 +237,6 @@ void Hud::handleSelect(Menu* p_menu){
                 break;
             case 4:
                 //start sp game
-                this->_selectedOptionIndex = 1;
                 break;
             case 5:
                 *p_menu = MAINMENU;

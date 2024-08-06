@@ -122,15 +122,17 @@ void Game::handleInput(Input &p_input) {
             this->_menu = SPGAME;
             this->_player = new Player(this->_graphics, Vector2f(100, 100));
             this->_singleplayer = new Singleplayer(this->_graphics, this->_player, this->_hud); // will have to pass in the variables for speed/size before it gets init
+            this->_hud.setOptionIndex(1);
         };
         
         if(p_input.wasKeyPressed(SDL_SCANCODE_ESCAPE) && this->_menu == SPGAME) { this->_menu = MAINMENU; this->_hud.setOptionIndex(1); }
 
         if(p_input.wasKeyPressed(SDL_SCANCODE_RETURN)) {
+            this->_hud.handleKeyInput(SDL_SCANCODE_RETURN, &this->_menu);
+
             if(this->_menu == SPMENU && this->_hud.getOptionIndex() == 4 && this->_singleplayer == nullptr && this->_player == nullptr) lambdaStartSPGame();
             if(this->_menu == LOSE && this->_hud.getOptionIndex() == 1 && this->_singleplayer == nullptr && this->_player == nullptr) lambdaStartSPGame();
             
-            this->_hud.handleKeyInput(SDL_SCANCODE_RETURN, &this->_menu);
         }
 
         if(this->_menu != SPGAME && this->_menu != MPGAME){

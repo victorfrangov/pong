@@ -11,12 +11,12 @@ Singleplayer::Singleplayer(Graphics &p_graphics, Player* p_player, Hud &p_hud) :
 void Singleplayer::draw(Graphics &p_graphics){
     this->_player.draw(p_graphics);
     this->_ball.draw(p_graphics);
+    this->_hud.renderPoints(&this->_player); // should change this and better structure it // have a renderGame method, that will render everything on the hud during the game such as each player's points
 }
 
 void Singleplayer::update(float p_elapsedTime){
     this->_ball.update(p_elapsedTime);
     this->_player.update(p_elapsedTime);
-    this->_hud.update(&this->_player);
 
     if(this->_collisionTimer > 0.0f){
         this->_collisionTimer -= p_elapsedTime;

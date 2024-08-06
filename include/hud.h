@@ -30,7 +30,7 @@ public:
 
     void draw(Menu p_menu, float p_fps, int p_elapsedTime);
 
-    void update(Player *p_player);
+    // void update();
 
     void renderText(const std::string& p_text, float p_x, float p_y, float p_texW, float p_texH);
 
