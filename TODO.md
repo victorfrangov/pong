@@ -8,6 +8,5 @@
 - [ ] Configure Cmake/make
 - [ ] Make it as an .app for MacOS
 - [ ] ~~Make selectedOptionIndex use menu enum~~ (SCRAPPED)
-- [ ] Add play again when lost (look in game.cpp delete singleplayer & delete player if statement)
-- [ ] Add pause for singleplayer
-- [ ] make the ball spawn randomly
+- [x] Add play again when lost (look in game.cpp delete singleplayer & delete player if statement)
+- [x] make the ball spawn randomly

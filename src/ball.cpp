@@ -1,13 +1,18 @@
 #include "ball.h"
 #include <iostream>
+#include <random>
 
 Ball::Ball(Graphics &p_graphics, Vector2f p_spawnPoint, Hud &p_hud) :
         Sprite(p_graphics, 0, 0, 10, 10, p_spawnPoint),
         _dx(0.15f),
-        _dy(0.15f),
+        _dy(rand() % 2 == 0 ? 0.15f : -0.15f),
         _hud(p_hud),
         _hasLost(false)
         {
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            std::uniform_int_distribution<> distr(1, 10);
+            // return distr(gen);
         }
 
 void Ball::draw(Graphics &p_graphics) {
