@@ -1,10 +1,10 @@
 #include "sprite.h"
 #include "graphics.h"
-#include "globals.h"
+// #include "globals.h"
 #include "bar.h"
-#include <SDL3_image/SDL_image.h>
 
-#include <iostream>
+#include <SDL3_image/SDL_image.h>
+// #include <iostream>
 
 Sprite::Sprite(){}
 

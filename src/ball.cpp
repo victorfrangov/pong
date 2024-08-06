@@ -1,6 +1,5 @@
 #include "ball.h"
 #include <iostream>
-#include <random>
 
 Ball::Ball(Graphics &p_graphics, Vector2f p_spawnPoint, Hud &p_hud) :
         Sprite(p_graphics, 0, 0, 10, 10, p_spawnPoint),
@@ -9,10 +8,6 @@ Ball::Ball(Graphics &p_graphics, Vector2f p_spawnPoint, Hud &p_hud) :
         _hud(p_hud),
         _hasLost(false)
         {
-            std::random_device rd;
-            std::mt19937 gen(rd());
-            std::uniform_int_distribution<> distr(1, 10);
-            // return distr(gen);
         }
 
 void Ball::draw(Graphics &p_graphics) {
@@ -36,9 +31,7 @@ void Ball::handleBorderCollisions() {
         this->_dy = -this->_dy;
         this->_y = 0;
     } else if (rect.getLeft() <= 0) {
-        this->setLost(); // removed for testing
-        // this->_dx = -this->_dx;
-        // this->_x = 0;
+        this->_hasLost = true;
     } else if (rect.getRight() >= globals::SCREEN_WIDTH) {
         this->_dx = -this->_dx;
         this->_x = globals::SCREEN_WIDTH - rect.getWidth();
@@ -53,7 +46,7 @@ void Ball::reverseDirectionY(){
     this->_dy = -this->_dy;
 }
 
-void Ball::setPosition(int p_x, int p_y){
-    this->_x = p_x;
-    this->_y = p_y;
-}
+// void Ball::setPosition(int p_x, int p_y){
+//     this->_x = p_x;
+//     this->_y = p_y;
+// }

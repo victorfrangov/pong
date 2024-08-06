@@ -46,23 +46,23 @@ public:
 
     void reverseDirectionY();
 
-    void setPosition(int p_x, int p_y);
+    // void setPosition(int p_x, int p_y);
 
     /**
      * @brief Gets the x-coordinate of the ball.
      * 
      * @return float: The x-coordinate.
      */
-    inline float getX() const { return this->_x; }
+    // inline float getX() const { return this->_x; }
 
     /**
      * @brief Gets the y-coordinate of the ball.
      * 
      * @return float: The y-coordinate.
      */
-    inline float getY() const { return this->_y; }
+    // inline float getY() const { return this->_y; }
 
-    inline void setLost() { this->_hasLost = true; }
+    // inline void setLost() { this->_hasLost = true; }
 
     inline bool getLostStatus() const { return this->_hasLost; }
 private:

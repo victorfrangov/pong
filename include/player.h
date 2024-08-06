@@ -10,14 +10,14 @@
 #ifndef PLAYER
 #define PLAYER
 
-#include "globals.h"
+// #include "globals.h"
 #include "sprite.h"
 
-#include <string>
+// #include <string>
 #include <vector>
 
-class Graphics;
-class Door;
+// class Graphics;
+// class Door;
 
 /**
  * @class Player
@@ -77,14 +77,14 @@ public:
      * 
      * @return float: The x-coordinate.
      */
-    inline float getX() const { return this->_x; }
+    // inline float getX() const { return this->_x; }
 
     /**
      * @brief Gets the y-coordinate of the player.
      * 
      * @return float: The y-coordinate.
      */
-    inline float getY() const { return this->_y; }
+    // inline float getY() const { return this->_y; }
 
     inline int getPoints() const { return this->_points; }
 

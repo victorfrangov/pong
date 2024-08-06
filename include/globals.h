@@ -26,14 +26,14 @@ namespace sides{
         NONE,
     };
 
-    const inline Side getOppositeSide(Side p_side){
-        return
-                p_side == TOP ? BOTTOM :
-                p_side == BOTTOM ? TOP :
-                p_side == LEFT ? RIGHT :
-                p_side == RIGHT ? LEFT :
-                NONE;
-    }
+    // const inline Side getOppositeSide(Side p_side){
+    //     return
+    //             p_side == TOP ? BOTTOM :
+    //             p_side == BOTTOM ? TOP :
+    //             p_side == LEFT ? RIGHT :
+    //             p_side == RIGHT ? LEFT :
+    //             NONE;
+    // }
 }
 
 /**

@@ -2,7 +2,7 @@
 #define SPRITE
 
 #include <SDL3/SDL.h>
-#include <string>
+// #include <string>
 
 #include "rectangle.h"
 #include "globals.h"
@@ -95,7 +95,7 @@ public:
      * 
      * @param p_value The new x-coordinate value.
      */
-    void setSourceRectX(int p_value);
+    // void setSourceRectX(int p_value);
 
     /**
      * @brief Sets the y-coordinate of the source rectangle.
@@ -104,7 +104,7 @@ public:
      * 
      * @param p_value The new y-coordinate value.
      */
-    void setSourceRectY(int p_value);
+    // void setSourceRectY(int p_value);
 
     /**
      * @brief Sets the width of the source rectangle.
@@ -113,7 +113,7 @@ public:
      * 
      * @param p_value The new width value.
      */
-    void setSourceRectW(int p_value);
+    // void setSourceRectW(int p_value);
 
     /**
      * @brief Sets the height of the source rectangle.
@@ -122,7 +122,7 @@ public:
      * 
      * @param p_value The new height value.
      */
-    void setSourceRectH(int p_value);
+    // void setSourceRectH(int p_value);
 
     /**
      * @brief Gets the x-coordinate of the sprite.
@@ -131,7 +131,7 @@ public:
      * 
      * @return float: The x-coordinate of the sprite.
      */
-    inline float getX() const { return this->_x; }
+    // inline float getX() const { return this->_x; }
 
     /**
      * @brief Gets the y-coordinate of the sprite.
@@ -140,7 +140,7 @@ public:
      * 
      * @return float: The y-coordinate of the sprite.
      */
-    inline float getY() const { return this->_y; }
+    // inline float getY() const { return this->_y; }
 
 protected:
     SDL_FRect _src; ///< Source rectangle in the sprite sheet.

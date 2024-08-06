@@ -10,3 +10,4 @@
 - [ ] ~~Make selectedOptionIndex use menu enum~~ (SCRAPPED)
 - [x] Add play again when lost (look in game.cpp delete singleplayer & delete player if statement)
 - [x] make the ball spawn randomly
+- [ ] add an ai for singleplayer

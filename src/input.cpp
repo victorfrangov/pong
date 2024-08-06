@@ -1,9 +1,5 @@
 #include "input.h"
 
-/* Input class
-Handles all inputs and checks different states of a key
-*/
-
 void Input::beginNewFrame(){
     this->_pressedKeys.clear();
     this->_releasedKeys.clear();
