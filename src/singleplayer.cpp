@@ -4,7 +4,7 @@ Singleplayer::Singleplayer(Graphics &p_graphics, Player* p_player, Hud &p_hud) :
         _player(*p_player),
         _hud(p_hud),
         _collisionTimer(0.0f),
-        _ball(p_graphics, Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / (rand() % 7 + 1)), p_hud)
+        _ball(p_graphics, Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / (rand() % 7 + 1)))
         {
         }
 

@@ -5,7 +5,7 @@
 #include "globals.h"
 #include "rectangle.h"
 #include "sprite.h"
-#include "hud.h"
+
 #include <vector>
 
 /**
@@ -19,7 +19,7 @@ public:
      * @param p_graphics Graphics context to draw the ball.
      * @param p_spawnPoint Initial position of the ball.
      */
-    Ball(Graphics &p_graphics, Vector2f p_spawnPoint, Hud &p_hud);
+    Ball(Graphics &p_graphics, Vector2f p_spawnPoint);
 
     /**
      * @brief Draws the ball on the screen.
@@ -67,7 +67,6 @@ public:
     inline bool getLostStatus() const { return this->_hasLost; }
 private:
     float _dx, _dy; // Velocity of the ball
-    Hud &_hud;
 
     bool _hasLost;
 };

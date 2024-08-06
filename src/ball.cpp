@@ -1,11 +1,10 @@
 #include "ball.h"
 #include <iostream>
 
-Ball::Ball(Graphics &p_graphics, Vector2f p_spawnPoint, Hud &p_hud) :
+Ball::Ball(Graphics &p_graphics, Vector2f p_spawnPoint) :
         Sprite(p_graphics, 0, 0, 10, 10, p_spawnPoint),
         _dx(0.15f),
         _dy(rand() % 2 == 0 ? 0.15f : -0.15f),
-        _hud(p_hud),
         _hasLost(false)
         {
         }
