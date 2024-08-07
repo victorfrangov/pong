@@ -7,9 +7,6 @@
 
 Graphics::Graphics(){
     SDL_Init(SDL_INIT_VIDEO);
-    if(SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl") == SDL_TRUE) {
-        SDL_Log("opengl was set");
-    }
 
     SDL_CreateWindowAndRenderer("PONG", globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE, &this->_window, &this->_renderer);
     SDL_SetRenderLogicalPresentation(this->_renderer, globals::SCREEN_WIDTH, globals::SCREEN_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX, SDL_SCALEMODE_NEAREST);
