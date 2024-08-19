@@ -150,9 +150,9 @@ void Hud::renderLose(){
 
 void Hud::renderSPOptions(){
     std::vector<std::vector<float>> SPOptions = {
-        {0.15f, 0.30f, 0.50f, 1.00f, 1.50f}, // ballSpeedOptions
-        {0.20f, 0.60f, 1.50f, 2.30f,3.00f}, // playerSpeedOptions
-        {0.50f, 1.00f, 2.00f, 3.00f, 5.00f} // ballSizeOptions
+        {0.15f, 0.30f, 0.45f, 0.60f, 0.90f}, // ballSpeedOptions
+        {0.20f, 0.40f, 0.60f, 0.80f, 1.00f}, // playerSpeedOptions
+        {0.50f, 1.00f, 2.50f, 2.00f, 3.00f} // ballSizeOptions
     };
 
     std::ostringstream stream;

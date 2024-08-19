@@ -2,7 +2,7 @@
 
 - [ ] Add multiplayer
 - [ ] Implement pause menu (when pressing esc)
-- [ ] Cycle through game options
+- [x] Cycle through game options
 - [x] Add fullscreen toggle
 - [ ] ~~Change resolution settings~~ (Change the option for something better)
 - [ ] Configure Cmake/make
