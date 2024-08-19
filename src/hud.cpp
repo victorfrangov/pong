@@ -173,6 +173,9 @@ void Hud::renderSPOptions(){
     stream.str("");
     stream.clear();
 
+    globals::setBallSpeed(SPOptions[0][this->_firstVectorIndex]);
+    globals::setPlayerSpeed(SPOptions[1][this->_secondVectorIndex]);
+
     this->_hudItem = {
         {"SINGLEPLAYER OPTIONS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5), Dash::NODASH},
         {ballSpeedStr, Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.5), Dash::DASH},

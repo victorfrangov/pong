@@ -6,6 +6,8 @@
 #ifndef GLOBALS
 #define GLOBALS
 
+#include <cstdlib>
+
 /**
  * @namespace globals
  * @brief Namespace containing global constants.
@@ -13,8 +15,16 @@
 namespace globals{
     const int SCREEN_WIDTH = 640; ///< Width of the screen in pixels.
     const int SCREEN_HEIGHT = 480; ///< Height of the screen in pixels.
-
     const float SPRITE_SCALE = 1.0f; ///< Scale factor for sprites.
+
+    inline float ballDx = 0.15f;
+    inline float ballDy = rand() % 2 == 0 ? 0.15f : -0.15f;
+
+    inline float playerSpeed = 0.20f;
+
+    inline void setBallSpeed(float p_ballD) { ballDx = p_ballD ; ballDy = rand() % 2 == 0 ? p_ballD : -p_ballD; }
+    inline void setPlayerSpeed(float p_playerSpeed) { playerSpeed = p_playerSpeed ; }
+    // inline void setBallSize();
 }
 
 namespace sides{

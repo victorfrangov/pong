@@ -3,8 +3,8 @@
 
 Ball::Ball(Graphics &p_graphics, Vector2f p_spawnPoint) :
         Sprite(p_graphics, 0, 0, 10, 10, p_spawnPoint),
-        _dx(0.15f),
-        _dy(rand() % 2 == 0 ? 0.15f : -0.15f),
+        _dx(globals::ballDx),
+        _dy(globals::ballDy),
         _hasLost(false)
         {
         }

@@ -3,10 +3,6 @@
 #include <iostream>
 #include <algorithm>
 
-namespace player_constants{
-    const float SPEED = 0.20f;
-}
-
 Player::Player(){}
 
 Player::Player(Graphics &p_graphics, Vector2f p_spawnPoint):
@@ -32,11 +28,11 @@ void Player::update(float p_elapsedTime){
 }
 
 void Player::moveUp(){
-    this->_dy = std::clamp(this->_dy - player_constants::SPEED, -player_constants::SPEED, player_constants::SPEED);
+    this->_dy = std::clamp(this->_dy - globals::playerSpeed, -globals::playerSpeed, globals::playerSpeed);
 }
 
 void Player::moveDown(){
-    this->_dy = std::clamp(this->_dy + player_constants::SPEED, -player_constants::SPEED, player_constants::SPEED);
+    this->_dy = std::clamp(this->_dy + globals::playerSpeed, -globals::playerSpeed, globals::playerSpeed);
 }
 
 void Player::handleBorderCollisions(){
