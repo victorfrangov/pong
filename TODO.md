@@ -1,7 +1,7 @@
 # TODO
 
 - [ ] Add multiplayer
-- [ ] Implement pause menu (when pressing esc)
+- [ ] ~~Implement pause menu (when pressing esc)~~
 - [x] Cycle through game options
 - [x] Add fullscreen toggle
 - [ ] ~~Change resolution settings~~ (Change the option for something better)

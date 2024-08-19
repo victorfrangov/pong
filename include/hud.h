@@ -74,7 +74,7 @@ private:
     
     int _firstVectorIndex = 0;
     int _secondVectorIndex = 0;
-    int _thirdVectorIndex = 0;
+    int _thirdVectorIndex = 1;
 
     // bool _isRunning;
 };
