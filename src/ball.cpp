@@ -2,7 +2,7 @@
 #include <iostream>
 
 Ball::Ball(Graphics &p_graphics, Vector2f p_spawnPoint) :
-        Sprite(p_graphics, 0, 0, 10, 10, p_spawnPoint),
+        Sprite(p_graphics, 0, 0, globals::ballSize, globals::ballSize, p_spawnPoint),
         _dx(globals::ballDx),
         _dy(globals::ballDy),
         _hasLost(false)

@@ -34,12 +34,7 @@ public:
      * @param p_elapsedTime Time elapsed since the last update.
      */
     void update(float p_elapsedTime);
-
-    /**
-     * @brief Handles collisions with tiles.
-     * 
-     * @param p_others A vector of rectangles representing the tiles.
-     */
+    
     void handleBorderCollisions();
 
     void reverseDirectionX();
