@@ -19,7 +19,7 @@ enum Dash{
 struct HudItem {
     std::string text;
     Vector2f pos;
-    Dash _dash;
+    Dash dash;
     float sizeScale = 1;
 };
 
@@ -71,8 +71,10 @@ private:
 
     bool _showFPS = false;
     unsigned int _selectedOptionIndex = 1;
-
-    unsigned int vectorIndex = 0;
+    
+    int _firstVectorIndex = 0;
+    int _secondVectorIndex = 0;
+    int _thirdVectorIndex = 0;
 
     // bool _isRunning;
 };

@@ -106,10 +106,10 @@ void Game::handleInput(Input &p_input) {
     }
 
     auto handleArrowKeys = [this, &p_input]() {
-        if (p_input.wasKeyPressed(SDL_SCANCODE_UP) && this->_menu != SPGAME) this->_hud.handleKeyInput(SDL_SCANCODE_UP);
-        if (p_input.wasKeyPressed(SDL_SCANCODE_DOWN) && this->_menu != SPGAME) this->_hud.handleKeyInput(SDL_SCANCODE_DOWN);
-        if (p_input.wasKeyPressed(SDL_SCANCODE_RIGHT) && this->_menu != SPGAME) this->_hud.handleKeyInput(SDL_SCANCODE_RIGHT);
-        if (p_input.wasKeyPressed(SDL_SCANCODE_LEFT) && this->_menu != SPGAME) this->_hud.handleKeyInput(SDL_SCANCODE_LEFT);
+        if (p_input.wasKeyPressed(SDL_SCANCODE_UP) && this->_menu != SPGAME && this->_menu != MPGAME) this->_hud.handleKeyInput(SDL_SCANCODE_UP);
+        if (p_input.wasKeyPressed(SDL_SCANCODE_DOWN) && this->_menu != SPGAME && this->_menu != MPGAME) this->_hud.handleKeyInput(SDL_SCANCODE_DOWN);
+        if (p_input.wasKeyPressed(SDL_SCANCODE_RIGHT) && this->_menu != SPGAME && this->_menu != MPGAME) this->_hud.handleKeyInput(SDL_SCANCODE_RIGHT);
+        if (p_input.wasKeyPressed(SDL_SCANCODE_LEFT) && this->_menu != SPGAME && this->_menu != MPGAME) this->_hud.handleKeyInput(SDL_SCANCODE_LEFT);
 
         if(p_input.isKeyHeld(SDL_SCANCODE_UP) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->moveUp();
         if(p_input.wasKeyReleased(SDL_SCANCODE_UP) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->stopMoving();

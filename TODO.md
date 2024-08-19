@@ -3,7 +3,7 @@
 - [ ] Add multiplayer
 - [ ] Implement pause menu (when pressing esc)
 - [ ] Cycle through game options
-- [ ] Add fullscreen toggle
+- [x] Add fullscreen toggle
 - [ ] ~~Change resolution settings~~ (Change the option for something better)
 - [ ] Configure Cmake/make
 - [ ] Make it as an .app for MacOS

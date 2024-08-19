@@ -149,19 +149,35 @@ void Hud::renderLose(){
 }
 
 void Hud::renderSPOptions(){
-    std::vector<float> ballSpeedOptions = {0.15f, 0.30f, 0.50f, 1.00f, 1.50f};
-    std::vector<float> playerSpeedOptions = {0.20f, 0.60f, 1.50f, 2.30f,3.00f};
-    std::vector<float> ballSizeOptions = {0.50f, 1.00f, 2.00f, 3.00f, 5.00f};
+    std::vector<std::vector<float>> SPOptions = {
+        {0.15f, 0.30f, 0.50f, 1.00f, 1.50f}, // ballSpeedOptions
+        {0.20f, 0.60f, 1.50f, 2.30f,3.00f}, // playerSpeedOptions
+        {0.50f, 1.00f, 2.00f, 3.00f, 5.00f} // ballSizeOptions
+    };
 
     std::ostringstream stream;
     stream.precision(2);
-    stream << std::fixed << ballSpeedOptions[this->vectorIndex];
+
+    stream << "BALL SPEED: " << SPOptions[0][this->_firstVectorIndex];
+    std::string ballSpeedStr = stream.str();
+    stream.str("");
+    stream.clear();
+
+    stream << "PLAYER SPEED: " << SPOptions[1][this->_secondVectorIndex];
+    std::string playerSpeedStr = stream.str();
+    stream.str("");
+    stream.clear();
+
+    stream << "BALL SIZE: " << SPOptions[2][this->_thirdVectorIndex];
+    std::string ballSizeStr = stream.str();
+    stream.str("");
+    stream.clear();
 
     this->_hudItem = {
         {"SINGLEPLAYER OPTIONS", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5), Dash::NODASH},
-        {"BALL SPEED: " + stream.str(), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.5), Dash::DASH},
-        {"PLAYER SPEED: " + std::to_string(1000), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2), Dash::DASH},
-        {"BALL SIZE: " + std::to_string(10), Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.666667), Dash::DASH},
+        {ballSpeedStr, Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.5), Dash::DASH},
+        {playerSpeedStr, Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2), Dash::DASH},
+        {ballSizeStr, Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 1.666667), Dash::DASH},
         //add cooldown option?
         {"PLAY", Vector2f(globals::SCREEN_WIDTH / 3, globals::SCREEN_HEIGHT / 1.25), Dash::DASH},
         {"BACK", Vector2f(globals::SCREEN_WIDTH / 1.5, globals::SCREEN_HEIGHT / 1.25), Dash::DASH}     
@@ -190,10 +206,14 @@ void Hud::handleKeyInput(SDL_Scancode p_key, Menu* p_menu) {
             this->_selectedOptionIndex = (this->_selectedOptionIndex + 1) % this->_hudItem.size();
             break;
         case SDL_SCANCODE_LEFT:
-            //something
+            if(this->_selectedOptionIndex == 1) this->_firstVectorIndex = std::clamp(this->_firstVectorIndex -= 1, 0, 4);
+            if(this->_selectedOptionIndex == 2) this->_secondVectorIndex = std::clamp(this->_secondVectorIndex -= 1, 0, 4);
+            if(this->_selectedOptionIndex == 3) this->_thirdVectorIndex = std::clamp(this->_thirdVectorIndex -= 1, 0, 4);
             break;
         case SDL_SCANCODE_RIGHT:
-            //smth
+            if(this->_selectedOptionIndex == 1) this->_firstVectorIndex = std::clamp(this->_firstVectorIndex += 1, 0, 4);
+            if(this->_selectedOptionIndex == 2) this->_secondVectorIndex = std::clamp(this->_secondVectorIndex += 1, 0, 4);
+            if(this->_selectedOptionIndex == 3) this->_thirdVectorIndex = std::clamp(this->_thirdVectorIndex += 1, 0, 4);
             break;
         case SDL_SCANCODE_RETURN:
             this->handleSelect(p_menu);
@@ -201,7 +221,7 @@ void Hud::handleKeyInput(SDL_Scancode p_key, Menu* p_menu) {
         default:
             break;
         }
-    } while (this->_hudItem[this->_selectedOptionIndex]._dash == Dash::NODASH);
+    } while (this->_hudItem[this->_selectedOptionIndex].dash == Dash::NODASH);
 }
 
 void Hud::handleSelect(Menu* p_menu){
@@ -295,7 +315,7 @@ void Hud::renderHudItems(){
         int titleTexH = 0;
 
         std::string displayText = item.text;
-        if (i == this->_selectedOptionIndex && item._dash == Dash::DASH) {
+        if (i == this->_selectedOptionIndex && item.dash == Dash::DASH) {
             displayText = "- " + displayText;
         }
 
