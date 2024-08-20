@@ -12,3 +12,4 @@
 - [x] make the ball spawn randomly
 - [ ] add an ai for singleplayer
 - [ ] Replace error messages with: SDL_ShowSimpleMessageBox( SDL_MESSAGEBOX_ERROR, "SDL_Init()", SDL_GetError(), 0);
+- [ ] use constexpr
