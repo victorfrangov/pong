@@ -38,7 +38,7 @@ bool Singleplayer::checkPlayerBallCollision(){
 void Singleplayer::handlePlayerBallCollision(){
     if(this->_collisionTimer <= 0 && this->checkPlayerBallCollision()){
         const Rectangle ballRect = this->_ball.getBoundingBox();
-        const Rectangle playerRect = this->_player.getBoundingBox();
+        // const Rectangle playerRect = this->_player.getBoundingBox();
 
         this->_player.gainPoint();
         sides::Side collisionSide = this->_player.getCollisionSide(ballRect);

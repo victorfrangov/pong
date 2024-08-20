@@ -18,11 +18,11 @@ namespace globals{
     const float SPRITE_SCALE = 1.0f; ///< Scale factor for sprites.
 
     inline float ballDx = 0.15f;
-    inline float ballDy = rand() % 2 == 0 ? 0.15f : -0.15f;
+    inline float ballDy = arc4random() % 2 == 0 ? 0.15f : -0.15f;
     inline float playerSpeed = 0.20f;
     inline float ballSize = 10.0f;
 
-    inline void setBallSpeed(float p_ballD) { ballDx = p_ballD; ballDy = rand() % 2 == 0 ? p_ballD : -p_ballD; }
+    inline void setBallSpeed(float p_ballD) { ballDx = p_ballD; ballDy = arc4random() % 2 == 0 ? p_ballD : -p_ballD; }
     inline void setPlayerSpeed(float p_playerSpeed) { playerSpeed = p_playerSpeed; }
     inline void setBallSize(float p_ballSize) { ballSize = p_ballSize; }
 }
@@ -65,7 +65,7 @@ enum Menu{
     MPMENU,
     OPTIONS,
     LOSE,
-    PAUSE,
+    // PAUSE,
     SPGAME,
     MPGAME
 };
