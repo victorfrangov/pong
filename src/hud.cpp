@@ -244,7 +244,7 @@ void Hud::handleSelect(Menu* p_menu){
                 this->_selectedOptionIndex = 1;
                 break;
             case 4:
-                Game::setRunning(false);
+                Game::setRunningFalse();
                 break;
             default:
                 break;

@@ -35,7 +35,7 @@ public:
      */
     ~Game();
 
-    static void setRunning(bool isRunning) { _isRunning = isRunning; }
+    static void setRunningFalse() { _isRunning = false; }
 
 private:
     /**

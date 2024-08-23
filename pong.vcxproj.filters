@@ -44,15 +44,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bin\SDL2_dll.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bin\SDL2_image_dll.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bin\SDL2_ttf_dll.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\ball.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -90,6 +81,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\sprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="multiplayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

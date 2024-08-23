@@ -5,6 +5,7 @@
 #include "input.h"
 #include "hud.h"
 #include "singleplayer.h"
+#include <enet/enet.h>
 
 namespace{
     const int FPS_TARGET = 60;
@@ -23,6 +24,7 @@ Game::Game() :
     _player(nullptr),
     _menu()
     {
+    enet_initialize();
     this->gameLoop();
     }
 
@@ -57,18 +59,19 @@ void Game::gameLoop() {
             lastFpsUpdateTime = currentTimeMs;
         }
 
-        this->update(std::min(static_cast<int>(elapsedTimeMs), MAX_FRAME_TIME));
+        this->update((((static_cast<float>(elapsedTimeMs)) < (MAX_FRAME_TIME)) ? (static_cast<float>(elapsedTimeMs)) : (MAX_FRAME_TIME)));
         lastUpdateTime = currentTimeMs;
 
-        this->draw(currentFPS, elapsedTimeMs);
+        this->draw(currentFPS, static_cast<int>(elapsedTimeMs));
 
         // Frame rate limiting
         Uint64 frameEndTime = SDL_GetTicks();
-        int frameDuration = frameEndTime - currentTimeMs;
+        int frameDuration = static_cast<int>(frameEndTime - currentTimeMs);
         if (frameDuration < MAX_FRAME_TIME) {
             SDL_Delay(MAX_FRAME_TIME - frameDuration);
         }
     }
+    enet_deinitialize();
 }
 
 void Game::draw(float p_currentFPS, int p_elapsedTime){
@@ -100,7 +103,7 @@ void Game::handleInput(Input &p_input) {
         } else if (e.type == SDL_EVENT_KEY_UP) {
             p_input.keyUpEvent(e);
         } else if (e.type == SDL_EVENT_QUIT) {
-            this->_isRunning = false;
+            this->setRunningFalse();
             return;
         }
     }

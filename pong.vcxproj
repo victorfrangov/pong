@@ -97,7 +97,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>C:\msys64\mingw64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL3.lib;SDL3_image.lib;SDL3_ttf.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL3.lib;SDL3_image.lib;SDL3_ttf.lib;enet64.lib;ws2_32.lib;winmm.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -138,9 +138,6 @@
     <ClCompile Include="src\sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bin\SDL2_dll.h" />
-    <ClInclude Include="bin\SDL2_image_dll.h" />
-    <ClInclude Include="bin\SDL2_ttf_dll.h" />
     <ClInclude Include="include\ball.h" />
     <ClInclude Include="include\bar.h" />
     <ClInclude Include="include\game.h" />
@@ -154,6 +151,7 @@
     <ClInclude Include="include\rectangle.h" />
     <ClInclude Include="include\singleplayer.h" />
     <ClInclude Include="include\sprite.h" />
+    <ClInclude Include="multiplayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="res\gfx\pong.rc" />

@@ -24,7 +24,7 @@ private:
     Hud &_hud;
     Ball _ball;
 
-    const float COLLISION_COOLDOWN_TIME = 500.0f;
+    const float COLLISION_COOLDOWN_TIME = 200.0f;
     float _collisionTimer;
 };
 

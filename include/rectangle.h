@@ -1,5 +1,5 @@
-#ifndef RECTANGLE_H
-#define RECTANGLE_H
+#ifndef RECTANGLE
+#define RECTANGLE
 
 #include "globals.h"
 

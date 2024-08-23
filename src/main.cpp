@@ -8,7 +8,7 @@ int WinMain(int argc, const char* argv[]){
 #else
 int main(int argc, const char* argv[]){
 #endif
-    srand(time(NULL));
+    srand(static_cast<unsigned int>(time(NULL)));
     Game game;
     return 0;
 }
