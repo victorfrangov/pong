@@ -30,12 +30,7 @@ build.bat
 # IDE files
 .vscode/
 bin/
-pong/
-x64/
-*.sln
-*.vcxproj
-*.vcxproj.filters
-*.vcxproj.user
+.vs/
 
 
 #Other
