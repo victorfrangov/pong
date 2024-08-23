@@ -6,14 +6,16 @@
 Player::Player() :
     _dy(0),
     _points(0),
-    _hasLost(NULL)
+    _hasLost(NULL),
+    _hasWon(NULL)
     {}
 
-Player::Player(Graphics &p_graphics, Vector2f p_spawnPoint):
+Player::Player(Graphics& p_graphics, Vector2f p_spawnPoint) :
     Sprite(p_graphics, 0, 0, 10, 65, p_spawnPoint),
-        _points(0),
-        _dy(0),
-        _hasLost(false)
+    _points(0),
+    _dy(0),
+    _hasLost(false),
+    _hasWon(false)
     {
     }
 

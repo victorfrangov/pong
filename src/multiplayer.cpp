@@ -1,4 +1,7 @@
 #include "multiplayer.h"
+#include "host.h"
+#include "client.h"
+
 #include <enet/enet.h>
 
 Multiplayer::Multiplayer(Graphics& p_graphics, Player* p_client, Player* p_host, Hud& p_hud) :
@@ -9,28 +12,9 @@ Multiplayer::Multiplayer(Graphics& p_graphics, Player* p_client, Player* p_host,
 	_ball(p_graphics, Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / (rand() % 7 + 1)))
 	{
 		if (!this->_client) { // start a server
-			ENetAddress address;
-			ENetHost* server;
-
-			address.host = ENET_HOST_ANY;
-			address.port = 7777;
-
-			server = enet_host_create(&address, 1, 2, 0, 0);
-
-			if (server == NULL) {
-				OutputDebugString("An error occurred while trying to create an ENet server host.\n");
-				exit(EXIT_FAILURE);
-			}
-		} 
-		if (!this->_host) { // start a client
-			ENetHost* client;
-
-			client = enet_host_create(NULL, 1, 2, 0, 0);
-
-			if (client == NULL) {
-				OutputDebugString("An error occurred while trying to create an ENet client host.\n");
-				exit(EXIT_FAILURE);
-			}
+			Host host();
+		} else if (!this->_host) { // start a client
+			Client client();
 		}
 	}
 
@@ -42,7 +26,7 @@ void Multiplayer::draw(Graphics& p_graphics) {
 		this->_host->draw(p_graphics);
 	}
 	this->_ball.draw(p_graphics);
-	this->_hud.renderPoints(this->_client, this->_host);
+	//this->_hud.renderPoints(this->_client, this->_host);
 }
 
 void Multiplayer::update(float p_elapsedTime) {

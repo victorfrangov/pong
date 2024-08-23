@@ -69,8 +69,8 @@ enum Menu{
     SPGAME,
     MPGAMECLIENT,
     MPGAMEHOST,
-    HOST,
-    CLIENT
+    MPOPTIONHOST,
+    MPOPTIONCLIENT
 };
 
 /**

@@ -88,6 +88,8 @@ void Game::draw(float p_currentFPS, int p_elapsedTime){
 
     if(this->_singleplayer != nullptr)
         this->_singleplayer->draw(this->_graphics);
+	if (this->_multiplayer != nullptr)
+		this->_multiplayer->draw(this->_graphics);
 
     this->_graphics.flip();
 }
@@ -95,6 +97,9 @@ void Game::draw(float p_currentFPS, int p_elapsedTime){
 void Game::update(float p_elapsedTime){
     if(this->_singleplayer != nullptr)
         this->_singleplayer->update(p_elapsedTime);
+
+    if (this->_multiplayer != nullptr)
+        this->_multiplayer->update(p_elapsedTime);
 
     if(this->_player != nullptr){
         if(this->_player->getLostStatus())
@@ -129,24 +134,24 @@ void Game::handleInput(Input &p_input) {
 
     auto handleMenuSelection = [this, &p_input]() {
         auto lambdaStartSPGame = [this]() {
-            this->_menu = SPGAME;
-            this->_player = new Player(this->_graphics, Vector2f(100, 100));
-            this->_singleplayer = new Singleplayer(this->_graphics, this->_player, this->_hud); // will have to pass in the variables for speed/size before it gets init
-            this->_hud.setOptionIndex(1);
+                this->_menu = SPGAME;
+                this->_player = new Player(this->_graphics, Vector2f(100, 100));
+                this->_singleplayer = new Singleplayer(this->_graphics, this->_player, this->_hud);
+                this->_hud.setOptionIndex(1);
             };
 
         auto lambdaStartMPGameClient = [this]() {
-            this->_menu = MPGAMECLIENT;
-            this->_player = new Player(this->_graphics, Vector2f(100, 100));
-            this->_multiplayer = new Multiplayer(this->_graphics, this->_player, nullptr, this->_hud);
-            this->_hud.setOptionIndex(1);
+                this->_menu = MPGAMECLIENT;
+                this->_player = new Player(this->_graphics, Vector2f(100, 100));
+                this->_multiplayer = new Multiplayer(this->_graphics, this->_player, nullptr, this->_hud);
+                this->_hud.setOptionIndex(1);
             };
 
         auto lambdaStartMPGameHost = [this]() {
-            this->_menu = MPGAMEHOST;
-            this->_player = new Player(this->_graphics, Vector2f(540, 100));
-            this->_multiplayer = new Multiplayer(this->_graphics, nullptr, this->_player, this->_hud);
-            this->_hud.setOptionIndex(1);
+                this->_menu = MPGAMEHOST;
+                this->_player = new Player(this->_graphics, Vector2f(540, 100));
+                this->_multiplayer = new Multiplayer(this->_graphics, nullptr, this->_player, this->_hud);
+                this->_hud.setOptionIndex(1);
             };
 
         if (p_input.wasKeyPressed(SDL_SCANCODE_ESCAPE) && this->_menu == SPGAME) { this->_menu = MAINMENU; this->_hud.setOptionIndex(1); }
@@ -156,11 +161,11 @@ void Game::handleInput(Input &p_input) {
 
             if (this->_menu == SPMENU && this->_hud.getOptionIndex() == 4 && this->_singleplayer == nullptr && this->_player == nullptr) lambdaStartSPGame();
             if (this->_menu == LOSE && this->_hud.getOptionIndex() == 1 && this->_singleplayer == nullptr && this->_player == nullptr) lambdaStartSPGame();
-            if (this->_menu == CLIENT && this->_hud.getOptionIndex() == 2 && this->_multiplayer == nullptr && this->_player == nullptr) lambdaStartMPGameClient();
-            if (this->_menu == HOST && this->_hud.getOptionIndex() == 4 && this->_multiplayer == nullptr && this->_player == nullptr) lambdaStartMPGameHost();
+            if (this->_menu == MPOPTIONCLIENT && this->_hud.getOptionIndex() == 2 && this->_multiplayer == nullptr && this->_player == nullptr) lambdaStartMPGameClient();
+            if (this->_menu == MPOPTIONHOST && this->_hud.getOptionIndex() == 4 && this->_multiplayer == nullptr && this->_player == nullptr) lambdaStartMPGameHost();
         }
 
-        if (this->_menu != SPGAME) {
+        if (this->_menu != MPGAMECLIENT && this->_menu != MPGAMEHOST && this->_menu != SPGAME) {
             if (this->_singleplayer != nullptr) { // add checks for when will have multiplayer
                 delete this->_singleplayer;
                 this->_singleplayer = nullptr;
@@ -169,16 +174,9 @@ void Game::handleInput(Input &p_input) {
                 delete this->_player;
                 this->_player = nullptr;
             }
-        }
-
-        if (this->_menu != MPGAMECLIENT && this->_menu != MPGAMEHOST) {
             if (this->_multiplayer != nullptr) {
                 delete this->_multiplayer;
                 this->_multiplayer = nullptr;
-            }
-            if (this->_player != nullptr) {
-                delete this->_player;
-                this->_player = nullptr;
             }
         }
     };
