@@ -1,0 +1,19 @@
+﻿  ball.cpp
+C:\Users\victo\Desktop\VS-GIT\pong\src\ball.cpp(1,10): error C1083: Cannot open include file: 'ball.h': No such file or directory
+  game.cpp
+C:\Users\victo\Desktop\VS-GIT\pong\src\game.cpp(4,10): error C1083: Cannot open include file: 'game.h': No such file or directory
+  graphics.cpp
+C:\Users\victo\Desktop\VS-GIT\pong\src\graphics.cpp(4,10): error C1083: Cannot open include file: 'graphics.h': No such file or directory
+  hud.cpp
+C:\Users\victo\Desktop\VS-GIT\pong\src\hud.cpp(6,10): error C1083: Cannot open include file: 'hud.h': No such file or directory
+  input.cpp
+C:\Users\victo\Desktop\VS-GIT\pong\src\input.cpp(1,10): error C1083: Cannot open include file: 'input.h': No such file or directory
+  main.cpp
+C:\Users\victo\Desktop\VS-GIT\pong\src\main.cpp(4,10): error C1083: Cannot open include file: 'game.h': No such file or directory
+  player.cpp
+C:\Users\victo\Desktop\VS-GIT\pong\src\player.cpp(1,10): error C1083: Cannot open include file: 'player.h': No such file or directory
+  singleplayer.cpp
+C:\Users\victo\Desktop\VS-GIT\pong\src\singleplayer.cpp(1,10): error C1083: Cannot open include file: 'singleplayer.h': No such file or directory
+  sprite.cpp
+C:\Users\victo\Desktop\VS-GIT\pong\src\sprite.cpp(1,10): error C1083: Cannot open include file: 'sprite.h': No such file or directory
+  Generating Code...

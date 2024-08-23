@@ -3,7 +3,11 @@
 #include <iostream>
 #include <algorithm>
 
-Player::Player(){}
+Player::Player() :
+    _dy(0),
+    _points(0),
+    _hasLost(NULL)
+    {}
 
 Player::Player(Graphics &p_graphics, Vector2f p_spawnPoint):
     Sprite(p_graphics, 0, 0, 10, 65, p_spawnPoint),

@@ -13,9 +13,9 @@
  * @brief Namespace containing global constants.
  */
 namespace globals{
-    const int SCREEN_WIDTH = 640; ///< Width of the screen in pixels.
-    const int SCREEN_HEIGHT = 480; ///< Height of the screen in pixels.
-    const float SPRITE_SCALE = 1.0f; ///< Scale factor for sprites.
+    constexpr int SCREEN_WIDTH = 640; ///< Width of the screen in pixels.
+    constexpr int SCREEN_HEIGHT = 480; ///< Height of the screen in pixels.
+    constexpr float SPRITE_SCALE = 1.0f; ///< Scale factor for sprites.
 
     inline float ballDx = 0.15f;
     inline float ballDy = rand() % 2 == 0 ? 0.15f : -0.15f;

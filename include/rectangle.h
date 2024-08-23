@@ -15,7 +15,12 @@ public:
     /**
      * @brief Default constructor for the Rectangle class.
      */
-    Rectangle() {}
+    Rectangle() :
+        _x(0),
+        _y(0),
+        _width(0),
+        _height(0) 
+    {}
 
     /**
      * @brief Constructs a Rectangle with specified position and dimensions.

@@ -48,7 +48,7 @@ void Game::gameLoop() {
         this->handleInput(input);
 
         const Uint64 currentTimeMs = SDL_GetTicks();
-        int elapsedTimeMs = currentTimeMs - lastUpdateTime;
+        Uint64 elapsedTimeMs = currentTimeMs - lastUpdateTime;
 
         frameCount++;
         if (currentTimeMs - lastFpsUpdateTime >= 1000) {
@@ -57,7 +57,7 @@ void Game::gameLoop() {
             lastFpsUpdateTime = currentTimeMs;
         }
 
-        this->update(std::min(elapsedTimeMs, MAX_FRAME_TIME));
+        this->update(std::min(static_cast<int>(elapsedTimeMs), MAX_FRAME_TIME));
         lastUpdateTime = currentTimeMs;
 
         this->draw(currentFPS, elapsedTimeMs);
