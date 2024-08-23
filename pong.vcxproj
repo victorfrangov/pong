@@ -136,10 +136,12 @@
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\singleplayer.cpp" />
     <ClCompile Include="src\sprite.cpp" />
+	<ClCompile Include="src\multiplayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ball.h" />
     <ClInclude Include="include\bar.h" />
+    <ClInclude Include="include\client.h" />
     <ClInclude Include="include\game.h" />
     <ClInclude Include="include\globals.h" />
     <ClInclude Include="include\graphics.h" />
@@ -149,9 +151,10 @@
     <ClInclude Include="include\player.h" />
     <ClInclude Include="include\pongIcon.h" />
     <ClInclude Include="include\rectangle.h" />
+    <ClInclude Include="include\host.h" />
     <ClInclude Include="include\singleplayer.h" />
     <ClInclude Include="include\sprite.h" />
-    <ClInclude Include="multiplayer.h" />
+    <ClInclude Include="include\multiplayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="res\gfx\pong.rc" />

@@ -5,11 +5,12 @@
 #include "input.h"
 #include "hud.h"
 #include "singleplayer.h"
+#include "multiplayer.h"
 #include <enet/enet.h>
 
 namespace{
     const int FPS_TARGET = 60;
-    const int MAX_FRAME_TIME = 1000 / FPS_TARGET;
+    constexpr int MAX_FRAME_TIME = 1000 / FPS_TARGET;
 
     unsigned int frameCount = 0;
     float currentFPS = 0.0f;
@@ -21,6 +22,7 @@ Game::Game() :
     _graphics(),
     _hud(_graphics),
     _singleplayer(nullptr),
+	_multiplayer(nullptr),
     _player(nullptr),
     _menu()
     {
@@ -29,12 +31,17 @@ Game::Game() :
     }
 
 Game::~Game(){
-    if(this->_singleplayer != nullptr){
+    if (this->_singleplayer != nullptr){
         delete this->_singleplayer;
         this->_singleplayer = nullptr;
     }
 
-    if(this->_player != nullptr){
+	if (this->_multiplayer != nullptr) {
+		delete this->_multiplayer;
+		this->_multiplayer = nullptr;
+	}
+
+    if (this->_player != nullptr){
         delete this->_player;
         this->_player = nullptr;
     }
@@ -109,11 +116,11 @@ void Game::handleInput(Input &p_input) {
     }
 
     auto handleArrowKeys = [this, &p_input]() {
-        if (p_input.wasKeyPressed(SDL_SCANCODE_UP) && this->_menu != SPGAME && this->_menu != MPGAME) this->_hud.handleKeyInput(SDL_SCANCODE_UP);
-        if (p_input.wasKeyPressed(SDL_SCANCODE_DOWN) && this->_menu != SPGAME && this->_menu != MPGAME) this->_hud.handleKeyInput(SDL_SCANCODE_DOWN);
-        if (p_input.wasKeyPressed(SDL_SCANCODE_RIGHT) && this->_menu != SPGAME && this->_menu != MPGAME) this->_hud.handleKeyInput(SDL_SCANCODE_RIGHT);
-        if (p_input.wasKeyPressed(SDL_SCANCODE_LEFT) && this->_menu != SPGAME && this->_menu != MPGAME) this->_hud.handleKeyInput(SDL_SCANCODE_LEFT);
-
+        if (p_input.wasKeyPressed(SDL_SCANCODE_UP) && this->_menu != SPGAME && this->_menu != MPGAMECLIENT && this->_menu != MPGAMEHOST) this->_hud.handleKeyInput(SDL_SCANCODE_UP);
+        if (p_input.wasKeyPressed(SDL_SCANCODE_DOWN) && this->_menu != SPGAME && this->_menu != MPGAMECLIENT && this->_menu != MPGAMEHOST) this->_hud.handleKeyInput(SDL_SCANCODE_DOWN);
+        if (p_input.wasKeyPressed(SDL_SCANCODE_RIGHT) && this->_menu != SPGAME && this->_menu != MPGAMECLIENT && this->_menu != MPGAMEHOST) this->_hud.handleKeyInput(SDL_SCANCODE_RIGHT);
+        if (p_input.wasKeyPressed(SDL_SCANCODE_LEFT) && this->_menu != SPGAME && this->_menu != MPGAMECLIENT && this->_menu != MPGAMEHOST) this->_hud.handleKeyInput(SDL_SCANCODE_LEFT);
+        
         if(p_input.isKeyHeld(SDL_SCANCODE_UP) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->moveUp();
         if(p_input.wasKeyReleased(SDL_SCANCODE_UP) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->stopMoving();
         if(p_input.isKeyHeld(SDL_SCANCODE_DOWN) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->moveDown();
@@ -126,19 +133,34 @@ void Game::handleInput(Input &p_input) {
             this->_player = new Player(this->_graphics, Vector2f(100, 100));
             this->_singleplayer = new Singleplayer(this->_graphics, this->_player, this->_hud); // will have to pass in the variables for speed/size before it gets init
             this->_hud.setOptionIndex(1);
-        };
-        
-        if(p_input.wasKeyPressed(SDL_SCANCODE_ESCAPE) && this->_menu == SPGAME) { this->_menu = MAINMENU; this->_hud.setOptionIndex(1); }
+            };
 
-        if(p_input.wasKeyPressed(SDL_SCANCODE_RETURN)) {
+        auto lambdaStartMPGameClient = [this]() {
+            this->_menu = MPGAMECLIENT;
+            this->_player = new Player(this->_graphics, Vector2f(100, 100));
+            this->_multiplayer = new Multiplayer(this->_graphics, this->_player, nullptr, this->_hud);
+            this->_hud.setOptionIndex(1);
+            };
+
+        auto lambdaStartMPGameHost = [this]() {
+            this->_menu = MPGAMEHOST;
+            this->_player = new Player(this->_graphics, Vector2f(540, 100));
+            this->_multiplayer = new Multiplayer(this->_graphics, nullptr, this->_player, this->_hud);
+            this->_hud.setOptionIndex(1);
+            };
+
+        if (p_input.wasKeyPressed(SDL_SCANCODE_ESCAPE) && this->_menu == SPGAME) { this->_menu = MAINMENU; this->_hud.setOptionIndex(1); }
+
+        if (p_input.wasKeyPressed(SDL_SCANCODE_RETURN)) {
             this->_hud.handleKeyInput(SDL_SCANCODE_RETURN, &this->_menu);
 
-            if(this->_menu == SPMENU && this->_hud.getOptionIndex() == 4 && this->_singleplayer == nullptr && this->_player == nullptr) lambdaStartSPGame();
-            if(this->_menu == LOSE && this->_hud.getOptionIndex() == 1 && this->_singleplayer == nullptr && this->_player == nullptr) lambdaStartSPGame();
-            
+            if (this->_menu == SPMENU && this->_hud.getOptionIndex() == 4 && this->_singleplayer == nullptr && this->_player == nullptr) lambdaStartSPGame();
+            if (this->_menu == LOSE && this->_hud.getOptionIndex() == 1 && this->_singleplayer == nullptr && this->_player == nullptr) lambdaStartSPGame();
+            if (this->_menu == CLIENT && this->_hud.getOptionIndex() == 2 && this->_multiplayer == nullptr && this->_player == nullptr) lambdaStartMPGameClient();
+            if (this->_menu == HOST && this->_hud.getOptionIndex() == 4 && this->_multiplayer == nullptr && this->_player == nullptr) lambdaStartMPGameHost();
         }
 
-        if(this->_menu != SPGAME && this->_menu != MPGAME){
+        if (this->_menu != SPGAME) {
             if (this->_singleplayer != nullptr) { // add checks for when will have multiplayer
                 delete this->_singleplayer;
                 this->_singleplayer = nullptr;
@@ -148,8 +170,18 @@ void Game::handleInput(Input &p_input) {
                 this->_player = nullptr;
             }
         }
-    };
 
+        if (this->_menu != MPGAMECLIENT && this->_menu != MPGAMEHOST) {
+            if (this->_multiplayer != nullptr) {
+                delete this->_multiplayer;
+                this->_multiplayer = nullptr;
+            }
+            if (this->_player != nullptr) {
+                delete this->_player;
+                this->_player = nullptr;
+            }
+        }
+    };
     handleArrowKeys();
     handleMenuSelection();
 }

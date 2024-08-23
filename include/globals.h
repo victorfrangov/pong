@@ -67,7 +67,10 @@ enum Menu{
     LOSE,
     // PAUSE,
     SPGAME,
-    MPGAME
+    MPGAMECLIENT,
+    MPGAMEHOST,
+    HOST,
+    CLIENT
 };
 
 /**

@@ -38,7 +38,7 @@ float p_sourceY, float p_width, float p_height, Vector2f p_pos):
 
     SDL_DestroySurface(surface);
 
-    this->_boundingBox = Rectangle(this->_x, this->_y, p_width * globals::SPRITE_SCALE, p_height * globals::SPRITE_SCALE);
+    this->_boundingBox = SpriteRectangle(this->_x, this->_y, p_width * globals::SPRITE_SCALE, p_height * globals::SPRITE_SCALE);
 }
 
 Sprite::~Sprite(){
@@ -46,7 +46,7 @@ Sprite::~Sprite(){
 }
 
 void Sprite::update(){
-    this->_boundingBox = Rectangle(this->_x, this->_y, this->_src.w * globals::SPRITE_SCALE, this->_src.h * globals::SPRITE_SCALE);
+    this->_boundingBox = SpriteRectangle(this->_x, this->_y, this->_src.w * globals::SPRITE_SCALE, this->_src.h * globals::SPRITE_SCALE);
 }
 
 void Sprite::draw(Graphics &p_graphics, Vector2f p_pos){    
@@ -54,12 +54,12 @@ void Sprite::draw(Graphics &p_graphics, Vector2f p_pos){
     p_graphics.blitSurface(this->_spriteSheet, &this->_src, &dst);
 }
 
-const Rectangle Sprite::getBoundingBox() const{
+const SpriteRectangle Sprite::getBoundingBox() const{
     return this->_boundingBox;
 }
 
 //this gets called when there is a collision and you want to check which side collided
-const sides::Side Sprite::getCollisionSide(const Rectangle &p_other) const{
+const sides::Side Sprite::getCollisionSide(const SpriteRectangle &p_other) const{
     int amtRight = this->_boundingBox.getRight() - p_other.getLeft();
     int amtLeft = p_other.getRight() - this->_boundingBox.getLeft();
     int amtTop = p_other.getBottom() - this->_boundingBox.getTop();

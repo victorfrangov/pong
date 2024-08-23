@@ -4,7 +4,7 @@
 #include <SDL3/SDL.h>
 // #include <string>
 
-#include "rectangle.h"
+#include "Rectangle.h"
 #include "globals.h"
 
 class Graphics;
@@ -72,53 +72,53 @@ public:
      * This method returns the bounding box of the sprite, which can be used for collision detection
      * and other purposes where the physical boundaries of the sprite are needed.
      * 
-     * @return const Rectangle: The bounding box of the sprite.
+     * @return const SpriteRectangle: The bounding box of the sprite.
      */
-    const Rectangle getBoundingBox() const;
+    const SpriteRectangle getBoundingBox() const;
 
     /**
-     * @brief Determines the side of the collision with another rectangle.
+     * @brief Determines the side of the collision with another SpriteRectangle.
      * 
-     * This method compares the bounding box of the sprite with another rectangle (typically another sprite's bounding box)
+     * This method compares the bounding box of the sprite with another SpriteRectangle (typically another sprite's bounding box)
      * to determine on which side the collision occurred. This can be useful for resolving collisions in a more
      * specific manner, such as adjusting sprite position or triggering different behaviors based on the collision side.
      * 
-     * @param p_other The Rectangle to check collision against.
-     * @return const sides::Side: The side of the sprite where the collision with the other rectangle occurred.
+     * @param p_other The SpriteRectangle to check collision against.
+     * @return const sides::Side: The side of the sprite where the collision with the other SpriteRectangle occurred.
      */
-    const sides::Side getCollisionSide(const Rectangle &p_other) const;
+    const sides::Side getCollisionSide(const SpriteRectangle &p_other) const;
 
     /**
-     * @brief Sets the x-coordinate of the source rectangle.
+     * @brief Sets the x-coordinate of the source SpriteRectangle.
      * 
-     * This method sets the x-coordinate of the source rectangle in the sprite sheet.
+     * This method sets the x-coordinate of the source SpriteRectangle in the sprite sheet.
      * 
      * @param p_value The new x-coordinate value.
      */
     // void setSourceRectX(int p_value);
 
     /**
-     * @brief Sets the y-coordinate of the source rectangle.
+     * @brief Sets the y-coordinate of the source SpriteRectangle.
      * 
-     * This method sets the y-coordinate of the source rectangle in the sprite sheet.
+     * This method sets the y-coordinate of the source SpriteRectangle in the sprite sheet.
      * 
      * @param p_value The new y-coordinate value.
      */
     // void setSourceRectY(int p_value);
 
     /**
-     * @brief Sets the width of the source rectangle.
+     * @brief Sets the width of the source SpriteRectangle.
      * 
-     * This method sets the width of the source rectangle in the sprite sheet.
+     * This method sets the width of the source SpriteRectangle in the sprite sheet.
      * 
      * @param p_value The new width value.
      */
     // void setSourceRectW(int p_value);
 
     /**
-     * @brief Sets the height of the source rectangle.
+     * @brief Sets the height of the source SpriteRectangle.
      * 
-     * This method sets the height of the source rectangle in the sprite sheet.
+     * This method sets the height of the source SpriteRectangle in the sprite sheet.
      * 
      * @param p_value The new height value.
      */
@@ -143,10 +143,10 @@ public:
     // inline float getY() const { return this->_y; }
 
 protected:
-    SDL_FRect _src; ///< Source rectangle in the sprite sheet.
+    SDL_FRect _src; ///< Source SpriteRectangle in the sprite sheet.
     SDL_Texture* _spriteSheet; ///< Texture of the sprite sheet.
     float _x, _y; ///< Current position of the sprite.
-    Rectangle _boundingBox; ///< Bounding box of the sprite.
+    SpriteRectangle _boundingBox; ///< Bounding box of the sprite.
 };
 
 #endif /* SPRITE */

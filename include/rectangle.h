@@ -10,12 +10,12 @@
  * The Rectangle class provides methods to get the properties of the rectangle,
  * check for collisions with other rectangles, and validate the rectangle.
  */
-class Rectangle {
+class SpriteRectangle {
 public:
     /**
      * @brief Default constructor for the Rectangle class.
      */
-    Rectangle() :
+    SpriteRectangle() :
         _x(0),
         _y(0),
         _width(0),
@@ -30,7 +30,7 @@ public:
      * @param p_width The width of the rectangle.
      * @param p_height The height of the rectangle.
      */
-    Rectangle(int p_x, int p_y, int p_width, int p_height) :
+    SpriteRectangle(int p_x, int p_y, int p_width, int p_height) :
         _x(p_x),
         _y(p_y),
         _width(p_width),
@@ -114,7 +114,7 @@ public:
      * @param p_other The other rectangle to check collision against.
      * @return bool: True if there is a collision, false otherwise.
      */
-    bool collidesWith(const Rectangle &p_other) const {
+    bool collidesWith(const SpriteRectangle &p_other) const {
         return
             this->getRight() >= p_other.getLeft() &&
             this->getLeft() <= p_other.getRight() &&
@@ -127,7 +127,7 @@ public:
      * 
      * @return const Rectangle: The rectangle.
      */
-    const inline Rectangle getRect() const { return *this; }
+    const inline SpriteRectangle getRect() const { return *this; }
 
 private:
     int _x; ///< The x-coordinate of the rectangle.

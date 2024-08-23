@@ -92,6 +92,8 @@ public:
 
     inline void setLost() { this->_hasLost = true; }
 
+    inline void setWon() { this->_hasWon = true; }
+
     inline bool getLostStatus() const { return this->_hasLost; }
 
 private:
@@ -99,6 +101,7 @@ private:
     float _dy; ///< Delta y for player's movement.
 
     bool _hasLost;
+    bool _hasWon;
 };
 
 #endif /* PLAYER */

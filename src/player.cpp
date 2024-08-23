@@ -40,7 +40,7 @@ void Player::moveDown(){
 }
 
 void Player::handleBorderCollisions(){
-    const Rectangle rect = Sprite::getBoundingBox();
+    const SpriteRectangle rect = Sprite::getBoundingBox();
     if (rect.getBottom() >= globals::SCREEN_HEIGHT) {
         this->_dy = 0;
         this->_y = globals::SCREEN_HEIGHT - rect.getHeight();

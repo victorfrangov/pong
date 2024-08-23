@@ -42,13 +42,17 @@ public:
 
     // void toggleFps();
 
-    void renderPoints(Player* p_player);
+    void renderPoints(Player* p_client, Player* p_host);
 
     void renderLose();
 
     void renderSPOptions();
 
-    void renderMPOptions();
+	void renderMPMenu();
+
+	void renderMPHost();
+
+	void renderMPClient();
 
     void handleKeyInput(SDL_Scancode p_key, Menu* p_menu = nullptr);
 

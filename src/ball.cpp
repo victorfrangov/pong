@@ -22,7 +22,7 @@ void Ball::update(float p_elapsedTime) {
 }
 
 void Ball::handleBorderCollisions() {
-    const Rectangle rect = Sprite::getBoundingBox();
+    const SpriteRectangle rect = Sprite::getBoundingBox();
     if (rect.getBottom() >= globals::SCREEN_HEIGHT) {
         this->_dy = -this->_dy;
         this->_y = globals::SCREEN_HEIGHT - rect.getHeight();

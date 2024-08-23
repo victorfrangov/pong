@@ -15,6 +15,7 @@
 class Player;
 class Input;
 class Singleplayer;
+class Multiplayer;
 
 /**
  * @class Game
@@ -64,6 +65,7 @@ private:
     Graphics _graphics; ///< Graphics object used for rendering.
     Hud _hud;
     Singleplayer* _singleplayer;
+	Multiplayer* _multiplayer;
     Player* _player;
     Menu _menu;
 
