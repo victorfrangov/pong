@@ -136,7 +136,7 @@
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\singleplayer.cpp" />
     <ClCompile Include="src\sprite.cpp" />
-	<ClCompile Include="src\multiplayer.cpp" />
+    <ClCompile Include="src\multiplayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ball.h" />
