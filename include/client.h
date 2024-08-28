@@ -10,16 +10,18 @@ public:
 		this->_client = enet_host_create(NULL, 1, 2, 0, 0);
 
 		if (this->_client == nullptr) {
+            #ifdef _MSC_VER
 			OutputDebugString("An error occurred while trying to create an ENet client.\n");
+            #endif
 			exit(EXIT_FAILURE);
 		}
 	}
 
-    Client::~Client() {
-        if (_client) {
-            enet_host_destroy(_client);
-        }
-    }
+    // Client::~Client() {
+    //     if (_client) {
+    //         enet_host_destroy(_client);
+    //     }
+    // }
 
 	ENetEvent enetParseEvent() {
 		ENetEvent event;
@@ -52,6 +54,8 @@ public:
                     event.peer->data = NULL;
                     break;
                 }
+                default:
+                    break;
             }
 		}
         return event;
@@ -73,6 +77,8 @@ public:
                 case ENET_EVENT_TYPE_DISCONNECT:
                     SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Disconnected", "dc", 0);
                     return;
+                default:
+                    break;
             }
         }
         enet_peer_reset(this->_peer);

@@ -6,8 +6,8 @@
 Player::Player() :
     _dy(0),
     _points(0),
-    _hasLost(NULL),
-    _hasWon(NULL)
+    _hasLost(false),
+    _hasWon(false)
     {}
 
 Player::Player(Graphics& p_graphics, Vector2f p_spawnPoint) :

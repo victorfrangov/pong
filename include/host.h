@@ -17,7 +17,9 @@ public:
 		this->_server = enet_host_create(&address, 1, 2, 0, 0);
 
 		if (this->_server == NULL) {
+            #ifdef _MSC_VER
 			OutputDebugString("An error occurred while trying to create an ENet server host.\n");
+            #endif
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -73,11 +75,13 @@ public:
         ENetEvent event;
         enet_peer_disconnect(this->_peer, 0);
 
-        while (enet_host_service(this->_client, &event, 3000) > 0) {
+        while (enet_host_service(this->_server, &event, 3000) > 0) {
             switch (event.type) {
             case ENET_EVENT_TYPE_DISCONNECT:
                 SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Disconnected", "dc", 0);
                 return;
+            default:
+                break;
             }
         }
         enet_peer_reset(this->_peer);

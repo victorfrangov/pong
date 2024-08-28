@@ -4,7 +4,7 @@
 #include <SDL3/SDL.h>
 // #include <string>
 
-#include "Rectangle.h"
+#include "rectangle.h"
 #include "globals.h"
 
 class Graphics;
