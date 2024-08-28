@@ -5,16 +5,16 @@
 #include <enet/enet.h>
 
 Multiplayer::Multiplayer(Graphics& p_graphics, Player* p_playerClient, Player* p_playerHost, Hud& p_hud) :
-	_playerClient(p_playerClient),
-	_playerHost(p_playerHost),
+	_playerClient(p_playerClient ? std::make_unique<Player>(*p_playerClient) : nullptr),
+	_playerHost(p_playerHost ? std::make_unique<Player>(*p_playerHost) : nullptr),
 	_hud(p_hud),
 	_collisionTimer(0.0f),
-	_ball(p_graphics, Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / (rand() % 7 + 1))),
+	_ball(p_graphics, Vector2f(globals::SCREEN_WIDTH / 2.0f, globals::SCREEN_HEIGHT / static_cast<float>(rand() % 7 + 1))),
 	_host(nullptr),
 	_client(nullptr)
 	{
 		if (!this->_playerClient) { // start a server
-			this->_host = new Host();
+			this->_host = std::make_unique<Host>();
 			//MUST WAIT THAT CLIENT IS OCNNECTED HERE
 			if (this->_host->enetParseEvent().type == ENET_EVENT_TYPE_CONNECT) { //HERE IS PLACED IN LOBBY, MUST CHANGE HOW HUDCPP AND GAMECPP 
 				//SEND TO THE GAME, ADD ANOTHER MPLOBBY MENU
@@ -22,24 +22,15 @@ Multiplayer::Multiplayer(Graphics& p_graphics, Player* p_playerClient, Player* p
 			}
 
 			//init thed other player here
-			this->_playerClient = new Player(p_graphics, Vector2f(100, 100));
+			this->_playerClient = std::make_unique<Player>(p_graphics, Vector2f(100, 100));
 		} else if (!this->_playerHost) { // start a client
-			this->_client = new Client();
+			this->_client = std::make_unique<Client>();
 			this->_client->connectToHost(); //show a little connecting... message on screen (WILL BE PASSING IN AS PARAM AN IP)
 
-			this->_playerHost = new Player(p_graphics, Vector2f(540, 100));
+			this->_playerHost = std::make_unique<Player>(p_graphics, Vector2f(540, 100));
 			//client.sendPacket();
 		}
 	}
-
-Multiplayer::~Multiplayer() {
-	if (this->_host) {
-		delete this->_host;
-	}
-	if (this->_client) {
-		delete this->_client;
-	}
-}
 
 void Multiplayer::draw(Graphics& p_graphics) {
 	if (this->_playerClient) {

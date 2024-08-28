@@ -1,8 +1,81 @@
-﻿  multiplayer.cpp
+﻿  ball.cpp
+C:\msys64\mingw64\include\SDL3\SDL_rect.h(106,16): warning C4099: 'SDL_FRect': type name first seen using 'class' now seen using 'struct'
+  (compiling source file 'src/ball.cpp')
+      C:\msys64\mingw64\include\SDL3\SDL_rect.h(106,16):
+      see declaration of 'SDL_FRect'
+  
+C:\Users\victo\Desktop\VS-GIT\pong\src\ball.cpp(28,43): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\victo\Desktop\VS-GIT\pong\src\ball.cpp(36,42): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  game.cpp
+C:\Users\victo\Desktop\VS-GIT\pong\include\graphics.h(18,7): warning C4099: 'SDL_FRect': type name first seen using 'struct' now seen using 'class'
+  (compiling source file 'src/game.cpp')
+      C:\msys64\mingw64\include\SDL3\SDL_rect.h(106,16):
+      see declaration of 'SDL_FRect'
+  
+  graphics.cpp
+C:\Users\victo\Desktop\VS-GIT\pong\include\graphics.h(18,7): warning C4099: 'SDL_FRect': type name first seen using 'struct' now seen using 'class'
+  (compiling source file 'src/graphics.cpp')
+      C:\msys64\mingw64\include\SDL3\SDL_rect.h(106,16):
+      see declaration of 'SDL_FRect'
+  
+  hud.cpp
+C:\Users\victo\Desktop\VS-GIT\pong\include\graphics.h(18,7): warning C4099: 'SDL_FRect': type name first seen using 'struct' now seen using 'class'
+  (compiling source file 'src/hud.cpp')
+      C:\msys64\mingw64\include\SDL3\SDL_rect.h(106,16):
+      see declaration of 'SDL_FRect'
+  
+C:\Users\victo\Desktop\VS-GIT\pong\src\hud.cpp(106,74): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\victo\Desktop\VS-GIT\pong\src\hud.cpp(117,169): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\victo\Desktop\VS-GIT\pong\src\hud.cpp(133,81): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\victo\Desktop\VS-GIT\pong\src\hud.cpp(133,66): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\victo\Desktop\VS-GIT\pong\src\hud.cpp(162,43): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\victo\Desktop\VS-GIT\pong\src\hud.cpp(200,76): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\victo\Desktop\VS-GIT\pong\src\hud.cpp(203,43): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\victo\Desktop\VS-GIT\pong\src\hud.cpp(251,76): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\victo\Desktop\VS-GIT\pong\src\hud.cpp(253,43): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\victo\Desktop\VS-GIT\pong\src\hud.cpp(254,79): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\victo\Desktop\VS-GIT\pong\src\hud.cpp(264,43): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\victo\Desktop\VS-GIT\pong\src\hud.cpp(273,94): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\victo\Desktop\VS-GIT\pong\src\hud.cpp(274,56): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\victo\Desktop\VS-GIT\pong\src\hud.cpp(434,18): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\victo\Desktop\VS-GIT\pong\src\hud.cpp(435,18): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\victo\Desktop\VS-GIT\pong\src\hud.cpp(436,107): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\victo\Desktop\VS-GIT\pong\src\hud.cpp(436,95): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  input.cpp
+  main.cpp
+C:\Users\victo\Desktop\VS-GIT\pong\include\graphics.h(18,7): warning C4099: 'SDL_FRect': type name first seen using 'struct' now seen using 'class'
+  (compiling source file 'src/main.cpp')
+      C:\msys64\mingw64\include\SDL3\SDL_rect.h(106,16):
+      see declaration of 'SDL_FRect'
+  
+  player.cpp
+C:\Users\victo\Desktop\VS-GIT\pong\src\player.cpp(48,43): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  singleplayer.cpp
+C:\msys64\mingw64\include\SDL3\SDL_rect.h(106,16): warning C4099: 'SDL_FRect': type name first seen using 'class' now seen using 'struct'
+  (compiling source file 'src/singleplayer.cpp')
+      C:\msys64\mingw64\include\SDL3\SDL_rect.h(106,16):
+      see declaration of 'SDL_FRect'
+  
+C:\Users\victo\Desktop\VS-GIT\pong\src\singleplayer.cpp(7,80): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  sprite.cpp
+C:\Users\victo\Desktop\VS-GIT\pong\include\graphics.h(18,7): warning C4099: 'SDL_FRect': type name first seen using 'struct' now seen using 'class'
+  (compiling source file 'src/sprite.cpp')
+      C:\msys64\mingw64\include\SDL3\SDL_rect.h(106,16):
+      see declaration of 'SDL_FRect'
+  
+C:\Users\victo\Desktop\VS-GIT\pong\src\sprite.cpp(41,104): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\victo\Desktop\VS-GIT\pong\src\sprite.cpp(41,70): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\victo\Desktop\VS-GIT\pong\src\sprite.cpp(41,56): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\victo\Desktop\VS-GIT\pong\src\sprite.cpp(41,46): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\victo\Desktop\VS-GIT\pong\src\sprite.cpp(49,113): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\victo\Desktop\VS-GIT\pong\src\sprite.cpp(49,75): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\victo\Desktop\VS-GIT\pong\src\sprite.cpp(49,56): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\victo\Desktop\VS-GIT\pong\src\sprite.cpp(49,46): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  multiplayer.cpp
 C:\msys64\mingw64\include\SDL3\SDL_rect.h(106,16): warning C4099: 'SDL_FRect': type name first seen using 'class' now seen using 'struct'
   (compiling source file 'src/multiplayer.cpp')
       C:\msys64\mingw64\include\SDL3\SDL_rect.h(106,16):
       see declaration of 'SDL_FRect'
   
-C:\Users\victo\Desktop\VS-GIT\pong\src\multiplayer.cpp(12,79): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Generating Code...
   pong.vcxproj -> C:\Users\victo\Desktop\VS-GIT\pong\x64\Debug\pong.exe

@@ -6,7 +6,7 @@
 class Host {
 public:
 	Host() {
-        this->_client = NULL;
+        //this->_client = NULL;
         this->_peer = NULL;
 
         ENetAddress address{};
@@ -84,7 +84,7 @@ public:
     }
 
 private:
-    ENetHost* _client;
+    //ENetHost* _client;
     ENetPeer* _peer;
     ENetHost* _server;
 };
