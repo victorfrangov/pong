@@ -12,12 +12,6 @@ C:\Users\victo\Desktop\VS-GIT\pong\include\graphics.h(18,7): warning C4099: 'SDL
       C:\msys64\mingw64\include\SDL3\SDL_rect.h(106,16):
       see declaration of 'SDL_FRect'
   
-  graphics.cpp
-C:\Users\victo\Desktop\VS-GIT\pong\include\graphics.h(18,7): warning C4099: 'SDL_FRect': type name first seen using 'struct' now seen using 'class'
-  (compiling source file 'src/graphics.cpp')
-      C:\msys64\mingw64\include\SDL3\SDL_rect.h(106,16):
-      see declaration of 'SDL_FRect'
-  
   hud.cpp
 C:\Users\victo\Desktop\VS-GIT\pong\include\graphics.h(18,7): warning C4099: 'SDL_FRect': type name first seen using 'struct' now seen using 'class'
   (compiling source file 'src/hud.cpp')
@@ -41,10 +35,15 @@ C:\Users\victo\Desktop\VS-GIT\pong\src\hud.cpp(434,18): warning C4244: 'initiali
 C:\Users\victo\Desktop\VS-GIT\pong\src\hud.cpp(435,18): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
 C:\Users\victo\Desktop\VS-GIT\pong\src\hud.cpp(436,107): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\Users\victo\Desktop\VS-GIT\pong\src\hud.cpp(436,95): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  input.cpp
   main.cpp
 C:\Users\victo\Desktop\VS-GIT\pong\include\graphics.h(18,7): warning C4099: 'SDL_FRect': type name first seen using 'struct' now seen using 'class'
   (compiling source file 'src/main.cpp')
+      C:\msys64\mingw64\include\SDL3\SDL_rect.h(106,16):
+      see declaration of 'SDL_FRect'
+  
+  multiplayer.cpp
+C:\msys64\mingw64\include\SDL3\SDL_rect.h(106,16): warning C4099: 'SDL_FRect': type name first seen using 'class' now seen using 'struct'
+  (compiling source file 'src/multiplayer.cpp')
       C:\msys64\mingw64\include\SDL3\SDL_rect.h(106,16):
       see declaration of 'SDL_FRect'
   
@@ -71,11 +70,5 @@ C:\Users\victo\Desktop\VS-GIT\pong\src\sprite.cpp(49,113): warning C4244: 'argum
 C:\Users\victo\Desktop\VS-GIT\pong\src\sprite.cpp(49,75): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 C:\Users\victo\Desktop\VS-GIT\pong\src\sprite.cpp(49,56): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 C:\Users\victo\Desktop\VS-GIT\pong\src\sprite.cpp(49,46): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  multiplayer.cpp
-C:\msys64\mingw64\include\SDL3\SDL_rect.h(106,16): warning C4099: 'SDL_FRect': type name first seen using 'class' now seen using 'struct'
-  (compiling source file 'src/multiplayer.cpp')
-      C:\msys64\mingw64\include\SDL3\SDL_rect.h(106,16):
-      see declaration of 'SDL_FRect'
-  
   Generating Code...
   pong.vcxproj -> C:\Users\victo\Desktop\VS-GIT\pong\x64\Debug\pong.exe
