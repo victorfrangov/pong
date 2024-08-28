@@ -32,6 +32,7 @@ build.bat
 bin/
 .vs/
 x64/
+pong/
 
 
 #Other
