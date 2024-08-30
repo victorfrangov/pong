@@ -31,6 +31,8 @@ build.bat
 .vscode/
 bin/
 .vs/
+x64/
+pong/
 
 
 #Other
