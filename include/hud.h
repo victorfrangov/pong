@@ -54,6 +54,8 @@ public:
 
 	void renderMPClient();
 
+    void renderMPLobby();
+
     void handleKeyInput(SDL_Scancode p_key, Menu* p_menu = nullptr);
 
     void handleSelect(Menu* p_menu);

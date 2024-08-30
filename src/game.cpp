@@ -6,6 +6,7 @@
 #include "hud.h"
 #include "singleplayer.h"
 #include "multiplayer.h"
+
 #include <enet/enet.h>
 
 namespace{
@@ -31,20 +32,20 @@ Game::Game() :
     }
 
 Game::~Game(){
-    if (this->_singleplayer != nullptr){
-        delete this->_singleplayer;
-        this->_singleplayer = nullptr;
-    }
+    // if (this->_singleplayer){
+    //     delete this->_singleplayer;
+    //     this->_singleplayer = nullptr;
+    // }
 
-	if (this->_multiplayer != nullptr) {
-		delete this->_multiplayer;
-		this->_multiplayer = nullptr;
-	}
+	// if (this->_multiplayer) {
+	// 	delete this->_multiplayer;
+	// 	this->_multiplayer = nullptr;
+	// }
 
-    if (this->_player != nullptr){
-        delete this->_player;
-        this->_player = nullptr;
-    }
+    // if (this->_player){
+    //     delete this->_player;
+    //     this->_player = nullptr;
+    // }
 }
 
 void Game::gameLoop() {
@@ -86,22 +87,22 @@ void Game::draw(float p_currentFPS, int p_elapsedTime){
 
     this->_hud.draw(this->_menu, p_currentFPS, p_elapsedTime);
 
-    if(this->_singleplayer != nullptr)
+    if(this->_singleplayer)
         this->_singleplayer->draw(this->_graphics);
-	if (this->_multiplayer != nullptr)
+	if (this->_multiplayer)
 		this->_multiplayer->draw(this->_graphics);
 
     this->_graphics.flip();
 }
 
 void Game::update(float p_elapsedTime){
-    if(this->_singleplayer != nullptr)
+    if(this->_singleplayer)
         this->_singleplayer->update(p_elapsedTime);
 
-    if (this->_multiplayer != nullptr)
+    if (this->_multiplayer)
         this->_multiplayer->update(p_elapsedTime);
 
-    if(this->_player != nullptr){
+    if(this->_player){
         if(this->_player->getLostStatus())
             this->_menu = LOSE; // delete sp and player instances unless you have a play again button
     }
@@ -126,35 +127,57 @@ void Game::handleInput(Input &p_input) {
         if (p_input.wasKeyPressed(SDL_SCANCODE_RIGHT) && this->_menu != SPGAME && this->_menu != MPGAMECLIENT && this->_menu != MPGAMEHOST) this->_hud.handleKeyInput(SDL_SCANCODE_RIGHT);
         if (p_input.wasKeyPressed(SDL_SCANCODE_LEFT) && this->_menu != SPGAME && this->_menu != MPGAMECLIENT && this->_menu != MPGAMEHOST) this->_hud.handleKeyInput(SDL_SCANCODE_LEFT);
         
-        if(p_input.isKeyHeld(SDL_SCANCODE_UP) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->moveUp();
-        if(p_input.wasKeyReleased(SDL_SCANCODE_UP) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->stopMoving();
-        if(p_input.isKeyHeld(SDL_SCANCODE_DOWN) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->moveDown();
-        if(p_input.wasKeyReleased(SDL_SCANCODE_DOWN) && this->_menu == SPGAME && this->_singleplayer != nullptr && this->_player != nullptr) this->_player->stopMoving();
-    };
+        if ((this->_menu == SPGAME || this->_menu == MPGAMECLIENT || this->_menu == MPGAMEHOST) && this->_player) {
+            if (p_input.isKeyHeld(SDL_SCANCODE_UP)) {
+                this->_player->moveUp();
+            }
+            if (p_input.wasKeyReleased(SDL_SCANCODE_UP)) {
+                this->_player->stopMoving();
+            }
+            if (p_input.isKeyHeld(SDL_SCANCODE_DOWN)) {
+                this->_player->moveDown();
+            }
+            if (p_input.wasKeyReleased(SDL_SCANCODE_DOWN)) {
+                this->_player->stopMoving();
+            }
+        }
+   };
 
     auto handleMenuSelection = [this, &p_input]() {
         auto lambdaStartSPGame = [this]() {
                 this->_menu = SPGAME;
-                this->_player = new Player(this->_graphics, Vector2f(100, 100));
-                this->_singleplayer = new Singleplayer(this->_graphics, this->_player, this->_hud);
+                this->_player = std::make_shared<Player>(this->_graphics, Vector2f(100, 100));
+                this->_singleplayer = std::make_unique<Singleplayer>(this->_graphics, this->_player, this->_hud);
                 this->_hud.setOptionIndex(1);
             };
 
         auto lambdaStartMPGameClient = [this]() {
                 this->_menu = MPGAMECLIENT;
-                this->_player = new Player(this->_graphics, Vector2f(100, 100));
-                this->_multiplayer = new Multiplayer(this->_graphics, this->_player, nullptr, this->_hud);
+                this->_player = std::make_shared<Player>(this->_graphics, Vector2f(100, 100));
+                this->_multiplayer = std::make_unique<Multiplayer>(this->_graphics, this->_player, nullptr, this->_hud);
                 this->_hud.setOptionIndex(1);
             };
 
         auto lambdaStartMPGameHost = [this]() {
                 this->_menu = MPGAMEHOST;
-                this->_player = new Player(this->_graphics, Vector2f(540, 100));
-                this->_multiplayer = new Multiplayer(this->_graphics, nullptr, this->_player, this->_hud);
+                this->_player = std::make_shared<Player>(this->_graphics, Vector2f(540, 100));
+                this->_multiplayer = std::make_unique<Multiplayer>(this->_graphics, nullptr, this->_player, this->_hud);
                 this->_hud.setOptionIndex(1);
             };
 
-        if (p_input.wasKeyPressed(SDL_SCANCODE_ESCAPE) && this->_menu == SPGAME) { this->_menu = MAINMENU; this->_hud.setOptionIndex(1); }
+        if (p_input.wasKeyPressed(SDL_SCANCODE_ESCAPE) && (this->_menu == SPGAME || this->_menu == MPGAMECLIENT || this->_menu == MPGAMEHOST)) {
+            if (this->_singleplayer) {
+                this->_singleplayer.reset();
+            }
+            if (this->_player) {
+                this->_player.reset();
+            }
+            if (this->_multiplayer) {
+                this->_multiplayer.reset();
+            }
+            this->_menu = MAINMENU;
+            this->_hud.setOptionIndex(1); 
+        }
 
         if (p_input.wasKeyPressed(SDL_SCANCODE_RETURN)) {
             this->_hud.handleKeyInput(SDL_SCANCODE_RETURN, &this->_menu);
@@ -162,24 +185,9 @@ void Game::handleInput(Input &p_input) {
             if (this->_menu == SPMENU && this->_hud.getOptionIndex() == 4 && this->_singleplayer == nullptr && this->_player == nullptr) lambdaStartSPGame();
             if (this->_menu == LOSE && this->_hud.getOptionIndex() == 1 && this->_singleplayer == nullptr && this->_player == nullptr) lambdaStartSPGame();
             if (this->_menu == MPOPTIONCLIENT && this->_hud.getOptionIndex() == 2 && this->_multiplayer == nullptr && this->_player == nullptr) lambdaStartMPGameClient();
-            if (this->_menu == MPOPTIONHOST && this->_hud.getOptionIndex() == 4 && this->_multiplayer == nullptr && this->_player == nullptr) lambdaStartMPGameHost();
-        }
-
-        if (this->_menu != MPGAMECLIENT && this->_menu != MPGAMEHOST && this->_menu != SPGAME) {
-            if (this->_singleplayer != nullptr) { // add checks for when will have multiplayer
-                delete this->_singleplayer;
-                this->_singleplayer = nullptr;
-            }
-            if (this->_player != nullptr) {
-                delete this->_player;
-                this->_player = nullptr;
-            }
-            if (this->_multiplayer != nullptr) {
-                delete this->_multiplayer;
-                this->_multiplayer = nullptr;
-            }
+            if (this->_menu == MPLOBBY && this->_hud.getOptionIndex() == 2 && this->_multiplayer == nullptr && this->_player == nullptr) lambdaStartMPGameHost();
         }
     };
-    handleArrowKeys();
     handleMenuSelection();
+    handleArrowKeys();
 }

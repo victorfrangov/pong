@@ -59,6 +59,9 @@ void Hud::draw(Menu p_menu, float p_fps, int p_elapsedTime){
 		case MPOPTIONCLIENT:
 			this->renderMPClient();
 			break;
+		case MPLOBBY:
+			this->renderMPLobby();
+			break;
 		case OPTIONS:
 			this->renderOptions();
 			break;
@@ -266,6 +269,16 @@ void Hud::renderMPClient() {
 	this->renderHudItems();
 }
 
+void Hud::renderMPLobby(){
+	this->_hudItem = {
+		{"LOBBY", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5), Dash::NODASH},
+		{"PLAYER 1: NOT CONNECTED", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 2.5), Dash::NODASH},
+		{"START", Vector2f(globals::SCREEN_WIDTH / 3, globals::SCREEN_HEIGHT / 1.5), Dash::DASH},
+		{"BACK", Vector2f(globals::SCREEN_WIDTH / 1.5, globals::SCREEN_HEIGHT / 1.5), Dash::DASH}
+	};
+	this->renderHudItems();
+}
+
 void Hud::handleKeyInput(SDL_Scancode p_key, Menu* p_menu) {
 	do {
 		switch (p_key){
@@ -377,11 +390,26 @@ void Hud::handleSelect(Menu* p_menu){
 		case 3:
 			break;
 		case 4:
-			//*p_menu = MPMPOPTIONHOS;
+			*p_menu = MPLOBBY;
 			break;
 		case 5:
 			*p_menu = MPMENU;
 			this->_selectedOptionIndex = 1;
+			break;
+		default:
+			break;
+		}
+	} else if (*p_menu == MPLOBBY) {
+		switch (this->_selectedOptionIndex) {
+		case 1:
+			//*p_menu = CLIENT; ip address is show here
+			break;
+		case 2:
+			// *p_menu = MPGAMEHOST;
+			break;
+		case 3:
+			*p_menu = MPGAMEHOST;
+			this->_selectedOptionIndex = 2;
 			break;
 		default:
 			break;

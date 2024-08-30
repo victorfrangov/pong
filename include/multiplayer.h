@@ -12,7 +12,7 @@
 
 class Multiplayer {
 public:
-	Multiplayer(Graphics& p_graphics, Player* p_client, Player* p_host, Hud& p_hud);
+	Multiplayer(Graphics& p_graphics, std::shared_ptr<Player> p_client, std::shared_ptr<Player> p_host, Hud& p_hud);
 
 	~Multiplayer() = default;
 
@@ -21,8 +21,8 @@ public:
 	void update(float p_elapsedTime);
 
 private:
-	std::unique_ptr<Player> _playerClient;
-	std::unique_ptr<Player> _playerHost;
+	std::shared_ptr<Player> _playerClient;
+	std::shared_ptr<Player> _playerHost;
 	Hud& _hud;
 	Ball _ball;
 

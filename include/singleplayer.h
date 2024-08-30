@@ -5,12 +5,13 @@
 #include "player.h"
 #include "ball.h"
 #include "hud.h"
+#include <memory>
 // #include "globals.h"
 // #include "sprite.h"
 
 class Singleplayer{
 public:
-	Singleplayer(Graphics &p_graphics, Player* p_player, Hud &p_hud);
+	Singleplayer(Graphics &p_graphics, std::shared_ptr<Player> p_player, Hud &p_hud);
 
 	void draw(Graphics &p_graphics);
 
@@ -20,7 +21,7 @@ public:
 
 	void handlePlayerBallCollision();
 private:
-	Player &_player;
+	std::shared_ptr<Player> _player;
 	Hud &_hud;
 	Ball _ball;
 

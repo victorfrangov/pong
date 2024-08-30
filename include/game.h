@@ -12,10 +12,12 @@
 #include "graphics.h"
 #include "hud.h"
 
-class Player;
 class Input;
+class Player;
 class Singleplayer;
 class Multiplayer;
+
+#include <memory>
 
 /**
  * @class Game
@@ -64,9 +66,9 @@ private:
 
     Graphics _graphics; ///< Graphics object used for rendering.
     Hud _hud;
-    Singleplayer* _singleplayer;
-	Multiplayer* _multiplayer;
-    Player* _player;
+    std::unique_ptr<Singleplayer> _singleplayer;
+	std::unique_ptr<Multiplayer> _multiplayer;
+    std::shared_ptr<Player> _player;
     Menu _menu;
 
     static bool _isRunning;

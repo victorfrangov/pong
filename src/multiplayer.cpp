@@ -4,9 +4,9 @@
 
 #include <enet/enet.h>
 
-Multiplayer::Multiplayer(Graphics& p_graphics, Player* p_playerClient, Player* p_playerHost, Hud& p_hud) :
-	_playerClient(p_playerClient ? std::make_unique<Player>(*p_playerClient) : nullptr),
-	_playerHost(p_playerHost ? std::make_unique<Player>(*p_playerHost) : nullptr),
+Multiplayer::Multiplayer(Graphics& p_graphics, std::shared_ptr<Player> p_playerClient, std::shared_ptr<Player> p_playerHost, Hud& p_hud) :
+	_playerClient(p_playerClient ? std::move(p_playerClient) : nullptr),
+	_playerHost(p_playerHost ? std::move(p_playerHost) : nullptr),
 	_hud(p_hud),
 	_collisionTimer(0.0f),
 	_ball(p_graphics, Vector2f(globals::SCREEN_WIDTH / 2.0f, globals::SCREEN_HEIGHT / static_cast<float>(rand() % 7 + 1))),
