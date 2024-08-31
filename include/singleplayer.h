@@ -13,6 +13,8 @@ class Singleplayer{
 public:
 	Singleplayer(Graphics &p_graphics, std::shared_ptr<Player> p_player, Hud &p_hud);
 
+	~Singleplayer() = default;
+
 	void draw(Graphics &p_graphics);
 
 	void update(float p_elapsedTime);

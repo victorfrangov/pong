@@ -3,6 +3,9 @@
 
 #include <enet/enet.h>
 
+#include <iostream>
+#include <memory>
+
 class Host {
 public:
 	Host() {
@@ -14,21 +17,23 @@ public:
 		address.host = ENET_HOST_ANY;
 		address.port = 7777;
 
-		this->_server = enet_host_create(&address, 1, 2, 0, 0);
+		ENetHost* server = enet_host_create(&address, 1, 2, 0, 0);
 
-		if (this->_server == NULL) {
+		if (server == NULL) {
             #ifdef _MSC_VER
 			OutputDebugString("An error occurred while trying to create an ENet server host.\n");
             #endif
+            std::cout << "Server init failed" << std::endl;
 			exit(EXIT_FAILURE);
 		}
+        this->_server = std::unique_ptr<ENetHost, decltype(&enet_host_destroy)>(server, &enet_host_destroy);
 	}
 
     ENetEvent enetParseEvent() {
         ENetEvent event;
         //supposed to put this in a loop, set the 5000 to 0, because it will delay the game for 5s
         // do we even need _client
-        while (enet_host_service(this->_server, &event, 0) > 0) {
+        while (enet_host_service(this->_server.get(), &event, 0) > 0) {
             switch (event.type) {
             case ENET_EVENT_TYPE_CONNECT:
             {
@@ -75,7 +80,7 @@ public:
         ENetEvent event;
         enet_peer_disconnect(this->_peer, 0);
 
-        while (enet_host_service(this->_server, &event, 3000) > 0) {
+        while (enet_host_service(this->_server.get(), &event, 3000) > 0) {
             switch (event.type) {
             case ENET_EVENT_TYPE_DISCONNECT:
                 SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Disconnected", "dc", 0);
@@ -90,7 +95,7 @@ public:
 private:
     //ENetHost* _client;
     ENetPeer* _peer;
-    ENetHost* _server;
+    std::unique_ptr<ENetHost, decltype(&enet_host_destroy)> _server{nullptr, &enet_host_destroy};
 };
 
 #endif /* HOST */

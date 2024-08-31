@@ -166,17 +166,17 @@ void Game::handleInput(Input &p_input) {
             };
 
         if (p_input.wasKeyPressed(SDL_SCANCODE_ESCAPE) && (this->_menu == SPGAME || this->_menu == MPGAMECLIENT || this->_menu == MPGAMEHOST)) {
-            if (this->_singleplayer) {
-                this->_singleplayer.reset();
-            }
             if (this->_player) {
                 this->_player.reset();
+            }
+            if (this->_singleplayer) {
+                this->_singleplayer.reset();
             }
             if (this->_multiplayer) {
                 this->_multiplayer.reset();
             }
             this->_menu = MAINMENU;
-            this->_hud.setOptionIndex(1); 
+            this->_hud.setOptionIndex(1);
         }
 
         if (p_input.wasKeyPressed(SDL_SCANCODE_RETURN)) {
