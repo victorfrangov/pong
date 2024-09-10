@@ -85,6 +85,11 @@ void Game::gameLoop() {
 void Game::draw(float p_currentFPS, int p_elapsedTime){
     this->_graphics.clear();
 
+    if(this->_menu == LOSE){
+        this->_player.reset();
+        this->_singleplayer.reset();
+    }
+
     this->_hud.draw(this->_menu, p_currentFPS, p_elapsedTime);
 
     if(this->_singleplayer)
