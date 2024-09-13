@@ -219,7 +219,7 @@ void Hud::renderMPMenu() {
 }
 
 void Hud::renderMPHost() {
-	std::vector<std::vector<float>> SPOptions = {
+	std::vector<std::vector<float>> MPOptions = {
 		{0.15f, 0.30f, 0.45f, 0.60f, 0.90f}, // ballSpeedOptions
 		{0.20f, 0.40f, 0.60f, 0.80f, 1.00f}, // playerSpeedOptions
 		{5.00f, 7.50f, 10.00f, 20.00f, 30.00f} // ballSizeOptions
@@ -228,24 +228,24 @@ void Hud::renderMPHost() {
 	std::ostringstream stream;
 	stream.precision(2);
 
-	stream << "BALL SPEED: " << SPOptions[0][this->_firstVectorIndex];
+	stream << "BALL SPEED: " << MPOptions[0][this->_firstVectorIndex];
 	std::string ballSpeedStr = stream.str();
 	stream.str("");
 	stream.clear();
 
-	stream << "PLAYER SPEED: " << SPOptions[1][this->_secondVectorIndex];
+	stream << "PLAYER SPEED: " << MPOptions[1][this->_secondVectorIndex];
 	std::string playerSpeedStr = stream.str();
 	stream.str("");
 	stream.clear();
 
-	stream << "BALL SIZE: " << SPOptions[2][this->_thirdVectorIndex];
+	stream << "BALL SIZE: " << MPOptions[2][this->_thirdVectorIndex];
 	std::string ballSizeStr = stream.str();
 	stream.str("");
 	stream.clear();
 
-	globals::setBallSpeed(SPOptions[0][this->_firstVectorIndex]);
-	globals::setPlayerSpeed(SPOptions[1][this->_secondVectorIndex]);
-	globals::setBallSize(SPOptions[2][this->_thirdVectorIndex]);
+	globals::setBallSpeed(MPOptions[0][this->_firstVectorIndex]);
+	globals::setPlayerSpeed(MPOptions[1][this->_secondVectorIndex]);
+	globals::setBallSize(MPOptions[2][this->_thirdVectorIndex]);
 	//make this lambda function later
 	this->_hudItem = {
 		{"HOST", Vector2f(globals::SCREEN_WIDTH / 2, globals::SCREEN_HEIGHT / 5), Dash::NODASH},
@@ -330,6 +330,9 @@ void Hud::handleSelect(Menu* p_menu){
 				break;
 		}
 	} else if(*p_menu == SPMENU){
+		this->_firstVectorIndex = 0;
+		this->_secondVectorIndex = 0;
+		this->_thirdVectorIndex = 0;
 		switch (this->_selectedOptionIndex){
 			case 1:
 				//ball speed
@@ -380,6 +383,9 @@ void Hud::handleSelect(Menu* p_menu){
 			break;
 		}
 	} else if (*p_menu == MPOPTIONHOST) {
+		this->_firstVectorIndex = 0;
+		this->_secondVectorIndex = 0;
+		this->_thirdVectorIndex = 0;
 		switch (this->_selectedOptionIndex) {
 		case 1:
 			//*p_menu = CLIENT; ip address is show here
