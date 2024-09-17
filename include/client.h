@@ -67,7 +67,7 @@ public:
         }
     }
 
-	void update() {
+    ENetEvent update() {
 		ENetEvent event;
 		while (enet_host_service(this->_client, &event, 0) > 0) {
             switch (event.type) {

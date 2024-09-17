@@ -8,9 +8,9 @@
 #include <map>
 //#include <memory>
 
-class ClientData {
+class HostData {
 public:
-    ClientData(int p_id) : _id(p_id) {}
+    HostData(int p_id) : _id(p_id) {}
 
     void setUsername(std::string username) { this->_username = username; }
 
@@ -67,7 +67,6 @@ public:
                 sprintf_s(send_data2, "2|%d|%s", id, username);
                 std::cout << "SEND: " << send_data2 << "\n";
 
-
                 sendPacket(peer, send_data2);
                 client_map[id]->setUsername(username);
                 break;
@@ -75,11 +74,11 @@ public:
             }
     }
 
-    void update() {
+    ENetEvent update() {
         ENetEvent event;
         int playerID = 0;
-        while (true) {
-            // gamee loop
+        int running = true;
+        while (running) {
             while (enet_host_service(this->_server.get(), &event, 0) > 0) {
                 switch (event.type) {
                 case ENET_EVENT_TYPE_CONNECT:
@@ -91,7 +90,7 @@ public:
                     }
 
                     playerID++;
-                    client_map[playerID] = std::make_unique<ClientData>(playerID); // where do we send username to client?
+                    client_map[playerID] = std::make_unique<HostData>(playerID); // where do we send username to client?
                     event.peer->data = client_map[playerID].get();
 
                     char data_to_send[126] = { '\0' }; //sent to client
@@ -103,7 +102,7 @@ public:
                 {
                     printf("length: %zu, data:  %s.\n", event.packet->dataLength, event.packet->data);
 
-                    parseData(event.peer, static_cast<ClientData*>(event.peer->data)->getID(), reinterpret_cast<char*>(event.packet->data));
+                    parseData(event.peer, static_cast<HostData*>(event.peer->data)->getID(), reinterpret_cast<char*>(event.packet->data));
                     enet_packet_destroy(event.packet);
                     break;
                 }
@@ -111,17 +110,18 @@ public:
                 {
                     printf("%x:%u disconnection", event.peer->address.host, event.peer->address.port);
                     char disc_data[126] = { '\0' };
-                    sprintf_s(disc_data, "4|%d", static_cast<ClientData*>(event.peer->data)->getID());
+                    sprintf_s(disc_data, "4|%d", static_cast<HostData*>(event.peer->data)->getID());
                     sendPacket(event.peer, disc_data);
 
-                    event.peer->data = NULL;
+                    event.peer = NULL;
+                    running = false;
                     break;
                 }
                 }
             }
         }
-
         enet_host_destroy(this->_server.get());
+        return event;
     }
 
     void sendPacket(ENetPeer* peer, const char* data) {
@@ -130,9 +130,7 @@ public:
     }
 
 private:
-    //ENetHost* _client;
-    //ENetPeer* _peer;
-    std::map<int, std::unique_ptr<ClientData>> client_map;
+    std::map<int, std::unique_ptr<HostData>> client_map;
     std::unique_ptr<ENetHost, decltype(&enet_host_destroy)> _server{nullptr, &enet_host_destroy};
 };
 

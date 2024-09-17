@@ -17,7 +17,7 @@ Multiplayer::Multiplayer(Graphics& p_graphics, std::shared_ptr<Player> p_playerC
 		if (!this->_playerClient) { // start a server
 			this->_host = std::make_unique<Host>();
 			//MUST WAIT THAT CLIENT IS OCNNECTED HERE
-			if (this->_host->enetParseEvent().type == ENET_EVENT_TYPE_CONNECT) { //HERE IS PLACED IN LOBBY, MUST CHANGE HOW HUDCPP AND GAMECPP 
+			if (this->_host->update().type == ENET_EVENT_TYPE_CONNECT) { //HERE IS PLACED IN LOBBY, MUST CHANGE HOW HUDCPP AND GAMECPP 
 				//SEND TO THE GAME, ADD ANOTHER MPLOBBY MENU
 				exit(EXIT_FAILURE);
 			}
@@ -47,7 +47,7 @@ void Multiplayer::draw(Graphics& p_graphics) {
 void Multiplayer::update(float p_elapsedTime) {
 	this->_ball.update(p_elapsedTime);
 	if (this->_playerClient) { this->_playerClient->update(p_elapsedTime); } //client sends packet here?
-	if (this->_playerHost) { this->_playerHost->update(p_elapsedTime); this->_host->enetParseEvent(); }
+	if (this->_playerHost) { this->_playerHost->update(p_elapsedTime); this->_host->update(); }
 	if (this->_collisionTimer > 0.0f) { this->_collisionTimer -= p_elapsedTime; }
 
 	this->handlePlayerBallCollision();
