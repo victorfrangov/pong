@@ -4,6 +4,22 @@
 #include <enet/enet.h>
 #include <sstream>
 
+static int CLIENT_ID = -1;
+
+class ClientData {
+public:
+    ClientData(int p_id) : _id(p_id) {}
+
+    void setUsername(std::string username) { this->_username = username; }
+
+    int getID() { return this->_id; }
+
+    std::string getUsername() { return this->_username; }
+private:
+    int _id;
+    std::string _username;
+};
+
 class Client {
 public:
 	Client() : _client(nullptr), _peer(nullptr){
@@ -23,7 +39,35 @@ public:
     //     }
     // }
 
-	ENetEvent enetParseEvent() {
+    void parseData(char* data) {
+        int data_type;
+        int id;
+        sscanf(data, "%d|%d", &data_type, &id);
+        switch (data_type) {
+        case 1:
+            if (id != CLIENT_ID) {
+                char msg[80];
+                sscanf(data, "%*d|%*d|%[^|]", &msg); //stores the msg itself
+            }
+            break;
+        case 2:
+
+            if (id != CLIENT_ID) {
+                char username[80];
+                sscanf(data, "%*d|%*d|%[^|]", username);
+
+
+                client_map[id] = std::make_unique<ClientData>(id);
+                client_map[id]->setUsername(username);
+            }
+            break;
+        case 3:
+            CLIENT_ID = id;
+            break;
+        }
+    }
+
+	void update() {
 		ENetEvent event;
 		while (enet_host_service(this->_client, &event, 0) > 0) {
             switch (event.type) {
@@ -38,10 +82,7 @@ public:
                 }
                 case ENET_EVENT_TYPE_RECEIVE: 
                 {
-                    std::ostringstream oss;
-                    oss << "Length: " << event.packet->dataLength << "\nData: " << (char*)event.packet->data << "\nFrom: " << (char*)event.peer->data << "\nChannel: " << event.channelID;
-                    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Packet Info", oss.str().c_str(), 0);
-
+                    parseData(reinterpret_cast<char*>(event.packet->data));
                     enet_packet_destroy(event.packet);
                     break;
                 }
@@ -60,13 +101,6 @@ public:
 		}
         return event;
 	}
-
-    void sendPacket() {
-        ENetPacket* packet = enet_packet_create("packet",
-            strlen("packet") + 1,
-            ENET_PACKET_FLAG_RELIABLE);
-        enet_peer_send(this->_peer, 0, packet);
-    }
 
     void disconnectPeer() {
         ENetEvent event;
@@ -107,9 +141,16 @@ public:
         }
     }
 
+    void sendPacket(ENetPeer* peer, const char* data) {
+        ENetPacket* packet = enet_packet_create(data, strlen(data) + 1, ENET_PACKET_FLAG_RELIABLE);
+        enet_peer_send(peer, 0, packet);
+    }
+
 private:
 	ENetHost* _client;
     ENetPeer* _peer;
+
+    std::map<int, std::unique_ptr<ClientData>> client_map;
 };
 
 #endif /* CLIENT */
