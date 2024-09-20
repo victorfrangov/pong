@@ -46,25 +46,25 @@ public:
         std::cout << "BEFORE PARSING: " << data << "\n";
 
         int data_type;
-        sscanf_s(data, "%d|", &data_type);
+        sscanf(data, "%d|", &data_type);
         switch (data_type) {
             case 1:
             {
                 char msg[80]; //msg that was sent
-                sscanf_s(data, "%*d|%[^|]", &msg);
+                sscanf(data, "%*d|%[^|]", &msg);
 
                 char send_data1[1024] = { '\0' };
-                sprintf_s(send_data1, "1|%d|%s", id, msg);
+                snprintf(send_data1, sizeof(send_data1), "1|%d|%s", id, msg);
                 sendPacket(peer, send_data1);
                 break;
             }
             case 2:
             {
                 char username[80];
-                sscanf_s(data, "2|%[^\n]", &username);
+                sscanf(data, "2|%[^\n]", &username);
 
                 char send_data2[1024] = { '\0' };
-                sprintf_s(send_data2, "2|%d|%s", id, username);
+                snprintf(send_data2, sizeof(send_data2), "2|%d|%s", id, username);
                 std::cout << "SEND: " << send_data2 << "\n";
 
                 sendPacket(peer, send_data2);
@@ -85,7 +85,7 @@ public:
                 {
                     for (auto const& x : client_map) { //send packets to every client with username data
                         char send_data[1024] = { '\0' };
-                        sprintf_s(send_data, "2|%d|%s", x.first, x.second->getUsername().c_str());
+                        snprintf(send_data, sizeof(send_data), "2|%d|%s", x.first, x.second->getUsername().c_str());
                         sendPacket(event.peer, send_data);
                     }
 
@@ -94,7 +94,7 @@ public:
                     event.peer->data = client_map[playerID].get();
 
                     char data_to_send[126] = { '\0' }; //sent to client
-                    sprintf_s(data_to_send, "3|%d", playerID); // send username to client here
+                    snprintf(data_to_send, sizeof(data_to_send), "3|%d", playerID); // send username to client here
                     sendPacket(event.peer, data_to_send);
                     break;
                 }
@@ -110,7 +110,7 @@ public:
                 {
                     printf("%x:%u disconnection", event.peer->address.host, event.peer->address.port);
                     char disc_data[126] = { '\0' };
-                    sprintf_s(disc_data, "4|%d", static_cast<HostData*>(event.peer->data)->getID());
+                    snprintf(disc_data, sizeof(disc_data), "4|%d", static_cast<HostData*>(event.peer->data)->getID());
                     sendPacket(event.peer, disc_data);
 
                     event.peer = NULL;
