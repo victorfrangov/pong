@@ -83,8 +83,8 @@ public:
                 switch (event.type) {
                 case ENET_EVENT_TYPE_CONNECT:
                 {
-                    for (auto const& x : client_map) { //send packets to every client with username data
-                        char send_data[1024] = { '\0' };
+                    for (auto const& x : client_map) { //send packets to every client with username data 
+                        char send_data[1024] = { '\0' }; // THIS INFO GOES IN LOBBY MENU
                         snprintf(send_data, sizeof(send_data), "2|%d|%s", x.first, x.second->getUsername().c_str());
                         sendPacket(event.peer, send_data);
                     }
@@ -98,7 +98,7 @@ public:
                     sendPacket(event.peer, data_to_send);
                     break;
                 }
-                case ENET_EVENT_TYPE_RECEIVE:
+                case ENET_EVENT_TYPE_RECEIVE: //PACKET HOST RECEIVES MOVEMENT DATA FROM OTHER PLAYER
                 {
                     printf("length: %zu, data:  %s.\n", event.packet->dataLength, event.packet->data);
 
@@ -106,7 +106,7 @@ public:
                     enet_packet_destroy(event.packet);
                     break;
                 }
-                case ENET_EVENT_TYPE_DISCONNECT:
+                case ENET_EVENT_TYPE_DISCONNECT: //PACKET HOST RECEIVES WHEN OTHER PLAYER QUITS/DC/ETC
                 {
                     printf("%x:%u disconnection", event.peer->address.host, event.peer->address.port);
                     char disc_data[126] = { '\0' };

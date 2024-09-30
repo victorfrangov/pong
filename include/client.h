@@ -71,7 +71,7 @@ public:
 		ENetEvent event;
 		while (enet_host_service(this->_client, &event, 0) > 0) {
             switch (event.type) {
-                case ENET_EVENT_TYPE_CONNECT: 
+                case ENET_EVENT_TYPE_CONNECT: // WHEN CLIENT CONNECTS, HOST WILL SEND A CONNECT PACKET THAT TELLS USERNAME. CLIENT WILL HAVE HOST NAME IN LOBBY MENU, AFTERWARDS.
                 {
                     std::ostringstream oss;
                     oss << "Connected to " << event.peer->address.host << ":" << event.peer->address.port;
@@ -80,13 +80,13 @@ public:
                     event.peer->data = (void*)"Client info";
                     break;
                 }
-                case ENET_EVENT_TYPE_RECEIVE: 
+                case ENET_EVENT_TYPE_RECEIVE: // RECEIVE HOST MOVEMENT DATA.
                 {
                     parseData(reinterpret_cast<char*>(event.packet->data));
                     enet_packet_destroy(event.packet);
                     break;
                 }
-                case ENET_EVENT_TYPE_DISCONNECT: 
+                case ENET_EVENT_TYPE_DISCONNECT: //DISCONNECTION INFO FROM HOST IF HE QUITS
                 {
                     std::ostringstream oss;
                     oss << (char*)event.peer->data << " disconnected";
@@ -118,7 +118,7 @@ public:
         enet_peer_reset(this->_peer);
     }
 
-    void connectToHost() {
+    void connectToHost() { // Called when client presses connect (will connect to the ip he chose) if connection success, send to lobby and send/receive connect packets for username info.
         ENetAddress address;
         ENetEvent event;
         
