@@ -51,11 +51,9 @@ public:
             }
             break;
         case 2:
-
             if (id != CLIENT_ID) {
                 char username[80];
                 sscanf(data, "%*d|%*d|%[^|]", username);
-
 
                 client_map[id] = std::make_unique<ClientData>(id);
                 client_map[id]->setUsername(username);

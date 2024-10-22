@@ -157,14 +157,14 @@ void Game::handleInput(Input &p_input) {
             };
 
         auto lambdaStartMPGameClient = [this]() {
-                this->_menu = MPGAMECLIENT;
+                // this->_menu = MPGAMECLIENT;
                 this->_player = std::make_shared<Player>(this->_graphics, Vector2f(100, 100));
                 this->_multiplayer = std::make_unique<Multiplayer>(this->_graphics, this->_player, nullptr, this->_hud);
                 this->_hud.setOptionIndex(1);
             };
 
         auto lambdaStartMPGameHost = [this]() {
-                this->_menu = MPGAMEHOST;
+                // this->_menu = MPGAMEHOST;
                 this->_player = std::make_shared<Player>(this->_graphics, Vector2f(540, 100));
                 this->_multiplayer = std::make_unique<Multiplayer>(this->_graphics, nullptr, this->_player, this->_hud);
                 this->_hud.setOptionIndex(1);
@@ -190,7 +190,7 @@ void Game::handleInput(Input &p_input) {
             if (this->_menu == SPMENU && this->_hud.getOptionIndex() == 4 && this->_singleplayer == nullptr && this->_player == nullptr) lambdaStartSPGame();
             if (this->_menu == LOSE && this->_hud.getOptionIndex() == 1 && this->_singleplayer == nullptr && this->_player == nullptr) lambdaStartSPGame();
             if (this->_menu == MPOPTIONCLIENT && this->_hud.getOptionIndex() == 2 && this->_multiplayer == nullptr && this->_player == nullptr) lambdaStartMPGameClient();
-            if (this->_menu == MPLOBBY && this->_hud.getOptionIndex() == 2 && this->_multiplayer == nullptr && this->_player == nullptr) lambdaStartMPGameHost();
+            if (this->_menu == MPOPTIONHOST && this->_hud.getOptionIndex() == 2 && this->_multiplayer == nullptr && this->_player == nullptr) lambdaStartMPGameHost();
         }
     };
     handleMenuSelection();

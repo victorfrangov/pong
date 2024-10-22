@@ -373,7 +373,7 @@ void Hud::handleSelect(Menu* p_menu){
 			//*p_menu = CLIENT; enter ip address 
 			break;
 		case 2:
-			//*p_menu = MPMPOPTIONCLIENT;
+			*p_menu = MPLOBBY;
 			break;
 		case 3:
 			*p_menu = MPMENU;

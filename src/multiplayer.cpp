@@ -20,6 +20,8 @@ Multiplayer::Multiplayer(Graphics& p_graphics, std::shared_ptr<Player> p_playerC
 			if (this->_host->update().type == ENET_EVENT_TYPE_CONNECT) { //HERE IS PLACED IN LOBBY, MUST CHANGE HOW HUDCPP AND GAMECPP 
 				//SEND TO THE GAME, ADD ANOTHER MPLOBBY MENU
 				exit(EXIT_FAILURE);
+			} else {
+				// nothing happens and you sit in lobby
 			}
 
 			//init thed other player here

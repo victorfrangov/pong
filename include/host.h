@@ -34,7 +34,7 @@ public:
 
 		if (server == NULL) {
             #ifdef _MSC_VER
-			OutputDebugString("An error occurred while trying to create an ENet server host.\n");
+            OutputDebugString("An error occurred while trying to create an ENet server host.\n");
             #endif
             std::cout << "Server init failed" << std::endl;
 			exit(EXIT_FAILURE);
