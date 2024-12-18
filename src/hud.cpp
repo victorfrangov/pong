@@ -414,7 +414,7 @@ void Hud::handleSelect(Menu* p_menu){
 			// *p_menu = MPGAMEHOST;
 			break;
 		case 3:
-			*p_menu = MPGAMEHOST;
+			*p_menu = MPOPTIONHOST;
 			this->_selectedOptionIndex = 2;
 			break;
 		default:

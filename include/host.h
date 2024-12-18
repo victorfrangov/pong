@@ -79,6 +79,7 @@ public:
         int playerID = 0;
         int running = true;
         while (running) {
+            //infinte loop (FIX THIS)
             while (enet_host_service(this->_server.get(), &event, 0) > 0) {
                 switch (event.type) {
                 case ENET_EVENT_TYPE_CONNECT:
