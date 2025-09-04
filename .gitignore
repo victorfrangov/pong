@@ -38,3 +38,5 @@ pong/
 #Other
 .DS_Store
 *.psd
+*.mov
+*.png

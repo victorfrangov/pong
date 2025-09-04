@@ -411,7 +411,7 @@ void Hud::handleSelect(Menu* p_menu){
 			//*p_menu = CLIENT; ip address is show here
 			break;
 		case 2:
-			// *p_menu = MPGAMEHOST;
+			*p_menu = MPGAMEHOST;
 			break;
 		case 3:
 			*p_menu = MPOPTIONHOST;

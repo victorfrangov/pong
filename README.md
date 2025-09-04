@@ -1,15 +1,19 @@
-# Pong
+# Retro Pong
 
-![Pong Game](https://example.com/pong-game-banner.png)
+## Update
+I have dropped this project as I have moved on. Implementing multiplayer was my limit. Messing around with networking, espcially in C++ is something I underestimated.
 
 ## Overview
 Welcome to **Pong**, a classic singleplayer/multiplayer pong game built with SDL3. Challenge your friends or play against yourself in this timeless arcade game.
 
 ## Features
-- 🎮 **Multiplayer Mode**: Play with friends locally or on the net!.
-- 🕹️ **Single Player Mode**: Challenge the computer (SOON).
+- 🎮 **Multiplayer Mode**: Play with friends locally or on the net!. (SOON!)
+- 🕹️ **Single Player Mode**: Challenge yourself!
 - 🔄 **Game Options**: Customize your gameplay experience.
 - 🖥️ **Fullscreen Toggle**: Switch between fullscreen and windowed mode.
+
+
+![Pong GIF](pong.gif)
 
 ## Getting Started
 
